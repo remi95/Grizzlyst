@@ -1,7 +1,7 @@
 import React, {Component} from 'react';
 import {View, TextInput, Button, Text} from 'react-native';
 import colors from "../../constants/colors";
-import styles from "../../styles/styles";
+import Styles from "../../styles/styles";
 import FormValidator from "../../helpers/FormValidator";
 
 class LoginForm extends Component {
@@ -85,7 +85,7 @@ class LoginForm extends Component {
                     this.state.form.inputs.map((input, i) =>
                         <View key={input.placeholder + i}>
                             <TextInput
-                                style={[styles.form.inputText, input.error ? styles.form.inputError : null]}
+                                style={[Styles.form.inputText, input.error ? Styles.form.inputError : null]}
                                 placeholder={input.placeholder}
                                 textContentType={input.type ? input.type : 'none'}
                                 secureTextEntry={input.type && input.type === 'password'}
@@ -96,7 +96,7 @@ class LoginForm extends Component {
                             {
                                 input.error
                                     ? <Text
-                                        style={styles.form.textError}>{input.error}</Text>
+                                        style={Styles.form.textError}>{input.error}</Text>
                                     : null
                             }
                         </View>

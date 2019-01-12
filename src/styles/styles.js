@@ -1,7 +1,7 @@
 import form from "./form/form";
 
-const styles = {
+const Styles = {
     form: form,
 };
 
-export default styles;
+export default Styles;
