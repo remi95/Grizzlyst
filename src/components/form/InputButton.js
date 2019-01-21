@@ -53,8 +53,8 @@ class InputButton extends Component {
     };
 
     render() {
-        if (this.state.isLoaded) {
-            return (<View>
+        return(
+            <View>
                 <View style={styles.blockInputBtn}>
 
                     <TextInput
@@ -67,23 +67,24 @@ class InputButton extends Component {
                     />
 
                     <TouchableOpacity onPress={this.action}>
-                        <FontAwesome name={this.props.icon} size={32} color={this.props.color}/>
+                        {
+                            this.state.isLoaded
+                                ? <FontAwesome name={this.props.icon} size={32} color={this.props.color}/>
+                                : <Text>O</Text>
+                        }
                     </TouchableOpacity>
 
                 </View>
 
-                {
-                    this.state.error || this.props.error
-                        ?   <Text style={Styles.form.textError}>
-                                {this.state.error || this.props.error}
-                            </Text>
-                        :    null
-                }
-            </View>)
-        }
-        else {
-            return (<AppLoading />)
-        }
+                    {
+                        this.state.error || this.props.error
+                            ?   <Text style={Styles.form.textError}>
+                                    {this.state.error || this.props.error}
+                                </Text>
+                            :    null
+                    }
+            </View>
+        )
     }
 
     async componentDidMount() {

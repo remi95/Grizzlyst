@@ -1,9 +1,10 @@
 import React, {Component} from 'react';
-import { View, TextInput, StyleSheet, Text } from 'react-native';
+import {View, TextInput, StyleSheet, Text, Button} from 'react-native';
 import Styles from "../../styles/styles";
 import colors from "../../constants/colors";
 import InputButton from "./InputButton";
 import FormValidator from "../../helpers/FormValidator";
+import TextButton from "../Text/TextButton";
 
 class CreateGroupForm extends Component {
 
@@ -50,6 +51,19 @@ class CreateGroupForm extends Component {
         this.setState({ emails: currentEmails });
     };
 
+    removeEmail = (email) => {
+        let emails = this.state.emails;
+
+        if (emails.includes(email)) {
+            emails = emails.filter(element => element !== email);
+            this.setState({emails})
+        }
+    };
+
+    create = () => {
+
+    };
+
     render() {
         return (
             <View style={styles.form}>
@@ -60,13 +74,15 @@ class CreateGroupForm extends Component {
 
                 <View style={styles.emails}>
                     {
-                        this.state.emails.map(emails =>
-                            <Text
-                                key={emails}
+                        this.state.emails.map(email =>
+                            <TextButton
+                                key={email}
                                 style={styles.email}
-                            >
-                                {emails}
-                            </Text>
+                                text={email}
+                                icon={'close'}
+                                color={colors.GRAY}
+                                action={this.removeEmail.bind(this, email)}
+                            />
                         )
                     }
                 </View>
@@ -82,6 +98,13 @@ class CreateGroupForm extends Component {
                     onChange={this.updateValue.bind(this, 'inputEmail')}
                     validation={FormValidator.emailValidate}
                 />
+
+                <Button
+                    style={Styles.form.btnSubmit}
+                    title={'Valider'}
+                    color={colors.BLUE}
+                    onPress={this.create}
+                />
             </View>
         )
     }
@@ -90,10 +113,13 @@ class CreateGroupForm extends Component {
 const styles = StyleSheet.create({
     form: {
         flexDirection: 'column',
+        justifyContent: 'center',
+        alignItems: 'center',
+        marginTop: 30,
+        marginBottom: 30,
     },
     emails: {
         margin: 15,
-        marginLeft: 25,
     },
     email: {
         color: colors.GRAY,
