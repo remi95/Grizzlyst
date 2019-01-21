@@ -1,10 +1,10 @@
 import React, {Component} from 'react';
-import { View, TextInput, Button, Text } from 'react-native';
-import colors from "../../constants/colors";
-import Styles from "../../styles/styles";
-import FormValidator from "../../helpers/FormValidator";
+import {View, TextInput, Button, Text} from 'react-native';
+import colors from "../constants/colors";
+import Styles from "../styles/styles";
+import FormValidator from "../helpers/FormValidator";
 
-class RegisterForm extends Component {
+class LoginForm extends Component {
 
     constructor(props) {
         super(props);
@@ -13,31 +13,11 @@ class RegisterForm extends Component {
             form: {
                 inputs: [
                     {
-                        placeholder: 'Prénom',
-                        value: '',
-                        type: 'givenName',
-                        validator: FormValidator.minLengthValidate,
-                        params: 2,
-                    },
-                    {
-                        placeholder: 'Nom',
-                        value: '',
-                        type: 'familyName',
-                        validator: FormValidator.minLengthValidate,
-                        params: 2,
-                    },
-                    {
-                        placeholder: 'Pseudo',
-                        value: '',
-                        type: 'username',
-                        validator: FormValidator.minLengthValidate,
-                        params: 2,
-                    },
-                    {
                         placeholder: 'Email',
                         value: '',
                         type: 'emailAddress',
                         validator: FormValidator.emailValidate,
+                        params: 2,
                     },
                     {
                         placeholder: 'Mot de passe',
@@ -48,8 +28,9 @@ class RegisterForm extends Component {
                     },
                 ],
                 button: {
-                    label: 'S\'inscrire',
-                    color: colors.BLUE,
+                    label: 'Connexion',
+                    color: colors.GREEN,
+                    action: null,
                 },
             },
         }
@@ -121,17 +102,14 @@ class RegisterForm extends Component {
                         </View>
                     )
                 }
-                <View>
-                    <Button
-                        style={Styles.form.btnSubmit}
-                        title={this.state.form.button.label}
-                        color={this.state.form.button.color}
-                        onPress={this.state.form.button.action}
-                    />
-                </View>
+                <Button
+                    title={this.state.form.button.label}
+                    color={this.state.form.button.color}
+                    onPress={this.state.form.button.action}
+                />
             </View>
         )
     }
 }
 
-export default RegisterForm;
+export default LoginForm;

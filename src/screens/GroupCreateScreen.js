@@ -1,15 +1,15 @@
 import React, {Component} from 'react';
-import { StyleSheet, View, Button } from 'react-native';
+import { StyleSheet, View } from 'react-native';
 import {Title} from "../components/Title";
-import CreateGroupForm from "../components/form/CreateGroupForm";
+import GroupCreateForm from "../forms/GroupCreateForm";
 
-class CreateGroupScreen extends Component {
+class GroupCreateScreen extends Component {
 
     render() {
         return (
             <View style={styles.screen}>
                 <Title text={'Créer un groupe'} />
-                <CreateGroupForm />
+                <GroupCreateForm />
             </View>
         )
     }
@@ -23,4 +23,4 @@ const styles = StyleSheet.create({
    },
 });
 
-export default CreateGroupScreen;
+export default GroupCreateScreen;

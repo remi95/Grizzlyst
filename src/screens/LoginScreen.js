@@ -2,8 +2,8 @@ import React, {Component} from 'react';
 import { StyleSheet, View, Image, Button } from 'react-native';
 import images from "../constants/images";
 import colors from "../constants/colors";
-import RegisterForm from "../components/form/RegisterForm";
-import LoginForm from "../components/form/LoginForm";
+import RegisterForm from "../forms/RegisterForm";
+import LoginForm from "../forms/LoginForm";
 
 class LoginScreen extends Component {
 

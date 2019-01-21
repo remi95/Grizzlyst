@@ -1,14 +1,16 @@
 import React from 'react';
 import { StyleSheet, View } from 'react-native';
 import LoginScreen from "./src/screens/LoginScreen";
-import CreateGroupScreen from "./src/screens/CreateGroupScreen";
+import GroupCreateScreen from "./src/screens/GroupCreateScreen";
+import GroupInviteScreen from "./src/screens/GroupInviteScreen";
 
 export default class App extends React.Component {
   render() {
     return (
       <View style={styles.container}>
         {/*<LoginScreen />*/}
-        <CreateGroupScreen />
+        {/*<GroupCreateScreen />*/}
+        <GroupInviteScreen />
       </View>
     );
   }
