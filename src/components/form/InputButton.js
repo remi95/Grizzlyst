@@ -1,6 +1,7 @@
 import React, {Component} from 'react';
 import {Text, StyleSheet, TextInput, TouchableOpacity, View} from 'react-native';
-import {FontAwesome} from "@expo/vector-icons";
+import {AppLoading, Font} from 'expo';
+import {FontAwesome} from '@expo/vector-icons';
 import colors from "../../constants/colors";
 import Styles from "../../styles/styles";
 
@@ -12,8 +13,18 @@ class InputButton extends Component {
 
         this.state = {
             error: null,
+            isLoaded: false,
         }
     }
+
+    clearError = () => {
+        this.setState({ error: null })
+    };
+
+    onWriting = (value) => {
+        this.clearError();
+        this.props.onChange(value);
+    };
 
     /**
      * Validate input value and set error if necessary.
@@ -37,12 +48,13 @@ class InputButton extends Component {
 
         if (isValid) {
             this.props.action();
+            this.props.onChange('');
         }
     };
 
     render() {
-        return (
-            <View>
+        if (this.state.isLoaded) {
+            return (<View>
                 <View style={styles.blockInputBtn}>
 
                     <TextInput
@@ -50,12 +62,12 @@ class InputButton extends Component {
                         placeholder={this.props.placeholder}
                         value={this.props.value}
                         textContentType={this.props.type}
-                        onChangeText={this.props.onChange}
+                        onChangeText={(value) => this.onWriting(value)}
                         onBlur={this.validate}
                     />
 
                     <TouchableOpacity onPress={this.action}>
-                        <FontAwesome name={this.props.icon} size={32} color={this.props.color} />
+                        <FontAwesome name={this.props.icon} size={32} color={this.props.color}/>
                     </TouchableOpacity>
 
                 </View>
@@ -65,10 +77,23 @@ class InputButton extends Component {
                         ?   <Text style={Styles.form.textError}>
                                 {this.state.error || this.props.error}
                             </Text>
-                        :   null
+                        :    null
                 }
-            </View>
-        )
+            </View>)
+        }
+        else {
+            return (<AppLoading />)
+        }
+    }
+
+    async componentDidMount() {
+        try {
+            await Font.loadAsync({FontAwesome: require('@expo/vector-icons/fonts/FontAwesome.ttf')});
+            this.setState({isLoaded: true})
+        }
+        catch {
+            console.log('ERROR WHILE LOADING ICONS...')
+        }
     }
 }
 

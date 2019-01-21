@@ -16,27 +16,27 @@ class CreateGroupForm extends Component {
                 value: '',
 
             },
-            inputMember: {
+            inputEmail: {
                 value: '',
                 error: null,
             },
-            members: [],
+            emails: [],
         }
     }
 
     updateValue = (input, value) => {
         this.setState(prevState => ({
             [input]: { ...prevState[input], value }
-        }))
+        }));
     };
 
-    addMember = () => {
-        let member = this.state.inputMember.value.trim();
+    addEmail = () => {
+        let email = this.state.inputEmail.value.trim();
 
-        if (this.state.members.includes(member)) {
+        if (this.state.emails.includes(email)) {
             this.setState(prevState => ({
-                inputMember: {
-                    ...prevState.inputMember,
+                inputEmail: {
+                    ...prevState.inputEmail,
                     error: 'Vous avez déjà ajouté ce membre'
                 }
             }));
@@ -44,10 +44,10 @@ class CreateGroupForm extends Component {
             return;
         }
 
-        let currentMembers = this.state.members;
-        currentMembers.push(member);
+        let currentEmails = this.state.emails;
+        currentEmails.push(email);
 
-        this.setState({ members: currentMembers });
+        this.setState({ emails: currentEmails });
     };
 
     render() {
@@ -58,21 +58,28 @@ class CreateGroupForm extends Component {
                     placeholder={'Nom du groupe'}
                 />
 
-                {
-                    this.state.members.map(member =>
-                        <Text key={member}>{member}</Text>
-                    )
-                }
+                <View style={styles.emails}>
+                    {
+                        this.state.emails.map(emails =>
+                            <Text
+                                key={emails}
+                                style={styles.email}
+                            >
+                                {emails}
+                            </Text>
+                        )
+                    }
+                </View>
 
                 <InputButton
                     placeholder={'Inviter des membres'}
                     type={'emailAddress'}
-                    value={this.state.inputMember.value}
+                    value={this.state.inputEmail.value}
                     icon={'plus-circle'}
                     color={colors.BLUE}
-                    error={this.state.inputMember.error}
-                    action={this.addMember}
-                    onChange={this.updateValue.bind(this, 'inputMember')}
+                    error={this.state.inputEmail.error}
+                    action={this.addEmail}
+                    onChange={this.updateValue.bind(this, 'inputEmail')}
                     validation={FormValidator.emailValidate}
                 />
             </View>
@@ -83,6 +90,13 @@ class CreateGroupForm extends Component {
 const styles = StyleSheet.create({
     form: {
         flexDirection: 'column',
+    },
+    emails: {
+        margin: 15,
+        marginLeft: 25,
+    },
+    email: {
+        color: colors.GRAY,
     },
 });
 
