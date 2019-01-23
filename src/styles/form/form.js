@@ -1,9 +1,16 @@
 import colors from "../../constants/colors";
 
 const form = {
+    label: {
+        margin: 10,
+        marginTop: 20,
+        fontSize: 16,
+        color: colors.GRAY,
+    },
     inputText: {
         width: 350,
         borderColor: colors.GRAY,
+        borderWidth: 0,
         borderBottomWidth: 1,
         margin: 10,
         padding: 10,

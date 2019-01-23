@@ -3,6 +3,7 @@ import { StyleSheet, View } from 'react-native';
 import LoginScreen from "./src/screens/LoginScreen";
 import GroupCreateScreen from "./src/screens/GroupCreateScreen";
 import GroupInviteScreen from "./src/screens/GroupInviteScreen";
+import ListCreateScreen from "./src/screens/ListCreateScreen";
 
 export default class App extends React.Component {
   render() {
@@ -10,7 +11,8 @@ export default class App extends React.Component {
       <View style={styles.container}>
         {/*<LoginScreen />*/}
         {/*<GroupCreateScreen />*/}
-        <GroupInviteScreen />
+        {/*<GroupInviteScreen />*/}
+        <ListCreateScreen />
       </View>
     );
   }
