@@ -1,8 +1,8 @@
 import React, {Component} from 'react';
 import {StyleSheet, View} from "react-native";
 import colors from "../../constants/colors";
-import InputButton from "./InputButton";
-import TextButton from "../Text/TextButton";
+import InputButton from "../form/InputButton";
+import TextButton from "../text/TextButton";
 
 class TextList extends Component {
 

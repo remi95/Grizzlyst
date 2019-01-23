@@ -3,7 +3,7 @@ import {View, TextInput, StyleSheet, Button} from 'react-native';
 import Styles from "../styles/styles";
 import colors from "../constants/colors";
 import FormValidator from "../helpers/FormValidator";
-import TextList from "../components/form/TextList";
+import TextList from "../components/list/TextList";
 
 class GroupCreateForm extends Component {
 
@@ -30,7 +30,7 @@ class GroupCreateForm extends Component {
 
     render() {
         return (
-            <View style={styles.form}>
+            <View style={styles.form.container}>
                 <TextInput
                     style={Styles.form.inputText}
                     placeholder={'Nom du groupe'}

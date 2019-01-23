@@ -1,11 +1,15 @@
 import colors from "../../constants/colors";
 
 const form = {
+    container: {
+        flexDirection: 'column',
+        justifyContent: 'center',
+    },
     label: {
         margin: 10,
         marginTop: 20,
         fontSize: 16,
-        color: colors.GRAY,
+        color: colors.DARK_GRAY,
     },
     inputText: {
         width: 350,
