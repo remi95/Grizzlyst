@@ -7,6 +7,7 @@ import GroupCreateScreen from "./src/screens/GroupCreateScreen";
 import GroupInviteScreen from "./src/screens/GroupInviteScreen";
 import ListCreateScreen from "./src/screens/ListCreateScreen";
 import ListEditScreen from "./src/screens/ListEditScreen";
+import AutocompleteScreen from "./src/screens/AutocompleteScreen";
 
 export default class App extends React.Component {
     render() {
@@ -17,7 +18,8 @@ export default class App extends React.Component {
                     {/*<GroupCreateScreen />*/}
                     {/*<GroupInviteScreen />*/}
                     {/*<ListCreateScreen />*/}
-                    <ListEditScreen/>
+                    {/*<ListEditScreen/>*/}
+                    <AutocompleteScreen />
                 </View>
             </Provider>
         )

@@ -5,8 +5,9 @@ import colors from "../../constants/colors";
 export const NutrientGrade = (props) => {
 
     let color = colors.GRAY;
+    let grade = props.grade.toUpperCase();
 
-    switch (props.grade) {
+    switch (grade) {
         case 'A':
             color = colors.DARK_GREEN;
             break;
@@ -28,7 +29,7 @@ export const NutrientGrade = (props) => {
 
     return (
         <View style={[{backgroundColor: color}, styles.container]}>
-            <Text style={styles.text}>{ props.grade }</Text>
+            <Text style={styles.text}>{ grade }</Text>
         </View>
     )
 };

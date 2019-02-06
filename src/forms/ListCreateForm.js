@@ -153,7 +153,7 @@ class ListCreateForm extends Component {
     getEnabledProducts = () => {
         let products = [];
 
-        for (product of this.state.products) {
+        for (let product of this.state.products) {
             if (product.enable) {
                 products.push(product)
             }

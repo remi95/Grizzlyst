@@ -1,8 +1,11 @@
 import React, {Component} from 'react';
-import {View, Text, FlatList, StyleSheet, TouchableHighlight} from 'react-native';
+import {View, Text, FlatList, StyleSheet, TouchableHighlight, TouchableOpacity} from 'react-native';
 import Collapsible from 'react-native-collapsible';
 import ProductRow from "./ProductRow";
 import colors from "../../constants/colors";
+import {FontAwesome} from "@expo/vector-icons";
+import {Font} from "expo";
+import Styles from "../../styles/styles";
 
 
 class Accordion extends Component {
@@ -12,6 +15,7 @@ class Accordion extends Component {
 
         this.state = {
             isCollapsed: false,
+            isIconLoaded: false,
         }
     }
 
@@ -25,6 +29,10 @@ class Accordion extends Component {
         this.setState(prevState => ({ isCollapsed: !prevState.isCollapsed }))
     };
 
+    startAutocomplete = () => {
+
+    };
+
     render () {
         let {department} = this.props;
 
@@ -32,8 +40,22 @@ class Accordion extends Component {
             <View>
                 <TouchableHighlight onPress={this.switchCollapse}>
                     <View style={styles.department}>
-                        <Text style={styles.name}>{ department.name }</Text>
-                        <Text style={styles.quantity}>  - { department.products.length }</Text>
+                        <View style={Styles.position.flex.rowBetween}>
+                            <Text style={styles.name}>{ department.name }</Text>
+                            <Text style={styles.quantity}>  - { department.products.length }</Text>
+                        </View>
+
+                        {
+                            this.state.isIconLoaded
+                                ?   <TouchableOpacity onPress={this.startAutocomplete} >
+                                        <FontAwesome
+                                            name={'plus'}
+                                            size={24}
+                                            color={colors.DARK_GRAY}
+                                        />
+                                    </TouchableOpacity>
+                                :null
+                        }
                     </View>
                 </TouchableHighlight>
 
@@ -48,12 +70,22 @@ class Accordion extends Component {
             </View>
         )
     }
+
+    async componentDidMount() {
+        try {
+            await Font.loadAsync({FontAwesome: require('@expo/vector-icons/fonts/FontAwesome.ttf')});
+            this.setState({isIconLoaded: true})
+        } catch {
+            console.log('ERROR WHILE LOADING ICONS...')
+        }
+    }
 }
 
 const styles = StyleSheet.create({
     department: {
         alignSelf: 'stretch',
         flexDirection: 'row',
+        justifyContent: 'space-between',
         alignItems: 'center',
         padding: 20,
         backgroundColor: colors.LIGHT_GRAY,

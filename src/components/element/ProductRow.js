@@ -40,8 +40,11 @@ class ProductRow extends Component {
                     </View>
                 </View>
 
-                <NutrientGrade style={styles.nutrient} grade={product.nutrient_grade}/>
-
+                {
+                    product.nutrient_grade
+                        ?   <NutrientGrade style={styles.nutrient} grade={product.nutrient_grade}/>
+                        :   null
+                }
                 {
                     this.props.favorite && this.state.isIconLoaded
                         ?   <FontAwesome
