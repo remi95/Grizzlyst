@@ -228,6 +228,7 @@ class ListCreateForm extends Component {
                             key={product.id}
                             product={product}
                             favorite={false}
+                            selectable={true}
                         />
                     )
                 }

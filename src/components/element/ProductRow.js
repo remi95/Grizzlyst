@@ -29,15 +29,18 @@ class ProductRow extends Component {
         return (
             <View style={styles.row}>
                 <View style={styles.basicInformations}>
-                    <Image source={{uri: product.image}} style={styles.icon}/>
+                    <View style={styles.iconContainer}>
+                        <Image source={{uri: product.image}} style={styles.icon}/>
+                    </View>
 
                     <View>
-                        <Text style={styles.title}>{product.brand} - {product.name}</Text>
+                        <Text style={styles.title}>{product.name}</Text>
+                        <Text style={styles.brand}>{product.brand}</Text>
                         <Text style={styles.description}>{product.weight}</Text>
                     </View>
                 </View>
 
-                <NutrientGrade grade={product.nutrient_grade}/>
+                <NutrientGrade style={styles.nutrient} grade={product.nutrient_grade}/>
 
                 {
                     this.props.favorite && this.state.isIconLoaded
@@ -50,14 +53,17 @@ class ProductRow extends Component {
                         :   null
                 }
 
-                <CheckBox
-                    value={product.enable}
-                    onChange={this.switchProduct}
-                />
+                {
+                    this.props.selectable
+                        ?   <CheckBox
+                                value={product.enable}
+                                onChange={this.switchProduct}
+                            />
+                        :null
+                }
             </View>
         )
     }
-
 
     async componentDidMount() {
         try {
@@ -75,27 +81,38 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         justifyContent: 'space-between',
         alignItems: 'center',
-        // borderTopWidth: 1,
         borderBottomWidth: 1,
         borderColor: colors.LIGHT_GRAY,
         padding: 10,
     },
     basicInformations: {
+        flex: 4,
         flexDirection: 'row',
     },
-    icon: {
-        width: 50,
+    iconContainer: {
         height: 50,
+        width: 50,
+        marginRight: 10,
         borderWidth: 1,
         borderColor: colors.LIGHT_GRAY,
-        marginRight: 10,
+    },
+    icon: {
+        flex: 1,
     },
     title: {
         fontSize: 16,
     },
+    brand: {
+        fontSize: 14,
+        color: colors.DARK_GRAY,
+    },
     description: {
+        fontSize: 12,
         color: colors.GRAY,
     },
+    nutrient: {
+        flex: 1,
+    }
 });
 
 export default ProductRow;

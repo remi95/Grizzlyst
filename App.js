@@ -1,28 +1,35 @@
 import React from 'react';
-import { StyleSheet, View } from 'react-native';
+import {StyleSheet, View} from 'react-native';
+import {Provider} from 'react-redux';
+import store from './src/store/index';
 import LoginScreen from "./src/screens/LoginScreen";
 import GroupCreateScreen from "./src/screens/GroupCreateScreen";
 import GroupInviteScreen from "./src/screens/GroupInviteScreen";
 import ListCreateScreen from "./src/screens/ListCreateScreen";
+import ListEditScreen from "./src/screens/ListEditScreen";
 
 export default class App extends React.Component {
-  render() {
-    return (
-      <View style={styles.container}>
-        {/*<LoginScreen />*/}
-        {/*<GroupCreateScreen />*/}
-        {/*<GroupInviteScreen />*/}
-        <ListCreateScreen />
-      </View>
-    );
-  }
+    render() {
+        return (
+            <Provider store={store}>
+                < View style = {styles.container} >
+                    {/*<LoginScreen />*/}
+                    {/*<GroupCreateScreen />*/}
+                    {/*<GroupInviteScreen />*/}
+                    {/*<ListCreateScreen />*/}
+                    <ListEditScreen/>
+                </View>
+            </Provider>
+        )
+        ;
+    }
 }
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
+    container: {
+        flex: 1,
+        backgroundColor: '#fff',
+        alignItems: 'center',
+        justifyContent: 'center',
+    },
 });
