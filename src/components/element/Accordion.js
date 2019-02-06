@@ -63,7 +63,14 @@ class Accordion extends Component {
                     <FlatList
                         data={department.products}
                         keyExtractor={this._keyExtractor}
-                        renderItem={ ({item}) => <ProductRow product={item} /> }
+                        renderItem={ ({item}) =>
+                            <ProductRow
+                                product={item}
+                                favorite={true}
+                                delete={true}
+                                quantity={true}
+                            />
+                        }
                         onPressItem={this.gotoDetailProduct}
                     />
                 </Collapsible>

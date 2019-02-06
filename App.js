@@ -18,8 +18,8 @@ export default class App extends React.Component {
                     {/*<GroupCreateScreen />*/}
                     {/*<GroupInviteScreen />*/}
                     {/*<ListCreateScreen />*/}
-                    {/*<ListEditScreen/>*/}
-                    <AutocompleteScreen />
+                    <ListEditScreen/>
+                    {/*<AutocompleteScreen />*/}
                 </View>
             </Provider>
         )

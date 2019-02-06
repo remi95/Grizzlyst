@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import {View, Image, Text, StyleSheet, CheckBox} from 'react-native';
+import {View, Image, Text, StyleSheet, CheckBox, Picker} from 'react-native';
 import {NutrientGrade} from "./NutrientGrade";
 import colors from "../../constants/colors";
 import {Font} from "expo";
@@ -20,7 +20,11 @@ class ProductRow extends Component {
     };
 
     switchProduct = () => {
+        // TODO: Enable or Disable product
+    };
 
+    changeQuantity = () => {
+        // TODO: Send request to node server with product.id
     };
 
     render() {
@@ -45,6 +49,7 @@ class ProductRow extends Component {
                         ?   <NutrientGrade style={styles.nutrient} grade={product.nutrient_grade}/>
                         :   null
                 }
+
                 {
                     this.props.favorite && this.state.isIconLoaded
                         ?   <FontAwesome
@@ -57,13 +62,36 @@ class ProductRow extends Component {
                 }
 
                 {
+                    this.props.delete && this.state.isIconLoaded
+                        ?   <FontAwesome
+                                name={'trash-o'}
+                                size={24}
+                                color={colors.RED}
+                                onClick={this.switchFavorite}
+                            />
+                        :   null
+                }
+
+                {
                     this.props.selectable
                         ?   <CheckBox
                                 value={product.enable}
                                 onChange={this.switchProduct}
                             />
-                        :null
+                        :   null
                 }
+
+                <Picker
+                    selectedValue={product.quantity.toString()}
+                    onValueChange={this.changeQuantity}
+                    style={styles.quantity}
+                >
+                    {
+                        Array(11).fill(1).map((value, index) =>
+                            <Picker.Item key={index} label={index.toString()} value={index.toString()} />
+                        )
+                    }
+                </Picker>
             </View>
         )
     }
@@ -115,7 +143,12 @@ const styles = StyleSheet.create({
     },
     nutrient: {
         flex: 1,
-    }
+    },
+    quantity: {
+        height: 50,
+        width: 90,
+        alignItems: 'center',
+    },
 });
 
 export default ProductRow;

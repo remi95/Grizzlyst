@@ -32,7 +32,7 @@ class OpenFactClient {
                 weight: original.quantity,
                 nutrient_grade: original.nutrition_grade_fr,
                 image: original.image_front_url,
-            }
+            };
             products.push(product)
         }
 
