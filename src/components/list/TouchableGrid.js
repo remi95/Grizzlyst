@@ -1,39 +1,27 @@
-import React, {Component} from 'react';
+import React from 'react';
 import {StyleSheet, View, TouchableOpacity, Text, Image} from "react-native";
 import colors from '../../constants/colors'
 
-class TouchableGrid extends Component {
+export const TouchableGrid = (props) => (
 
-    constructor(props) {
-        super(props);
-
-        this.state = {
-            data: [],
+    <View style={styles.container}>
+        {
+            props.data.map((element, i) =>
+                <TouchableOpacity
+                    key={element.text}
+                    style={[styles.touchable, (element.favorite || element.enable) ? styles.active : null]}
+                    onPress={() => props.action(i)}
+                >
+                    <Image
+                        source={element.icon}
+                        style={styles.icon}
+                    />
+                    <Text style={styles.text}>{element.text}</Text>
+                </TouchableOpacity>
+            )
         }
-    }
-
-    render() {
-        return (
-            <View style={styles.container}>
-                {
-                    this.props.data.map((element, i) =>
-                        <TouchableOpacity
-                            key={element.text}
-                            style={[styles.touchable, (element.favorite || element.enable) ? styles.active : null]}
-                            onPress={() => this.props.action(i)}
-                        >
-                            <Image
-                                source={element.icon}
-                                style={styles.icon}
-                            />
-                            <Text style={styles.text}>{element.text}</Text>
-                        </TouchableOpacity>
-                    )
-                }
-            </View>
-        )
-    }
-}
+    </View>
+);
 
 const styles = StyleSheet.create({
     container: {
@@ -62,4 +50,3 @@ const styles = StyleSheet.create({
     },
 });
 
-export default TouchableGrid;

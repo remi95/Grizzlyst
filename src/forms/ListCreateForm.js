@@ -1,11 +1,13 @@
 import React, {Component} from 'react';
-import {View, TextInput, CheckBox, StyleSheet, Text} from 'react-native';
+import {View, TextInput, CheckBox, StyleSheet, Text, Button} from 'react-native';
 import Styles from "../styles/styles";
 import Validator from "../helpers/FormValidator";
 import DatePicker from "react-native-datepicker";
 import moment from "moment";
-import TouchableGrid from "../components/list/TouchableGrid";
+import {TouchableGrid} from "../components/list/TouchableGrid";
 import images from '../constants/images'
+import ProductRow from "../components/element/ProductRow";
+import colors from "../constants/colors";
 
 
 class ListCreateForm extends Component {
@@ -93,13 +95,28 @@ class ListCreateForm extends Component {
             // MOCK
             products: [
                 {
+                    id: 1537,
                     brand: 'Nestlé',
                     name: 'Nesquik',
-                    weight: '400g',
+                    weight: '250g',
                     nutrient_grade: 'B',
-
-                }
-            ]
+                    image: 'https://static.openfoodfacts.org/images/products/303/371/006/5066/front_fr.48.400.jpg',
+                    quantity: 2,
+                    favorite: false,
+                    enable: false,
+                },
+                {
+                    id: 1557,
+                    brand: 'Ferrero',
+                    name: 'Nutella',
+                    weight: '750g',
+                    nutrient_grade: 'E',
+                    image: 'https://static.openfoodfacts.org/images/products/301/762/042/1006/front_fr.112.100.jpg',
+                    quantity: 1,
+                    favorite: false,
+                    enable: false,
+                },
+            ],
         }
     }
 
@@ -133,6 +150,23 @@ class ListCreateForm extends Component {
         return departments
     };
 
+    getEnabledProducts = () => {
+        let products = [];
+
+        for (product of this.state.products) {
+            if (product.enable) {
+                products.push(product)
+            }
+        }
+
+        return products;
+    };
+
+    create = () => {
+        let departments = this.getEnabledDepartmentsIds();
+        let products = this.getEnabledProducts();
+    };
+
     render() {
 
         let now = moment().format('DD MMM YYYY');
@@ -160,15 +194,8 @@ class ListCreateForm extends Component {
                                 format={'DD MMM YYYY'}
                                 minDate={now}
                                 customStyles={{
-                                    dateIcon: {
-                                        display: 'none',
-                                    },
-                                    dateInput: {
-                                        borderWidth: 0,
-                                        margin: 0,
-                                        padding: 0,
-                                        textAlign: 'left',
-                                    },
+                                    dateIcon: styles.dateIcon,
+                                    dateInput: styles.dateInput
                                 }}
                                 onDateChange={(date) => this.setState({limitDate: date})}
                             />
@@ -194,16 +221,42 @@ class ListCreateForm extends Component {
                 <Text style={Styles.form.label}>
                     Voulez-vous ajouter ces produits qui n'ont pu être achetés précédemment ?
                 </Text>
+
+                {
+                    this.state.products.map(product =>
+                        <ProductRow
+                            key={product.id}
+                            product={product}
+                            favorite={false}
+                        />
+                    )
+                }
+
+                <Button
+                    title={'Créer'}
+                    color={colors.BLUE}
+                    onPress={this.create}
+                    style={Styles.form.btnSubmit}
+                />
             </View>
         )
     }
 }
 
 const styles = StyleSheet.create({
-   checkboxContainer: {
-       flexDirection: 'row',
-       alignItems: 'center',
-   }
+    checkboxContainer: {
+        flexDirection: 'row',
+        alignItems: 'center',
+    },
+    dateIcon: {
+        display: 'none',
+    },
+    dateInput: {
+        borderWidth: 0,
+        margin: 0,
+        padding: 0,
+        textAlign: 'left',
+    },
 });
 
 export default ListCreateForm;
