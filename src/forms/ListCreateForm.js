@@ -138,6 +138,18 @@ class ListCreateForm extends Component {
         this.setState({departments});
     };
 
+    switchProductState = (index) => {
+        let products = this.state.products;
+
+        if (!products[index]) {
+            return;
+        }
+
+        products[index].enable = !products[index].enable;
+
+        this.setState({products});
+    };
+
     getEnabledDepartmentsIds = () => {
         let departments = [];
 
@@ -223,11 +235,12 @@ class ListCreateForm extends Component {
                 </Text>
 
                 {
-                    this.state.products.map(product =>
+                    this.state.products.map((product, i) =>
                         <ProductRow
                             key={product.id}
                             product={product}
                             favorite={false}
+                            enableAction={this.switchProductState.bind(this, i)}
                         />
                     )
                 }

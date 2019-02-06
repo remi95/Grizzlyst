@@ -20,7 +20,7 @@ class ProductRow extends Component {
     };
 
     switchProduct = () => {
-
+        this.props.enableAction()
     };
 
     render() {
