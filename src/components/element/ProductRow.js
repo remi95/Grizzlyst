@@ -81,17 +81,22 @@ class ProductRow extends Component {
                         :   null
                 }
 
-                <Picker
-                    selectedValue={product.quantity.toString()}
-                    onValueChange={this.changeQuantity}
-                    style={styles.quantity}
-                >
-                    {
-                        Array(11).fill(1).map((value, index) =>
-                            <Picker.Item key={index} label={index.toString()} value={index.toString()} />
-                        )
-                    }
-                </Picker>
+                {
+                    this.props.quantity
+                        ?   <Picker
+                            selectedValue={product.quantity.toString()}
+                                onValueChange={this.changeQuantity}
+                                style={styles.quantity}
+                            >
+                                {
+                                    Array(11).fill(1).map((value, index) =>
+                                        <Picker.Item key={index} label={index.toString()} value={index.toString()} />
+                                    )
+                                }
+                            </Picker>
+                        :   null
+                }
+
             </View>
         )
     }

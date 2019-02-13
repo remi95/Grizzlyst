@@ -40,7 +40,7 @@ class AutocompleteScreen extends Component {
     render() {
         let products = [
             {
-                id: 1537,
+                code: 1537,
                 brand: 'Nestlé',
                 name: 'Nesquik',
                 weight: '250g',
@@ -50,7 +50,7 @@ class AutocompleteScreen extends Component {
                 favorite: false,
             },
             {
-                id: 1557,
+                code: 1557,
                 brand: 'Ferrero',
                 name: 'Nutella',
                 weight: '750g',
