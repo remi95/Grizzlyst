@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import {View, Image, Text, StyleSheet, CheckBox} from 'react-native';
+import {View, Image, Text, StyleSheet, CheckBox, Picker} from 'react-native';
 import {NutrientGrade} from "./NutrientGrade";
 import colors from "../../constants/colors";
 import {Font} from "expo";
@@ -20,7 +20,11 @@ class ProductRow extends Component {
     };
 
     switchProduct = () => {
+        // TODO: Enable or Disable product
+    };
 
+    changeQuantity = () => {
+        // TODO: Send request to node server with product.id
     };
 
     render() {
@@ -29,15 +33,22 @@ class ProductRow extends Component {
         return (
             <View style={styles.row}>
                 <View style={styles.basicInformations}>
-                    <Image source={{uri: product.image}} style={styles.icon}/>
+                    <View style={styles.iconContainer}>
+                        <Image source={{uri: product.image}} style={styles.icon}/>
+                    </View>
 
                     <View>
-                        <Text style={styles.title}>{product.brand} - {product.name}</Text>
+                        <Text style={styles.title}>{product.name}</Text>
+                        <Text style={styles.brand}>{product.brand}</Text>
                         <Text style={styles.description}>{product.weight}</Text>
                     </View>
                 </View>
 
-                <NutrientGrade grade={product.nutrient_grade}/>
+                {
+                    product.nutrient_grade
+                        ?   <NutrientGrade style={styles.nutrient} grade={product.nutrient_grade}/>
+                        :   null
+                }
 
                 {
                     this.props.favorite && this.state.isIconLoaded
@@ -50,14 +61,45 @@ class ProductRow extends Component {
                         :   null
                 }
 
-                <CheckBox
-                    value={product.enable}
-                    onChange={this.switchProduct}
-                />
+                {
+                    this.props.delete && this.state.isIconLoaded
+                        ?   <FontAwesome
+                                name={'trash-o'}
+                                size={24}
+                                color={colors.RED}
+                                onClick={this.switchFavorite}
+                            />
+                        :   null
+                }
+
+                {
+                    this.props.selectable
+                        ?   <CheckBox
+                                value={product.enable}
+                                onChange={this.switchProduct}
+                            />
+                        :   null
+                }
+
+                {
+                    this.props.quantity
+                        ?   <Picker
+                            selectedValue={product.quantity.toString()}
+                                onValueChange={this.changeQuantity}
+                                style={styles.quantity}
+                            >
+                                {
+                                    Array(11).fill(1).map((value, index) =>
+                                        <Picker.Item key={index} label={index.toString()} value={index.toString()} />
+                                    )
+                                }
+                            </Picker>
+                        :   null
+                }
+
             </View>
         )
     }
-
 
     async componentDidMount() {
         try {
@@ -75,26 +117,42 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         justifyContent: 'space-between',
         alignItems: 'center',
-        // borderTopWidth: 1,
         borderBottomWidth: 1,
         borderColor: colors.LIGHT_GRAY,
         padding: 10,
     },
     basicInformations: {
+        flex: 4,
         flexDirection: 'row',
     },
-    icon: {
-        width: 50,
+    iconContainer: {
         height: 50,
+        width: 50,
+        marginRight: 10,
         borderWidth: 1,
         borderColor: colors.LIGHT_GRAY,
-        marginRight: 10,
+    },
+    icon: {
+        flex: 1,
     },
     title: {
         fontSize: 16,
     },
+    brand: {
+        fontSize: 14,
+        color: colors.DARK_GRAY,
+    },
     description: {
+        fontSize: 12,
         color: colors.GRAY,
+    },
+    nutrient: {
+        flex: 1,
+    },
+    quantity: {
+        height: 50,
+        width: 90,
+        alignItems: 'center',
     },
 });
 
