@@ -1,6 +1,6 @@
 import React, {Component} from 'react';
 import {View, Image, Text, StyleSheet, CheckBox, Picker} from 'react-native';
-import {NutrientGrade} from "./NutrientGrade";
+import {NutrientGradePreview} from "./NutrientGradePreview";
 import colors from "../../constants/colors";
 import {Font} from "expo";
 import {FontAwesome} from "@expo/vector-icons";
@@ -46,7 +46,7 @@ class ProductRow extends Component {
 
                 {
                     product.nutrient_grade
-                        ?   <NutrientGrade style={styles.nutrient} grade={product.nutrient_grade}/>
+                        ?   <NutrientGradePreview style={styles.nutrient} grade={product.nutrient_grade}/>
                         :   null
                 }
 

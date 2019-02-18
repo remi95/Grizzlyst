@@ -1,7 +1,10 @@
 import React, {Component} from 'react';
-import {View, StyleSheet, Image, Text, FlatList} from 'react-native';
+import {ScrollView, View, StyleSheet, Image, Text, FlatList} from 'react-native';
 import OpenClient from "../clients/OpenFactClient";
 import colors from "../constants/colors";
+import Styles from "../styles/styles";
+import NutrientGradeHelper from "../helpers/NutrientGrade";
+import {NutrientGrade} from "../components/element/NutrientGrade";
 
 class ProductScreen extends Component {
 
@@ -10,6 +13,7 @@ class ProductScreen extends Component {
 
         this.state = {
             product: null,
+            gradeColor: null,
         }
     }
 
@@ -19,50 +23,65 @@ class ProductScreen extends Component {
         let { product } = this.state;
 
         return (
-            <View>
+            <View style={[Styles.position.size.fullWidth, styles.container]}>
             {
                 product !== null
                 ?
-                    <View>
-                        <View>
-                            <Image source={{uri: product.image}} style={styles.image} />
-                            <Text>{ product.name }</Text>
-                            <Text>{ product.brand }</Text>
-                            <Text>{ product.weight }</Text>
+                    <ScrollView style={Styles.position.flex.flex}>
+                        <View style={styles.boxShadow}>
+                            <View style={styles.main}>
+                                <Image source={{uri: product.image}} style={[styles.image, {borderColor: this.state.gradeColor}]} />
+                                <View>
+                                    <Text style={styles.title}>{ product.name }</Text>
+                                    <Text style={styles.brand}>{ product.brand }</Text>
+                                    <Text style={styles.weight}>{ product.weight }</Text>
+                                </View>
+                            </View>
+
+                            <Text style={styles.description}>{ product.description }</Text>
+
+                            <NutrientGrade grade={ product.nutrient_grade } />
                         </View>
 
-                        <Text>{ product.description }</Text>
-
                         <View>
-                            <Text>{ product.nutrient_grade }</Text>
-                            <Text>Allergènes : { product.allergens }</Text>
-                            <Text>Ingrédients :</Text>
+                            <Text style={styles.underline}>Ingrédients :</Text>
                             <FlatList
                                 data={product.ingredients}
                                 keyExtractor={this._keyExtractor}
                                 renderItem={ ({item}) => <Text>{`\u2022 ${item}`}</Text>}
+                                style={styles.ingredients}
                             />
+
+                            <Text style={styles.underline}>Allergènes :</Text><Text>{ product.allergens }</Text>
                         </View>
 
-                        <View>
-                            <View>
+                        <View style={styles.table}>
+                            <View style={styles.tableCol}>
                                 {
-                                    product.nutriments.map(nutriment =>
-                                        <Text key={`${nutriment.name}_name`}>{nutriment.name}</Text>
+                                    product.nutriments.map((nutriment, i) =>
+                                        <View
+                                            key={`${nutriment.name}_name`}
+                                            style={[styles.tableRow, i % 2 === 0 ? styles.tableRowEven : styles.tableRowOdd]}
+                                        >
+                                            <Text>{nutriment.name}</Text>
+                                        </View>
                                     )
                                 }
                             </View>
-                            <View>
+                            <View style={styles.tableCol}>
                                 {
-                                    product.nutriments.map(nutriment =>
-                                        <Text key={`${nutriment.name}_value`}>
-                                            {nutriment.value} {nutriment.unit}
-                                        </Text>
+                                    product.nutriments.map((nutriment, i) =>
+                                        <View
+                                            key={`${nutriment.name}_value`}
+                                            style={[styles.tableRow, i % 2 === 0 ? styles.tableRowEven : styles.tableRowOdd]}
+                                        >
+                                            <Text>{nutriment.value} {nutriment.unit}</Text>
+                                        </View>
                                     )
                                 }
                             </View>
                         </View>
-                    </View>
+                    </ScrollView>
 
                 :   null
             }
@@ -75,20 +94,90 @@ class ProductScreen extends Component {
 
         if (product.status) {
             let data = await OpenClient.normalizeProduct(product.data);
-            console.log(data)
-            this.setState({ product: data });
+            let gradeColor = NutrientGradeHelper.getColor(data.nutrient_grade);
+
+            this.setState({ product: data, gradeColor });
         }
         // TODO: Manage if API doesn't respond correctly.
     }
 }
 
 const styles = StyleSheet.create({
-    image: {
-        height: 50,
-        width: 50,
-
+    container: {
+        padding: 15,
     },
-
+    main: {
+        flexDirection: 'row',
+        marginBottom: 20,
+    },
+    image: {
+        height: 100,
+        width: 100,
+        marginRight: 20,
+        borderWidth: 3,
+        borderRadius: 5,
+    },
+    title: {
+        fontSize: 16,
+    },
+    brand: {
+        fontSize: 14,
+        color: colors.DARK_GRAY,
+    },
+    weight: {
+        fontSize: 12,
+        color: colors.GRAY,
+    },
+    description: {
+        padding: 25,
+        marginBottom: 20,
+        color: colors.GRAY,
+        borderWidth: 1,
+        borderColor: colors.GRAY,
+        borderRadius: 10,
+    },
+    boxShadow: {
+        padding: 10,
+        marginBottom: 15,
+        borderWidth: 0,
+        borderRadius: 5,
+        shadowColor: colors.DARK_GRAY,
+        shadowOffset: {
+            width: 0,
+            height: 5,
+        },
+        shadowOpacity: 0.25,
+        shadowRadius: 3.84,
+        elevation: 5,
+        overflow: 'visible',
+    },
+    ingredients: {
+        marginTop: 5,
+        marginLeft: 25,
+        marginBottom: 20,
+    },
+    table: {
+        flexDirection: 'row',
+        alignSelf: 'stretch',
+        marginTop: 20,
+    },
+    tableCol: {
+        flex: 1,
+        borderWidth: 1,
+        borderColor: colors.LIGHT_BLUE,
+    },
+    tableRow: {
+        padding: 5,
+    },
+    tableRowEven: {
+        backgroundColor: colors.WHITE,
+    },
+    tableRowOdd: {
+        backgroundColor: colors.LIGHT_BLUE,
+    },
+    underline: {
+        textDecorationLine: 'underline',
+    },
 });
 
 

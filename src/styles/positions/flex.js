@@ -1,9 +1,12 @@
 const flex = {
-  rowBetween: {
-      flexDirection: 'row',
-      justifyContent: 'space-between',
-      alignItems: 'center',
-  }
+    flex: {
+        flex: 1,
+    },
+    rowBetween: {
+        flexDirection: 'row',
+        justifyContent: 'space-between',
+        alignItems: 'center',
+    }
 };
 
 export default flex;

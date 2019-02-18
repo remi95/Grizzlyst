@@ -5,6 +5,7 @@ const colors = {
     GRAY: '#8d8d8d',
     DARK_GRAY: '#575757',
 
+    LIGHT_BLUE: '#d6eeff',
     BLUE: '#2a74fc',
     RED: '#F50000',
     YELLOW: '#FFD400',
@@ -12,6 +13,8 @@ const colors = {
 
     DARK_GREEN: '#008C45',
     GREEN: '#6CCA2F',
+
+    BLACK: '#000',
 };
 
 export default colors;

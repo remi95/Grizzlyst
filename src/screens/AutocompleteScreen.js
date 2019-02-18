@@ -3,6 +3,7 @@ import {View, StyleSheet} from 'react-native';
 import Autocomplete from "react-native-autocomplete-input";
 import ProductRow from "../components/element/ProductRow";
 import OpenClient from "../clients/OpenFactClient";
+import Styles from "../styles/styles";
 
 class AutocompleteScreen extends Component {
 
@@ -62,7 +63,7 @@ class AutocompleteScreen extends Component {
         ];
 
         return (
-            <View style={styles.autocomplete}>
+            <View style={Styles.position.size.fullWidth}>
                 <Autocomplete
                     data={this.state.data}
                     onChangeText={this.updateQuery.bind(this)}
@@ -76,10 +77,6 @@ class AutocompleteScreen extends Component {
 }
 
 const styles = StyleSheet.create({
-    autocomplete: {
-        flex: 1,
-        alignSelf: 'stretch',
-    },
     results: {
         margin: 0,
     },
