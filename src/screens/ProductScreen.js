@@ -23,12 +23,12 @@ class ProductScreen extends Component {
         let { product } = this.state;
 
         return (
-            <View style={[Styles.position.size.fullWidth, styles.container]}>
+            <ScrollView style={[Styles.position.size.fullWidth, styles.container]}>
             {
                 product !== null
                 ?
-                    <ScrollView style={Styles.position.flex.flex}>
-                        <View style={styles.boxShadow}>
+                    <View style={Styles.position.flex.flex}>
+                        <View style={styles.box}>
                             <View style={styles.main}>
                                 <Image source={{uri: product.image}} style={[styles.image, {borderColor: this.state.gradeColor}]} />
                                 <View>
@@ -81,11 +81,11 @@ class ProductScreen extends Component {
                                 }
                             </View>
                         </View>
-                    </ScrollView>
+                    </View>
 
                 :   null
             }
-            </View>
+            </ScrollView>
         )
     }
 
@@ -114,7 +114,7 @@ const styles = StyleSheet.create({
         height: 100,
         width: 100,
         marginRight: 20,
-        borderWidth: 3,
+        borderWidth: 2,
         borderRadius: 5,
     },
     title: {
@@ -136,20 +136,12 @@ const styles = StyleSheet.create({
         borderColor: colors.GRAY,
         borderRadius: 10,
     },
-    boxShadow: {
+    box: {
         padding: 10,
         marginBottom: 15,
-        borderWidth: 0,
+        borderWidth: 2,
+        borderColor: colors.LIGHT_GRAY,
         borderRadius: 5,
-        shadowColor: colors.DARK_GRAY,
-        shadowOffset: {
-            width: 0,
-            height: 5,
-        },
-        shadowOpacity: 0.25,
-        shadowRadius: 3.84,
-        elevation: 5,
-        overflow: 'visible',
     },
     ingredients: {
         marginTop: 5,
