@@ -3,6 +3,8 @@ import { View, TextInput, Button, Text } from 'react-native';
 import colors from "../constants/colors";
 import Styles from "../styles/styles";
 import FormValidator from "../helpers/FormValidator";
+import {connect} from "react-redux";
+import {register} from '../actions/userAction'
 
 class RegisterForm extends Component {
 
@@ -14,6 +16,7 @@ class RegisterForm extends Component {
                 inputs: [
                     {
                         placeholder: 'Prénom',
+                        name: 'firstname',
                         value: '',
                         type: 'givenName',
                         validator: FormValidator.minLengthValidate,
@@ -21,6 +24,7 @@ class RegisterForm extends Component {
                     },
                     {
                         placeholder: 'Nom',
+                        name: 'name',
                         value: '',
                         type: 'familyName',
                         validator: FormValidator.minLengthValidate,
@@ -28,6 +32,7 @@ class RegisterForm extends Component {
                     },
                     {
                         placeholder: 'Pseudo',
+                        name: 'pseudo',
                         value: '',
                         type: 'username',
                         validator: FormValidator.minLengthValidate,
@@ -35,12 +40,22 @@ class RegisterForm extends Component {
                     },
                     {
                         placeholder: 'Email',
+                        name: 'email',
                         value: '',
                         type: 'emailAddress',
                         validator: FormValidator.emailValidate,
                     },
                     {
                         placeholder: 'Mot de passe',
+                        name: 'password',
+                        value: '',
+                        type: 'password',
+                        validator: FormValidator.minLengthValidate,
+                        params: 6,
+                    },
+                    {
+                        placeholder: 'Confirmer le mot de passe',
+                        name: 'confirmPassword',
                         value: '',
                         type: 'password',
                         validator: FormValidator.minLengthValidate,
@@ -50,6 +65,7 @@ class RegisterForm extends Component {
                 button: {
                     label: 'S\'inscrire',
                     color: colors.BLUE,
+                    action: this.action,
                 },
             },
         }
@@ -97,6 +113,25 @@ class RegisterForm extends Component {
         }
     };
 
+    action = async () => {
+        let inputs = this.state.form.inputs;
+        let form = {};
+
+        for (let i in inputs) {
+            if (inputs[i].value.trim() === '') {
+                inputs[i].error = 'Ce champ est requis.';
+
+                return this.setState(prevState => ({
+                    form: {...prevState.form, inputs}
+                }))
+            }
+
+            form[inputs[i].name] = inputs[i].value;
+        }
+
+        this.props.register(form);
+    };
+
     render() {
         return (
             <View>
@@ -134,4 +169,16 @@ class RegisterForm extends Component {
     }
 }
 
-export default RegisterForm;
+const mapStateToProps = ({ userReducer }) => {
+    return {
+        userReducer
+    }
+};
+
+const mapDispatchToProps = (dispatch) => {
+    return {
+        register: (data) => dispatch(register(data)),
+    }
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(RegisterForm);

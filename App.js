@@ -15,13 +15,13 @@ export default class App extends React.Component {
         return (
             <Provider store={store}>
                 < View style = {styles.container} >
-                    {/*<LoginScreen />*/}
+                    <LoginScreen />
                     {/*<GroupCreateScreen />*/}
                     {/*<GroupInviteScreen />*/}
                     {/*<ListCreateScreen />*/}
                     {/*<ListEditScreen/>*/}
                     {/*<AutocompleteScreen />*/}
-                    <ProductScreen code={3017620429484} />
+                    {/*<ProductScreen code={3017620429484} />*/}
                 </View>
             </Provider>
         )
