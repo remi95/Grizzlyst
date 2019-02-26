@@ -1,13 +1,19 @@
 import parameters from "../../parameters";
+import store from "../store";
 
 class GrizzlystServerClient {
 
-    register = async (data) => {
+    constructor() {
+        this.token = store.getState().userReducer.token || null;
+    }
+
+    post = async (endpoint, data) => {
         try {
-            const response = await fetch(`${parameters.SERVER_URL}auth/signup`, {
+            const response = await fetch(`${parameters.SERVER_URL}${endpoint}`, {
                 method: 'POST',
                 headers: {
-                    'Content-Type': 'application/json'
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${this.token}`,
                 },
                 body: JSON.stringify(data),
             });
@@ -23,9 +29,7 @@ class GrizzlystServerClient {
         catch (error) {
             return { status: false, data: error }
         }
-    }
-    
-
+    };
 }
 
 const GrizzlystClient = new GrizzlystServerClient();
