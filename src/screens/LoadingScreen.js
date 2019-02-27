@@ -23,7 +23,7 @@ class LoadingScreen extends Component {
 
             if (token) {
                 // TODO: getUser
-                NavigationService.navigate('CreateGroup');
+                NavigationService.navigate('Invitations');
             }
             else {
                 NavigationService.navigate('Auth');

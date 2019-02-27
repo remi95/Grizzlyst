@@ -11,7 +11,7 @@ let initialState = {
         updatedAt: '2019-02-23T18:14:30.117Z',
         createdAt: '2019-02-23T18:14:30.117Z',
     },
-    token: null,
+    token: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MiwiaWF0IjoxNTUxMjYyNjEwLCJleHAiOjE1NTM4NTQ2MTB9.vvqzFsdhJwQUIaye2qltOqVAK9gfhrOtXDbj_5LTqFg',
 };
 
 const userReducer = (state = initialState, action) => {
