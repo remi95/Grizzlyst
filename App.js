@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {Component} from 'react';
 import {StyleSheet, View} from 'react-native';
 import {Provider} from 'react-redux';
 import store from './src/store/index';
@@ -15,7 +15,7 @@ import NavigationService from "./src/services/NavigationService";
 
 const AppContainer = createAppContainer(Navigator);
 
-export default class App extends React.Component {
+export default class App extends Component {
     render() {
         return (
             <Provider store={store}>

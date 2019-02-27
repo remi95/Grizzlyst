@@ -1,6 +1,7 @@
 import React from 'react';
 import {StyleSheet, View, TouchableOpacity, Text, Image} from "react-native";
 import colors from '../../constants/colors'
+import images from "../../constants/images";
 
 export const TouchableGrid = (props) => (
 
@@ -8,15 +9,15 @@ export const TouchableGrid = (props) => (
         {
             props.data.map((element, i) =>
                 <TouchableOpacity
-                    key={element.text}
+                    key={element.name}
                     style={[styles.touchable, (element.favorite || element.enable) ? styles.active : null]}
                     onPress={() => props.action(i)}
                 >
                     <Image
-                        source={element.icon}
+                        source={element.icon || images.logo}
                         style={styles.icon}
                     />
-                    <Text style={styles.text}>{element.text}</Text>
+                    <Text style={styles.text}>{element.name}</Text>
                 </TouchableOpacity>
             )
         }

@@ -64,7 +64,7 @@ class RegisterForm extends Component {
                 button: {
                     label: 'S\'inscrire',
                     color: colors.BLUE,
-                    action: this.action,
+                    action: this.props.register,
                 },
             },
         }
@@ -80,8 +80,7 @@ class RegisterForm extends Component {
         return (
             <SimpleForm
                 form={this.state.form}
-                update={this.updateForm}
-                action={this.props.register} />
+                update={this.updateForm} />
         )
     }
 }

@@ -33,7 +33,7 @@ class LoginForm extends Component {
                 button: {
                     label: 'Connexion',
                     color: colors.GREEN,
-                    action: this.props.login
+                    action: this.props.login,
                 },
             },
         }
@@ -49,8 +49,7 @@ class LoginForm extends Component {
         return (
             <SimpleForm
                 form={this.state.form}
-                update={this.updateForm}
-            />
+                update={this.updateForm} />
         )
     }
 }

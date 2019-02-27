@@ -1,15 +1,15 @@
 import {createStackNavigator} from 'react-navigation';
 import LoginScreen from "./src/screens/LoginScreen";
 import GroupCreateScreen from "./src/screens/GroupCreateScreen";
-import LoadingScreen from "./src/screens/LoadingScreen";
 import InvitationScreen from './src/screens/user/InvitationScreen';
+import HomeScreen from "./src/screens/HomeScreen";
+import GroupListScreen from "./src/screens/GroupListScreen";
+import ListCreateScreen from "./src/screens/ListCreateScreen";
+import ListListScreen from "./src/screens/ListListScreen";
 
 const Navigator = createStackNavigator({
-    Loading: {
-        screen: LoadingScreen,
-        navigationOptions: {
-            header: null,
-        },
+    Home: {
+        screen: HomeScreen,
     },
     Auth: {
         screen: LoginScreen,
@@ -18,10 +18,28 @@ const Navigator = createStackNavigator({
             headerLeft: null,
         },
     },
+    GroupList: {
+        screen: GroupListScreen,
+        navigationOptions: {
+            title: 'Mes groupes',
+        },
+    },
     CreateGroup: {
         screen: GroupCreateScreen,
         navigationOptions: {
             title: 'Créer un groupe',
+        },
+    },
+    ListList: {
+        screen: ListListScreen,
+        navigationOptions: {
+            title: 'Mes listes',
+        },
+    },
+    CreateList: {
+        screen: ListCreateScreen,
+        navigationOptions: {
+            title: 'Créer une liste',
         },
     },
     Invitations: {
