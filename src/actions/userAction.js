@@ -11,24 +11,21 @@ const success = (data) => {
 };
 
 export const registerAction = async (data) => {
-    userPostRequest('auth/signup', data);
+    return userPostRequest('auth/signup', data);
 };
 
 export const loginAction = (data) => {
-    userPostRequest('auth/login', data);
+    return userPostRequest('auth/login', data);
 };
 
-const userPostRequest = (endpoint, data) => {
-      return async (dispatch) => {
-          let response = await GrizzlystClient.post(endpoint, data);
+const userPostRequest = async (endpoint, data) => {
+    let response = await GrizzlystClient.post(endpoint, data);
 
-          if (response.status) {
-              dispatch(auth(response.data));
-          }
-          else {
-              //TODO: throw alert.
-          }
-      };
+    if (response.status) {
+      return auth(response.data);
+    } else {
+      //TODO: throw alert.
+    }
 };
 
 const auth = async (data) => {
@@ -37,6 +34,6 @@ const auth = async (data) => {
     } catch (error) {
 
     }
-    dispatch(success(data));
+    // dispatch(success(data));
     NavigationService.navigate('CreateGroup');
 };

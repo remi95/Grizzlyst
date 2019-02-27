@@ -9,6 +9,7 @@ class GrizzlystServerClient {
 
     post = async (endpoint, data) => {
         try {
+            console.log(`${parameters.SERVER_URL}${endpoint}`)
             const response = await fetch(`${parameters.SERVER_URL}${endpoint}`, {
                 method: 'POST',
                 headers: {

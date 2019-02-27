@@ -81,7 +81,7 @@ export const SimpleForm = (props) => {
             form[inputs[i].name] = inputs[i].value;
         }
 
-        props.action(form);
+        props.form.button.action(form);
     };
 
     return (
@@ -110,7 +110,7 @@ export const SimpleForm = (props) => {
             <Button
                 title={props.form.button.label}
                 color={props.form.button.color}
-                onPress={props.form.button.action}
+                onPress={() => action()}
             />
         </View>
     )
