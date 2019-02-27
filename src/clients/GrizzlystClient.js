@@ -5,17 +5,17 @@ class GrizzlystServerClient {
 
     constructor() {
         this.token = store.getState().userReducer.token || null;
+        this.headers = {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${this.token}`,
+        };
     }
 
     post = async (endpoint, data) => {
         try {
-            console.log(`${parameters.SERVER_URL}${endpoint}`)
             const response = await fetch(`${parameters.SERVER_URL}${endpoint}`, {
                 method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                    'Authorization': `Bearer ${this.token}`,
-                },
+                headers: this.headers,
                 body: JSON.stringify(data),
             });
 
@@ -31,6 +31,20 @@ class GrizzlystServerClient {
             return { status: false, data: error }
         }
     };
+
+    get = async (endpoint) => {
+        try {
+            const response = await fetch(`${parameters.SERVER_URL}${endpoint}`, {
+                method: 'GET',
+                headers: this.headers
+            });
+
+            return await response.json();
+        }
+        catch (e) {
+            return e;
+        }
+    }
 }
 
 const GrizzlystClient = new GrizzlystServerClient();
