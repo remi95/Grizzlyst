@@ -52,20 +52,32 @@ export const loginByTokenAction = () => {
 
 export const getGroups = () => {
     return async (dispatch) => {
-        let response = await GrizzlystClient.get('me/groups');
+        try {
+            let response = await GrizzlystClient.get('me/groups');
 
-        if (response.status) {
-            dispatch(groups(response.data));
+            if (response.status) {
+                dispatch(groups(response.data));
+            }
+        }
+        catch (error) {
+            // TODO: throw alert.
+            console.log(error)
         }
     }
 };
 
 export const getInvitations = () => {
     return async (dispatch) => {
-        let response = await GrizzlystClient.get('me/invitations');
+        try {
+            let response = await GrizzlystClient.get('me/invitations');
 
-        if (response.status) {
-            dispatch(invitations(response.data));
+            if (response.status) {
+                dispatch(invitations(response.data));
+            }
+        }
+        catch (error) {
+           // TODO: throw alert.
+            console.log(error)
         }
     }
 };

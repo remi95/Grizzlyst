@@ -5,3 +5,6 @@ export const INVITATIONS = 'INVITATIONS';
 
 // GROUP ACTIONS
 export const GROUP = 'GROUP';
+
+// LIST ACTIONS
+export const LIST = 'LIST';

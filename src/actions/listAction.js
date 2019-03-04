@@ -1,7 +1,8 @@
+import {LIST} from "../constants/actions";
 
-const action = (data) => {
+export const setCurrentList = (data) => {
     return {
-        type: 'test',
+        type: LIST,
         data
     }
 };

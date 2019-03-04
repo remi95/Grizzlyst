@@ -4,7 +4,6 @@ import ProductList from "../components/list/ProductList";
 
 class ListEditScreen extends Component {
 
-
     render() {
         return (
             <ScrollView style={styles.container}>
@@ -12,6 +11,7 @@ class ListEditScreen extends Component {
             </ScrollView>
         )
     }
+
 }
 
 const styles = StyleSheet.create({

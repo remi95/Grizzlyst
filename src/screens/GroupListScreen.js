@@ -2,6 +2,8 @@ import React, {Component} from 'react';
 import {StyleSheet, ScrollView, FlatList, Button, Text} from 'react-native';
 import {connect} from "react-redux";
 import NavigationService from "../services/NavigationService";
+import {setCurrentGroup} from "../actions/groupAction";
+import GrizzlystClient from "../clients/GrizzlystClient";
 
 class GroupListScreen extends Component {
 
@@ -15,6 +17,25 @@ class GroupListScreen extends Component {
 
     _keyExtractor = (item) => item.id.toString();
 
+    _renderItem = ({item}) => (
+        <Text onPress={() => this._onPressItem(item.id)}>
+            {item.name}
+        </Text>
+    );
+
+    _onPressItem = async (id) => {
+        const response = await GrizzlystClient.get('groups/' + id);
+
+        if (response.status) {
+            this.props.setCurrentGroup(response.data);
+            NavigationService.navigate('ListList');
+        }
+        else {
+            console.log(response)
+            // TODO: throw alert.
+        }
+    };
+
     render() {
         return (
             <ScrollView>
@@ -26,9 +47,7 @@ class GroupListScreen extends Component {
                         ?   <FlatList
                                 data={this.state.groups}
                                 keyExtractor={this._keyExtractor}
-                                renderItem={ ({item}) =>
-                                    <Text>{item.name}</Text>
-                                }
+                                renderItem={this._renderItem}
                             />
                         :   null
                 }
@@ -46,4 +65,10 @@ const mapStateToProps = ({ userReducer }) => {
     return { userReducer }
 };
 
-export default connect(mapStateToProps, null)(GroupListScreen);
+const mapDispatchToProps = (dispatch) => {
+    return {
+        setCurrentGroup: (data) => dispatch(setCurrentGroup(data)),
+    }
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(GroupListScreen);

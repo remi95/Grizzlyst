@@ -6,6 +6,7 @@ import HomeScreen from "./src/screens/HomeScreen";
 import GroupListScreen from "./src/screens/GroupListScreen";
 import ListCreateScreen from "./src/screens/ListCreateScreen";
 import ListListScreen from "./src/screens/ListListScreen";
+import ListEditScreen from "./src/screens/ListEditScreen";
 
 const Navigator = createStackNavigator({
     Home: {
@@ -40,6 +41,12 @@ const Navigator = createStackNavigator({
         screen: ListCreateScreen,
         navigationOptions: {
             title: 'Créer une liste',
+        },
+    },
+    EditList: {
+        screen: ListEditScreen,
+        navigationOptions: {
+            title: 'Editer une liste',
         },
     },
     Invitations: {

@@ -2,6 +2,7 @@ import React, {Component} from 'react';
 import {View, Text} from 'react-native';
 import {connect} from "react-redux";
 import Accordion from "../element/Accordion";
+import NavigationService from "../../services/NavigationService";
 
 class ProductList extends Component {
 
@@ -19,6 +20,13 @@ class ProductList extends Component {
             </View>
         )
     }
+
+    componentDidMount() {
+        if (!this.props.listReducer.list.id) {
+            return NavigationService.navigate('ListList');
+            // TODO: throw alert
+        }
+    }
 }
 
 const mapStateToProps = ({ listReducer }) => {
@@ -29,7 +37,7 @@ const mapStateToProps = ({ listReducer }) => {
 
 const mapDispatchToProps = (dispatch) => {
     return {
-        action: (data) => dispatch(action(data)),
+        // action: (data) => dispatch(action(data)),
     }
 };
 

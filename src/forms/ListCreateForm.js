@@ -9,6 +9,8 @@ import ProductRow from "../components/element/ProductRow";
 import colors from "../constants/colors";
 import GrizzlystClient from "../clients/GrizzlystClient";
 import {connect} from "react-redux";
+import NavigationService from "../services/NavigationService";
+import {setCurrentList} from "../actions/listAction";
 
 class ListCreateForm extends Component {
 
@@ -20,30 +22,7 @@ class ListCreateForm extends Component {
             limitDate: null,
             isDateUndefined: false,
             departments: [],
-            products: [
-                {
-                    id: 1537,
-                    brand: 'Nestlé',
-                    name: 'Nesquik',
-                    weight: '250g',
-                    nutrient_grade: 'B',
-                    image: 'https://static.openfoodfacts.org/images/products/303/371/006/5066/front_fr.48.400.jpg',
-                    quantity: 2,
-                    favorite: false,
-                    enable: false,
-                },
-                {
-                    id: 1557,
-                    brand: 'Ferrero',
-                    name: 'Nutella',
-                    weight: '750g',
-                    nutrient_grade: 'E',
-                    image: 'https://static.openfoodfacts.org/images/products/301/762/042/1006/front_fr.112.100.jpg',
-                    quantity: 1,
-                    favorite: false,
-                    enable: false,
-                },
-            ],
+            products: [],
         }
     }
 
@@ -89,9 +68,24 @@ class ListCreateForm extends Component {
         return products;
     };
 
-    create = () => {
+    create = async () => {
         let departments = this.getEnabledDepartmentsIds();
         let products = this.getEnabledProducts();
+
+        let response = await GrizzlystClient.post('lists', {
+            name: this.state.listName,
+            date: this.state.isDateUndefined ? new Date('now') : this.state.limitDate,
+            groupId: this.props.groupReducer.group.id,
+            departments,
+        });
+
+        if (response.status) {
+            this.props.setCurrentList(response.data);
+            NavigationService.navigate('EditList');
+        }
+        else {
+            // TODO: Throw alert.
+        }
     };
 
     render() {
@@ -209,4 +203,10 @@ const mapStateToProps = ({ groupReducer }) => {
     return { groupReducer }
 };
 
-export default connect(mapStateToProps, null)(ListCreateForm);
+const mapDispatchToProps = (dispatch) => {
+    return {
+        setCurrentList: (data) => dispatch(setCurrentList(data)),
+    }
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(ListCreateForm);
