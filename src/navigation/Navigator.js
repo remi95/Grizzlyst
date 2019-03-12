@@ -1,21 +1,64 @@
-import {createStackNavigator, createAppContainer} from 'react-navigation';
-import LoginScreen from "../screens/LoginScreen";
-import React from 'react';
+import React from 'react'
+import { createDrawerNavigator, createAppContainer, createStackNavigator } from 'react-navigation';
+import CreateGroupScreen from '../screens/GroupCreateScreen';
+import InvitationScreen from '../screens/user/InvitationScreen';
+import BurgerMenu from '../components/BurgerMenu';
 
-const StackNavigator = createStackNavigator({
-    Auth: {
-        screen: LoginScreen,
-        navigationOptions: {
-            title: 'Connexion / Inscription',
-            // headerRight: (
-            //     <Button
-            //         onPress={() => navigation.navigate('DrawerNav')}
-            //         title="Menu"
-            //         color="blue"
-            //     />
-            // ),
-        },
-    },
+const CreateGroupNavigator = createStackNavigator({
+    CreateGroup: {
+        screen: CreateGroupScreen,
+        navigationOptions: ({ navigation }) => ({
+            title: 'Création de groupe',
+            headerRight : <BurgerMenu navigation={navigation} />,
+        })
+    }
 });
 
-export default StackNavigator;
+const InvitationsNavigator = createStackNavigator({
+    Invitations: {
+        screen: InvitationScreen,
+        navigationOptions: ({ navigation }) => ({
+            title: 'Mes invitations',
+            headerRight : <BurgerMenu navigation={navigation} />,
+        }),
+    }
+});
+
+const DrawerNavigator = createDrawerNavigator({
+    CreateGroup: {
+        screen: CreateGroupNavigator,
+        navigationOptions: {
+            drawerLabel: 'Créer un groupe'
+        }
+    },
+    Invitations: {
+        screen: InvitationsNavigator,
+        navigationOptions: {
+            drawerLabel: 'Mes invitations'
+        }
+    },
+    Lists: {
+        screen: () => null,
+        navigationOptions: {
+            drawerLabel: 'Mes listes'
+        }
+    },
+    Params: {
+        screen: () => null,
+        navigationOptions: {
+            drawerLabel: 'Paramètres'
+        }
+    }
+}, {
+    drawerPosition: 'right',
+});
+
+const AppNavigator = createStackNavigator({
+    Drawer: {
+        screen: DrawerNavigator,
+    }
+}, {
+    headerMode: 'none',
+});
+
+export default createAppContainer(AppNavigator);

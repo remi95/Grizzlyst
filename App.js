@@ -1,14 +1,16 @@
 import React from 'react';
-import {StyleSheet, Button, View} from 'react-native';
 import {Provider} from 'react-redux';
 import store from './src/store/index';
-import Navigator from "./src/navigation/DrawerNavigator";
+import Navigator from "./src/navigation/Navigator";
+import NavigationService from "./src/services/NavigationService";
 
 export default class App extends React.Component {
     render() {
         return (
             <Provider store={store}>
-                <Navigator />
+                <Navigator ref={navigatorRef => {
+                    NavigationService.setTopLevelNavigator(navigatorRef);
+                }} />
             </Provider>
         )
     }
