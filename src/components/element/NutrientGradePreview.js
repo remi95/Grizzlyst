@@ -9,7 +9,7 @@ export const NutrientGradePreview = (props) => {
 
     return (
         <View style={[{backgroundColor: color}, styles.container]}>
-            <Text style={styles.text}>{ props.grade }</Text>
+            <Text style={styles.text}>{ props.grade.toUpperCase() }</Text>
         </View>
     )
 };

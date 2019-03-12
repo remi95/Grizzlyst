@@ -1,9 +1,10 @@
 import React, {Component} from 'react';
-import {StyleSheet, ScrollView, FlatList, Button, Text} from 'react-native';
+import {ScrollView, FlatList, Button, Text} from 'react-native';
 import {connect} from "react-redux";
 import NavigationService from "../services/NavigationService";
 import {setCurrentGroup} from "../actions/groupAction";
 import GrizzlystClient from "../clients/GrizzlystClient";
+import {setAlert} from "../actions/alertAction";
 
 class GroupListScreen extends Component {
 
@@ -68,6 +69,7 @@ const mapStateToProps = ({ userReducer }) => {
 const mapDispatchToProps = (dispatch) => {
     return {
         setCurrentGroup: (data) => dispatch(setCurrentGroup(data)),
+        setAlert: (data) => dispatch(setAlert(data)),
     }
 };
 

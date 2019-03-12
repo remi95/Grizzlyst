@@ -6,6 +6,9 @@ import FormValidator from "../helpers/FormValidator";
 import TextList from "../components/list/TextList";
 import GrizzlystClient from "../clients/GrizzlystClient";
 import NavigationService from "../services/NavigationService";
+import {connect} from "react-redux";
+import {auth} from "../actions/userAction";
+import {setCurrentGroup} from "../actions/groupAction";
 
 class GroupCreateForm extends Component {
 
@@ -30,6 +33,7 @@ class GroupCreateForm extends Component {
         let response = await GrizzlystClient.post('groups', this.state);
 
         if (response.status) {
+            this.props.setCurrentGroup(response.data);
             NavigationService.navigate('ListList', {groupId: response.data.id});
         }
         else {
@@ -74,4 +78,10 @@ const styles = StyleSheet.create({
     },
 });
 
-export default GroupCreateForm;
+const mapDispatchToProps = (dispatch) => {
+    return {
+        setCurrentGroup: (data) => dispatch(setCurrentGroup(data)),
+    }
+};
+
+export default  connect(null, mapDispatchToProps)(GroupCreateForm);

@@ -2,7 +2,7 @@ import React, {Component} from 'react';
 import colors from "../constants/colors";
 import FormValidator from "../helpers/FormValidator";
 import {SimpleForm} from "./SimpleForm";
-import {loginAction} from "../actions/userAction";
+import {auth} from "../actions/userAction";
 import {connect} from "react-redux";
 
 class LoginForm extends Component {
@@ -60,7 +60,7 @@ const mapStateToProps = ({ userReducer }) => {
 
 const mapDispatchToProps = (dispatch) => {
     return {
-        login: (data) => dispatch(loginAction(data)),
+        login: (data) => dispatch(auth(data)),
     }
 };
 

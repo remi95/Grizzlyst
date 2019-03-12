@@ -3,7 +3,7 @@ import {StyleSheet, ScrollView, FlatList, Button, Text} from 'react-native';
 import NavigationService from "../services/NavigationService";
 import GrizzlystClient from "../clients/GrizzlystClient";
 import {connect} from "react-redux";
-import {setCurrentList} from "../actions/listAction";
+import {setCurrentList, setProductsByDepartment} from "../actions/listAction";
 
 class ListListScreen extends Component {
 
@@ -24,11 +24,12 @@ class ListListScreen extends Component {
     );
 
     _onPressItem = async (id) => {
-        const response = await GrizzlystClient.get('lists/' + id);
-        // TODO: Replace with a query which get all associations.
+        const list = await GrizzlystClient.get('lists/' + id);
+        const products = await GrizzlystClient.get('lists/' + id + '/departments/products');
 
-        if (response.status) {
-            this.props.setCurrentList(response.data);
+        if (list.status && products.status) {
+            await this.props.setCurrentList(list.data);
+            await this.props.setProductsByDepartment(products.data);
             NavigationService.navigate('EditList');
         }
         else {
@@ -52,7 +53,6 @@ class ListListScreen extends Component {
                         />
                         :   null
                 }
-
             </ScrollView>
         )
     }
@@ -79,6 +79,7 @@ const mapStateToProps = ({ groupReducer }) => {
 const mapDispatchToProps = (dispatch) => {
     return {
         setCurrentList: (data) => dispatch(setCurrentList(data)),
+        setProductsByDepartment: (data) => dispatch(setProductsByDepartment(data)),
     }
 };
 

@@ -10,7 +10,7 @@ import colors from "../constants/colors";
 import GrizzlystClient from "../clients/GrizzlystClient";
 import {connect} from "react-redux";
 import NavigationService from "../services/NavigationService";
-import {setCurrentList} from "../actions/listAction";
+import {setCurrentFullList} from "../actions/listAction";
 
 class ListCreateForm extends Component {
 
@@ -74,13 +74,14 @@ class ListCreateForm extends Component {
 
         let response = await GrizzlystClient.post('lists', {
             name: this.state.listName,
-            date: this.state.isDateUndefined ? new Date('now') : this.state.limitDate,
+            date: this.state.isDateUndefined ? Date.now() : this.state.limitDate,
             groupId: this.props.groupReducer.group.id,
             departments,
         });
 
         if (response.status) {
-            this.props.setCurrentList(response.data);
+            response.data.departments = departments;
+            await this.props.setCurrentFullList(response.data);
             NavigationService.navigate('EditList');
         }
         else {
@@ -205,7 +206,7 @@ const mapStateToProps = ({ groupReducer }) => {
 
 const mapDispatchToProps = (dispatch) => {
     return {
-        setCurrentList: (data) => dispatch(setCurrentList(data)),
+        setCurrentFullList: (data) => dispatch(setCurrentFullList(data)),
     }
 };
 

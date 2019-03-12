@@ -7,6 +7,7 @@ import GroupListScreen from "./src/screens/GroupListScreen";
 import ListCreateScreen from "./src/screens/ListCreateScreen";
 import ListListScreen from "./src/screens/ListListScreen";
 import ListEditScreen from "./src/screens/ListEditScreen";
+import AutocompleteScreen from "./src/screens/AutocompleteScreen";
 
 const Navigator = createStackNavigator({
     Home: {
@@ -55,6 +56,12 @@ const Navigator = createStackNavigator({
             title: 'Mes invitations',
         },
     },
+    Autocomplete: {
+        screen: AutocompleteScreen,
+        navigationOptions: {
+            title: 'Rechercher un produit'
+        }
+    }
 });
 
 export default Navigator;

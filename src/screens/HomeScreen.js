@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import {StyleSheet, View, Image} from 'react-native';
+import {StyleSheet, View, Image, AsyncStorage} from 'react-native';
 import HomeService from "../services/HomeService";
 import images from "../constants/images";
 import {loginByTokenAction} from "../actions/userAction";
@@ -35,6 +35,9 @@ class HomeScreen extends Component {
         if (this.props.userReducer.token === null) {
             await this.props.loginByToken();
         }
+
+        // await AsyncStorage.removeItem('token');
+        // await this.props.loginByToken();
 
         const homeComponent = await HomeService.getHomeScreen();
 

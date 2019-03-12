@@ -12,6 +12,7 @@ import AutocompleteScreen from "./src/screens/AutocompleteScreen";
 import Navigator from "./Navigator";
 import {createAppContainer} from "react-navigation";
 import NavigationService from "./src/services/NavigationService";
+import Alert from "./src/components/element/Alert";
 
 const AppContainer = createAppContainer(Navigator);
 
@@ -30,6 +31,7 @@ export default class App extends Component {
                     {/*<AutocompleteScreen />*/}
                     {/*<ProductScreen code={3017620429484} />*/}
                 </AppContainer>
+                <Alert />
             </Provider>
         )
         ;

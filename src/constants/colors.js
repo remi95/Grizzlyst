@@ -15,6 +15,11 @@ const colors = {
     GREEN: '#6CCA2F',
 
     BLACK: '#000',
+
+    SUCCESS: '#3ab729',
+    WARNING: '#f9b540',
+    DANGER: '#bb0000',
+    INFO: '#2a74fc',
 };
 
 export default colors;

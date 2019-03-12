@@ -11,7 +11,7 @@ class LoginScreen extends Component {
         super(props);
 
         this.state = {
-            needRegistration: true,
+            needRegistration: false,
         }
     }
 

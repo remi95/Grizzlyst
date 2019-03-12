@@ -6,6 +6,7 @@ import colors from "../../constants/colors";
 import {FontAwesome} from "@expo/vector-icons";
 import {Font} from "expo";
 import Styles from "../../styles/styles";
+import NavigationService from "../../services/NavigationService";
 
 
 class Accordion extends Component {
@@ -19,7 +20,7 @@ class Accordion extends Component {
         }
     }
 
-    _keyExtractor = (item, index) => item.id.toString();
+    _keyExtractor = item => item.id.toString();
 
     gotoDetailProduct = (id) => {
         // TODO: redirect to product detail page.
@@ -30,19 +31,21 @@ class Accordion extends Component {
     };
 
     startAutocomplete = () => {
-
+        NavigationService.navigate('Autocomplete', {
+            departmentId: this.props.products[0].departmentId,
+        })
     };
 
     render () {
-        let {department} = this.props;
+        let {products, department} = this.props;
 
         return (
             <View>
                 <TouchableHighlight onPress={this.switchCollapse}>
                     <View style={styles.department}>
                         <View style={Styles.position.flex.rowBetween}>
-                            <Text style={styles.name}>{ department.name }</Text>
-                            <Text style={styles.quantity}>  - { department.products.length }</Text>
+                            <Text style={styles.name}>{ department }</Text>
+                            <Text style={styles.quantity}>  - { products.length }</Text>
                         </View>
 
                         {
@@ -59,21 +62,25 @@ class Accordion extends Component {
                     </View>
                 </TouchableHighlight>
 
-                <Collapsible collapsed={this.state.isCollapsed}>
-                    <FlatList
-                        data={department.products}
-                        keyExtractor={this._keyExtractor}
-                        renderItem={ ({item}) =>
-                            <ProductRow
-                                product={item}
-                                favorite={true}
-                                delete={true}
-                                quantity={true}
+                {
+                    products[0].id !== null ?
+                        <Collapsible collapsed={this.state.isCollapsed}>
+                            <FlatList
+                                data={products}
+                                keyExtractor={this._keyExtractor}
+                                renderItem={ ({item}) =>
+                                    <ProductRow
+                                        product={item}
+                                        favorite={true}
+                                        delete={true}
+                                        quantity={true}
+                                    />
+                                }
+                                onPressItem={this.gotoDetailProduct}
                             />
-                        }
-                        onPressItem={this.gotoDetailProduct}
-                    />
-                </Collapsible>
+                        </Collapsible>
+                        : null
+                }
             </View>
         )
     }

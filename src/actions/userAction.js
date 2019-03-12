@@ -1,6 +1,7 @@
 import {LOGIN, GROUPS, INVITATIONS} from "../constants/actions";
 import GrizzlystClient from "../clients/GrizzlystClient";
 import {AsyncStorage} from 'react-native';
+import NavigationService from "../services/NavigationService";
 
 const login = (data) => {
     return {
@@ -50,6 +51,26 @@ export const loginByTokenAction = () => {
     }
 };
 
+export const auth = (data, isRegistration = false) => {
+    return async (dispatch) => {
+        const endpoint = isRegistration ? 'auth/signup' : 'auth/login';
+
+        let response = await GrizzlystClient.post(endpoint, data);
+
+        if (response.status) {
+            await AsyncStorage.setItem('token', response.data.token);
+            dispatch(login(response.data));
+            NavigationService.navigate('GroupList');
+
+            // response.data.token = null;
+            // dispatch(login(response.data));
+        } else {
+            //TODO: throw alert.
+            console.log(response)
+        }
+    }
+};
+
 export const getGroups = () => {
     return async (dispatch) => {
         try {
@@ -92,13 +113,6 @@ const userPostRequest = async (endpoint, data)  => {
           //TODO: throw alert.
           console.log(response)
       }
-};
-
-const auth = (data) => {
-    return async (dispatch) => {
-        await AsyncStorage.setItem('token', data.token);
-        dispatch(login(data));
-    }
 };
 
 const setUserInfos = async () => {

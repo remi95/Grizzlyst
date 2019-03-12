@@ -2,7 +2,7 @@ import React, {Component} from 'react';
 import colors from "../constants/colors";
 import FormValidator from "../helpers/FormValidator";
 import {connect} from "react-redux";
-import {registerAction} from '../actions/userAction'
+import {auth} from '../actions/userAction'
 import {SimpleForm} from "./SimpleForm";
 
 class RegisterForm extends Component {
@@ -93,7 +93,7 @@ const mapStateToProps = ({ userReducer }) => {
 
 const mapDispatchToProps = (dispatch) => {
     return {
-        register: (data) => dispatch(registerAction(data)),
+        register: (data) => dispatch(auth(data, true)),
     }
 };
 

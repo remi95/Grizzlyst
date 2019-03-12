@@ -10,10 +10,11 @@ class ProductList extends Component {
         return (
             <View>
                 {
-                    this.props.listReducer.departments.map(department =>
+                    Object.keys(this.props.listReducer.departments).map(departmentName =>
                         <Accordion
-                            key={department.id}
-                            department={department}
+                            key={departmentName}
+                            department={departmentName}
+                            products={this.props.listReducer.departments[departmentName]}
                         />
                     )
                 }
