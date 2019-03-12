@@ -44,7 +44,6 @@ class LoginScreen extends Component {
                 {
                     this.state.needRegistration ? <RegisterForm /> : <LoginForm />
                 }
-                <Button title='click' onPress={() => this.props.navigation.openDrawer()}/>
             </View>
         )
     }

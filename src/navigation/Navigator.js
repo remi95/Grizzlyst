@@ -3,6 +3,7 @@ import { createDrawerNavigator, createAppContainer, createStackNavigator } from 
 import CreateGroupScreen from '../screens/GroupCreateScreen';
 import InvitationScreen from '../screens/user/InvitationScreen';
 import BurgerMenu from '../components/BurgerMenu';
+import LoginScreen from '../screens/LoginScreen';
 
 const CreateGroupNavigator = createStackNavigator({
     CreateGroup: {
@@ -56,9 +57,13 @@ const DrawerNavigator = createDrawerNavigator({
 const AppNavigator = createStackNavigator({
     Drawer: {
         screen: DrawerNavigator,
+    },
+    Auth: {
+        screen: LoginScreen
     }
 }, {
     headerMode: 'none',
+    initialRouteName: 'Auth'
 });
 
 export default createAppContainer(AppNavigator);
