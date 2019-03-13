@@ -41,7 +41,7 @@ class HomeScreen extends Component {
 
         const homeComponent = await HomeService.getHomeScreen();
 
-        this.setState({ homeComponent })
+        // this.setState({ homeComponent })
     }
 }
 

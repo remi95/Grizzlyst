@@ -9,68 +9,22 @@ import ListListScreen from "../screens/ListListScreen";
 import ListCreateScreen from "../screens/ListCreateScreen";
 import ListEditScreen from "../screens/ListEditScreen";
 import AutocompleteScreen from "../screens/AutocompleteScreen";
+import HomeScreen from "../screens/HomeScreen";
 
-const ListGroupNavigator = createStackNavigator({
-    GroupList: {
-        screen: GroupListScreen,
-        navigationOptions: ({ navigation }) => ({
-            title: 'Mes groupes',
-            headerRight : <BurgerMenu navigation={navigation} />,
-        })
-    }
-});
-
-const InvitationsNavigator = createStackNavigator({
-    Invitations: {
-        screen: InvitationScreen,
-        navigationOptions: ({ navigation }) => ({
-            title: 'Mes invitations',
-            headerRight : <BurgerMenu navigation={navigation} />,
-        }),
-    }
-});
-
-const DrawerNavigator = createDrawerNavigator({
-    GroupList: {
-        screen: ListGroupNavigator,
-        navigationOptions: {
-            drawerLabel: 'Créer un groupe'
-        }
-    },
-    Invitations: {
-        screen: InvitationsNavigator,
-        navigationOptions: {
-            drawerLabel: 'Mes invitations'
-        }
-    },
-    Lists: {
-        screen: () => null,
-        navigationOptions: {
-            drawerLabel: 'Mes listes'
-        }
-    },
-    Params: {
-        screen: () => null,
-        navigationOptions: {
-            drawerLabel: 'Paramètres'
-        }
-    }
-}, {
-    drawerPosition: 'right',
-});
+const headerConf = {
+    // headerMode: 'none',
+    initialRouteName: 'Home',
+    defaultNavigationOptions: ({ navigation }) => ({
+        headerRight : <BurgerMenu navigation={navigation} />
+    })
+};
 
 const AppNavigator = createStackNavigator({
-    Drawer: {
-        screen: DrawerNavigator,
+    Home: {
+        screen: HomeScreen
     },
     Auth: {
         screen: LoginScreen
-    },
-    CreateGroup: {
-        screen: CreateGroupScreen,
-        navigationOptions: {
-            title: 'Créer un groupe',
-        },
     },
     ListList: {
         screen: ListListScreen,
@@ -95,10 +49,49 @@ const AppNavigator = createStackNavigator({
         navigationOptions: {
             title: 'Rechercher un produit'
         }
+    },
+    GroupList: {
+        screen: GroupListScreen,
+        navigationOptions: {
+            title: 'Mes groupes'
+        }
+    },
+    CreateGroup: {
+        screen: CreateGroupScreen,
+        navigationOptions: {
+            title: 'Créer un groupe'
+        }
+    }
+}, headerConf);
+
+const DrawerNavigator = createDrawerNavigator({
+    Home: AppNavigator,
+    GroupList: {
+        screen: GroupListScreen,
+        navigationOptions: {
+            drawerLabel: 'Mes groupes'
+        }
+    },
+    Invitations: {
+        screen: () => null,
+        navigationOptions: {
+            drawerLabel: 'Mes invitations'
+        }
+    },
+    Lists: {
+        screen: () => null,
+        navigationOptions: {
+            drawerLabel: 'Mes listes'
+        }
+    },
+    Params: {
+        screen: () => null,
+        navigationOptions: {
+            drawerLabel: 'Paramètres'
+        }
     }
 }, {
-    headerMode: 'none',
-    initialRouteName: 'Auth'
+    drawerPosition: 'right',
 });
 
-export default createAppContainer(AppNavigator);
+export default createAppContainer(DrawerNavigator);
