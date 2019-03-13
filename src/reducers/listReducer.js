@@ -1,7 +1,9 @@
-import {LIST, SET_FULL_LIST, SET_LIST, SET_PRODUCTS_BY_DEPARTMENT} from "../constants/actions";
+import {REFERENCES, SET_FULL_LIST, SET_LIST, SET_PRODUCTS_BY_DEPARTMENT} from "../constants/actions";
 
 let initialState = {
-
+    list: {},
+    departments: [],
+    departmentsReference: [],
 };
 
 const listReducer = (state = initialState, action) => {
@@ -20,7 +22,12 @@ const listReducer = (state = initialState, action) => {
       case SET_PRODUCTS_BY_DEPARTMENT:
           return {
               ...state,
-              departments: action.data,
+              departments: {...action.data},
+          };
+      case REFERENCES:
+          return {
+              ...state,
+              departmentsReference: action.data,
           };
       default:
           return state

@@ -1,20 +1,23 @@
 import React, {Component} from 'react';
-import {View, Text} from 'react-native';
+import {View} from 'react-native';
 import {connect} from "react-redux";
 import Accordion from "../element/Accordion";
 import NavigationService from "../../services/NavigationService";
+import {addProductToDepartment} from "../../actions/listAction";
 
 class ProductList extends Component {
 
     render() {
+        console.log('render')
         return (
             <View>
                 {
-                    Object.keys(this.props.listReducer.departments).map(departmentName =>
+                    Object.keys(this.props.departments).map(departmentName =>
                         <Accordion
                             key={departmentName}
                             department={departmentName}
-                            products={this.props.listReducer.departments[departmentName]}
+                            products={this.props.departments[departmentName]}
+                            navigation={this.props.navigation}
                         />
                     )
                 }
@@ -23,23 +26,22 @@ class ProductList extends Component {
     }
 
     componentDidMount() {
-        if (!this.props.listReducer.list.id) {
-            return NavigationService.navigate('ListList');
-            // TODO: throw alert
-        }
+        // if (!this.props.listReducer.list.id) {
+        //     return NavigationService.navigate('ListList');
+        //     // TODO: throw alert
+        // }
+        console.log('MOUNT ')
+    }
+
+    componentDidUpdate(prevProps, prevState, snapshot) {
+        console.log(' UPDATED ')
     }
 }
 
 const mapStateToProps = ({ listReducer }) => {
     return {
-        listReducer,
+        departments: listReducer.departments,
     }
 };
 
-const mapDispatchToProps = (dispatch) => {
-    return {
-        // action: (data) => dispatch(action(data)),
-    }
-};
-
-export default connect(mapStateToProps, mapDispatchToProps)(ProductList);
+export default connect(mapStateToProps, null)(ProductList);

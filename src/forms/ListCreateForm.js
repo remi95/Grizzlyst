@@ -10,16 +10,18 @@ import colors from "../constants/colors";
 import GrizzlystClient from "../clients/GrizzlystClient";
 import {connect} from "react-redux";
 import NavigationService from "../services/NavigationService";
-import {setCurrentFullList} from "../actions/listAction";
+import {setCurrentFullList, setCurrentList, setProductsByDepartment} from "../actions/listAction";
 
 class ListCreateForm extends Component {
 
     constructor(props) {
         super(props);
 
+        let nextWeek = moment().add(7, 'days');
+
         this.state = {
             listName: null,
-            limitDate: null,
+            limitDate: nextWeek,
             isDateUndefined: false,
             departments: [],
             products: [],
@@ -72,16 +74,18 @@ class ListCreateForm extends Component {
         let departments = this.getEnabledDepartmentsIds();
         let products = this.getEnabledProducts();
 
-        let response = await GrizzlystClient.post('lists', {
+        let list = await GrizzlystClient.post('lists', {
             name: this.state.listName,
             date: this.state.isDateUndefined ? Date.now() : this.state.limitDate,
             groupId: this.props.groupReducer.group.id,
             departments,
         });
 
-        if (response.status) {
-            response.data.departments = departments;
-            await this.props.setCurrentFullList(response.data);
+        if (list.status) {
+            console.log(list)
+            let productsByDepartments = await GrizzlystClient.get('lists/' + list.data.list.id + '/departments/products');
+            await this.props.setCurrentList(list.data.list);
+            await this.props.setProductsByDepartment(productsByDepartments.data);
             NavigationService.navigate('EditList');
         }
         else {
@@ -91,7 +95,6 @@ class ListCreateForm extends Component {
 
     render() {
         let now = moment().format('DD MMM YYYY');
-        let nextWeek = moment().add(7, 'days');
 
         return (
             <View style={Styles.form.container}>
@@ -110,7 +113,7 @@ class ListCreateForm extends Component {
                         ?   null
                         :   <DatePicker
                                 style={Styles.form.inputText}
-                                date={this.state.limitDate ? this.state.limitDate : nextWeek}
+                                date={this.state.limitDate}
                                 mode={'date'}
                                 format={'DD MMM YYYY'}
                                 minDate={now}
@@ -206,7 +209,8 @@ const mapStateToProps = ({ groupReducer }) => {
 
 const mapDispatchToProps = (dispatch) => {
     return {
-        setCurrentFullList: (data) => dispatch(setCurrentFullList(data)),
+        setCurrentList: (data) => dispatch(setCurrentList(data)),
+        setProductsByDepartment: (data) => dispatch(setProductsByDepartment(data)),
     }
 };
 

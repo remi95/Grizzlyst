@@ -33,7 +33,7 @@ class GroupCreateForm extends Component {
         let response = await GrizzlystClient.post('groups', this.state);
 
         if (response.status) {
-            this.props.setCurrentGroup(response.data);
+            await this.props.setCurrentGroup(response.data);
             NavigationService.navigate('ListList', {groupId: response.data.id});
         }
         else {

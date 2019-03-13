@@ -59,7 +59,7 @@ export const auth = (data, isRegistration = false) => {
 
         if (response.status) {
             await AsyncStorage.setItem('token', response.data.token);
-            dispatch(login(response.data));
+            await dispatch(login(response.data));
             NavigationService.navigate('GroupList');
 
             // response.data.token = null;

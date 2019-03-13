@@ -11,7 +11,7 @@ class TextList extends Component {
 
         this.state = {
             list: [],
-            inputValue: null,
+            inputValue: '',
             error: null
         }
     }

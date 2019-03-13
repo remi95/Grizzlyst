@@ -7,7 +7,8 @@ import {FontAwesome} from "@expo/vector-icons";
 import {Font} from "expo";
 import Styles from "../../styles/styles";
 import NavigationService from "../../services/NavigationService";
-
+import {connect} from "react-redux";
+import {addProductToDepartment} from "../../actions/listAction";
 
 class Accordion extends Component {
 
@@ -38,7 +39,6 @@ class Accordion extends Component {
 
     render () {
         let {products, department} = this.props;
-
         return (
             <View>
                 <TouchableHighlight onPress={this.switchCollapse}>
@@ -63,22 +63,26 @@ class Accordion extends Component {
                 </TouchableHighlight>
 
                 {
-                    products[0].id !== null ?
-                        <Collapsible collapsed={this.state.isCollapsed}>
-                            <FlatList
-                                data={products}
-                                keyExtractor={this._keyExtractor}
-                                renderItem={ ({item}) =>
-                                    <ProductRow
-                                        product={item}
-                                        favorite={true}
-                                        delete={true}
-                                        quantity={true}
-                                    />
-                                }
-                                onPressItem={this.gotoDetailProduct}
-                            />
-                        </Collapsible>
+                    products.length > 0 && products[0].id !== null ?
+                        //<Collapsible collapsed={this.state.isCollapsed}>
+                        //    <FlatList
+                        //        data={products}
+                        //        keyExtractor={this._keyExtractor}
+                        //        renderItem={ ({item}) =>
+                        //            <ProductRow
+                        //                product={item}
+                        //                favorite={true}
+                        //                delete={true}
+                        //                quantity={true}
+                        //            />
+                        //        }
+                        //        onPressItem={this.gotoDetailProduct}
+                        //    />
+                        //</Collapsible>
+
+                        products.map(product =>
+                            <Text>{product.name}</Text>
+                        )
                         : null
                 }
             </View>

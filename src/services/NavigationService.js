@@ -17,7 +17,13 @@ class Navigation {
                 params,
             })
         );
-    }
+    };
+
+    goBack = () => {
+        this._navigator.dispatch(
+            NavigationActions.back()
+        );
+    };
 }
 
 const NavigationService = new Navigation();

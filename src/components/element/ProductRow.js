@@ -10,19 +10,21 @@ import {FontAwesome} from "@expo/vector-icons";
  *
  * Required props:
  *   - product:
- *      - image_url
- *      - name
- *      - brand
- *      - weight
+ *      - image_url     string
+ *      - name          string
+ *      - brand         string
+ *      - weight        int
  *
  * You can pass optional props which display or not some actions/icons.
  *
  * Optional props:
- *   - product.nutrition_grade
- *   - product.favorite
- *   - delete
- *   - selectable
- *   - quantity
+ *   - product.nutrition_grade      string
+ *   - product.favorite             bool
+ *   - delete                       bool
+ *   - selectable                   bool
+ *   - quantity                     int
+ *   - updateProduct                callback
+ *      If you want to update product on parent.
  */
 class ProductRow extends Component {
 
@@ -42,8 +44,14 @@ class ProductRow extends Component {
         // TODO: Enable or Disable product
     };
 
-    changeQuantity = () => {
+    changeQuantity = (quantity) => {
         // TODO: Send request to node server with product.id
+        if (this.props.updateProduct) {
+            let {product} = this.props;
+            product.quantity = quantity;
+
+            this.props.updateProduct(product);
+        }
     };
 
     render() {
@@ -58,11 +66,11 @@ class ProductRow extends Component {
 
                     <View>
                         <Text style={styles.title}>
-                            {product.name.substring(0, 50)}
-                            {product.name.length > 50 ? '...' : ''}
+                            {product.name.substring(0, 25)}
+                            {product.name.length > 25 ? '...' : ''}
                         </Text>
                         <Text style={styles.brand}>{product.brand}</Text>
-                        <Text style={styles.description}>{product.weight} g</Text>
+                        <Text style={styles.description}>{product.weight} { typeof product.weight === "number" ? 'g' : ''}</Text>
                     </View>
                 </View>
 
@@ -105,10 +113,10 @@ class ProductRow extends Component {
                     }
 
                     {
-                        this.props.quantity
+                        product.quantity
                             ?   <Picker
                                 selectedValue={product.quantity.toString()}
-                                onValueChange={this.changeQuantity}
+                                onValueChange={(value) => this.changeQuantity(value)}
                                 style={styles.quantity}
                             >
                                 {
@@ -138,6 +146,7 @@ class ProductRow extends Component {
 
 const styles = StyleSheet.create({
     row: {
+        flex: 1,
         flexDirection: 'row',
         justifyContent: 'space-between',
         alignItems: 'center',
@@ -161,6 +170,7 @@ const styles = StyleSheet.create({
     },
     title: {
         fontSize: 16,
+        flexWrap: 'wrap',
     },
     brand: {
         fontSize: 14,

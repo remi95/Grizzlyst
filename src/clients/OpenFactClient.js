@@ -93,8 +93,6 @@ class OpenFactClient {
             ],
             ingredients: [],
             allergens: original.allergens_from_ingredients,
-
-
         };
 
         for (let ingredient of original.ingredients) {
@@ -108,13 +106,18 @@ class OpenFactClient {
         let products = [];
 
         for (let original of originalProducts) {
+            if (!original.product_name_fr) {
+                continue;
+            }
+
             let product = {
                 code: original.code,
                 brand: original.brands,
                 name: original.product_name_fr,
                 weight: original.quantity,
-                nutrient_grade: original.nutrition_grade_fr,
-                image: original.image_front_url,
+                nutrition_grade: original.nutrition_grade_fr,
+                image_url: original.image_front_url,
+                quantity: 1,
             };
             products.push(product)
         }

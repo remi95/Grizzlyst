@@ -9,6 +9,7 @@ import ListListScreen from "../screens/ListListScreen";
 import ListCreateScreen from "../screens/ListCreateScreen";
 import ListEditScreen from "../screens/ListEditScreen";
 import AutocompleteScreen from "../screens/AutocompleteScreen";
+import HomeScreen from "../screens/HomeScreen";
 
 const ListGroupNavigator = createStackNavigator({
     GroupList: {
@@ -34,7 +35,7 @@ const DrawerNavigator = createDrawerNavigator({
     GroupList: {
         screen: ListGroupNavigator,
         navigationOptions: {
-            drawerLabel: 'Créer un groupe'
+            drawerLabel: 'Mes groupes'
         }
     },
     Invitations: {
@@ -60,6 +61,9 @@ const DrawerNavigator = createDrawerNavigator({
 });
 
 const AppNavigator = createStackNavigator({
+    Home: {
+        screen: HomeScreen,
+    },
     Drawer: {
         screen: DrawerNavigator,
     },
@@ -98,7 +102,7 @@ const AppNavigator = createStackNavigator({
     }
 }, {
     headerMode: 'none',
-    initialRouteName: 'Auth'
+    initialRouteName: 'Home'
 });
 
 export default createAppContainer(AppNavigator);

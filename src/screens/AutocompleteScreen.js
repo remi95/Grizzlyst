@@ -4,6 +4,10 @@ import Autocomplete from "react-native-autocomplete-input";
 import ProductRow from "../components/element/ProductRow";
 import OpenClient from "../clients/OpenFactClient";
 import Styles from "../styles/styles";
+import GrizzlystClient from "../clients/GrizzlystClient";
+import NavigationService from "../services/NavigationService";
+import {connect} from "react-redux";
+import {addProductToDepartment} from "../actions/listAction";
 
 /**
  * Display the autocomplete search screen.
@@ -20,6 +24,7 @@ class AutocompleteScreen extends Component {
         this.state = {
             query: '',
             data: [],
+            departmentId: null,
         };
 
         this.timeout = null;
@@ -31,7 +36,6 @@ class AutocompleteScreen extends Component {
         clearTimeout(this.timeout);
 
         this.timeout = setTimeout(async () => {
-            console.log('update')
             this.getData(query);
         }, 300);
     };
@@ -40,19 +44,46 @@ class AutocompleteScreen extends Component {
         let search = await OpenClient.search(query);
 
         if (search.status) {
-            let products = OpenClient.normalizeProductPreview(search.data.products)
+            let products = OpenClient.normalizeProductPreview(search.data.products);
             this.setState({data: products});
         }
     };
 
-    addProduct = () => {
+    addProduct = async (item) => {
+       let response = await GrizzlystClient.addProduct(
+           this.props.listReducer.list.id,
+           this.state.departmentId,
+           {
+               _id: item.code,
+               quantity: item.quantity,
+           }
+       );
 
+       // if (response.status) {
+       //     await this.props.addProductToDepartment(response.data.product, this.state.departmentId)
+       // }
+
+       NavigationService.navigate('EditList', {
+           product: response.data.product,
+           departmentId: this.state.departmentId,
+       });
+    };
+
+    updateProduct = (product) => {
+        let data = this.state.data;
+
+        for (let i in data) {
+            if (data[i].code === product.code) {
+                data[i] = product;
+                this.setState({data})
+            }
+        }
     };
 
     _renderItem = (item) => (
         <View style={styles.row}>
-            <ProductRow product={item} />
-            <Button title={'+'} onPress={this.addProduct} />
+            <ProductRow product={item} style={styles.product} updateProduct={this.updateProduct} />
+            <Button title={'+'} onPress={() => this.addProduct(item)} style={styles.button} />
         </View>
     );
 
@@ -75,6 +106,8 @@ class AutocompleteScreen extends Component {
             this.props.navigation.goBack();
             // TODO: throw alert
         }
+
+        this.setState({departmentId: this.props.navigation.getParam('departmentId')})
     }
 }
 
@@ -82,6 +115,30 @@ const styles = StyleSheet.create({
     results: {
         margin: 0,
     },
+    row: {
+        flex: 1,
+        flexDirection: 'row',
+        alignItems: 'center',
+        justifyContent: 'space-between',
+    },
+    product: {
+        flex: 3,
+    },
+    button: {
+        flex: 2,
+    },
 });
 
-export default AutocompleteScreen;
+const mapStateToProps = ({ listReducer }) => {
+    return {
+        listReducer,
+    }
+};
+
+const mapDispatchToProps = (dispatch) => {
+    return {
+        addProductToDepartment: (product, departmentId) => dispatch(addProductToDepartment(product, departmentId)),
+    }
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(AutocompleteScreen);

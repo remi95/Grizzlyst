@@ -7,6 +7,26 @@ class GrizzlystServerClient {
         this.token = store.getState().userReducer.token || null;
     }
 
+    /**
+     * Add product to a list, on a specific department.
+     *
+     * @param listId
+     * @param departmentId
+     * @param data
+     *   - _id:      int
+     *   - quantity: int
+     */
+    addProduct = async (listId, departmentId, data) => {
+        return await this.post(`lists/${listId}/department/${departmentId}/product`, data);
+    };
+
+    /**
+     * Return all departments objects.
+     */
+    getAllDepartments = async () => {
+        return await this.get('departments');
+    };
+
     post = async (endpoint, data, token = store.getState().userReducer.token) => {
         try {
             const response = await fetch(`${parameters.SERVER_URL}${endpoint}`, {
