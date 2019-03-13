@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import {StyleSheet, View, Image, Button, AsyncStorage} from 'react-native';
+import {StyleSheet, View, Image, AsyncStorage} from 'react-native';
 import images from "../constants/images";
 import colors from "../constants/colors";
 import NavigationService from "../services/NavigationService";

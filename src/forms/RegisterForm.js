@@ -2,7 +2,7 @@ import React, {Component} from 'react';
 import colors from "../constants/colors";
 import FormValidator from "../helpers/FormValidator";
 import {connect} from "react-redux";
-import {registerAction} from '../actions/userAction'
+import {auth} from '../actions/userAction'
 import {SimpleForm} from "./SimpleForm";
 
 class RegisterForm extends Component {
@@ -64,7 +64,7 @@ class RegisterForm extends Component {
                 button: {
                     label: 'S\'inscrire',
                     color: colors.BLUE,
-                    action: this.action,
+                    action: this.props.register,
                 },
             },
         }
@@ -80,8 +80,7 @@ class RegisterForm extends Component {
         return (
             <SimpleForm
                 form={this.state.form}
-                update={this.updateForm}
-                action={this.props.register} />
+                update={this.updateForm} />
         )
     }
 }
@@ -94,7 +93,7 @@ const mapStateToProps = ({ userReducer }) => {
 
 const mapDispatchToProps = (dispatch) => {
     return {
-        register: (data) => dispatch(registerAction(data)),
+        register: (data) => dispatch(auth(data, true)),
     }
 };
 

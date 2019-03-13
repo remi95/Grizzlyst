@@ -1,23 +1,30 @@
-import {LOGIN} from "../constants/actions";
+import {LOGIN, GROUPS, INVITATIONS} from "../constants/actions";
 
 let initialState = {
-    user: {
-        id: 1,
-        firstname: 'Grizz',
-        name: 'Lyst',
-        email: 'contact@grizzlyst.fr',
-        pseudo: 'Grizzlyst',
-        password: 'secret',
-        updatedAt: '2019-02-23T18:14:30.117Z',
-        createdAt: '2019-02-23T18:14:30.117Z',
-    },
-    token: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MiwiaWF0IjoxNTUxMjYyNjEwLCJleHAiOjE1NTM4NTQ2MTB9.vvqzFsdhJwQUIaye2qltOqVAK9gfhrOtXDbj_5LTqFg',
+    user: {},
+    token: null,
+    groups: [],
+    invitations: [],
 };
 
 const userReducer = (state = initialState, action) => {
     switch (action.type) {
         case LOGIN:
-            return action;
+            return {
+                ...state,
+                user: action.data.user,
+                token: action.data.token,
+            };
+        case GROUPS:
+            return {
+                ...state,
+                groups: action.data,
+            };
+        case INVITATIONS:
+            return {
+                ...state,
+                invitations: action.data,
+            };
         default:
             return state;
     }

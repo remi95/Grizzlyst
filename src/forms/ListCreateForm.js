@@ -5,10 +5,12 @@ import Validator from "../helpers/FormValidator";
 import DatePicker from "react-native-datepicker";
 import moment from "moment";
 import {TouchableGrid} from "../components/list/TouchableGrid";
-import images from '../constants/images'
 import ProductRow from "../components/element/ProductRow";
 import colors from "../constants/colors";
-
+import GrizzlystClient from "../clients/GrizzlystClient";
+import {connect} from "react-redux";
+import NavigationService from "../services/NavigationService";
+import {setCurrentFullList} from "../actions/listAction";
 
 class ListCreateForm extends Component {
 
@@ -19,104 +21,8 @@ class ListCreateForm extends Component {
             listName: null,
             limitDate: null,
             isDateUndefined: false,
-            // MOCK
-            departments: [
-                {
-                    id: 1,
-                    text: 'Boucherie',
-                    icon: images.logo,
-                    favorite: false,
-                    enable: false,
-                },
-                {
-                    id: 2,
-                    text: 'Volailles',
-                    icon: images.logo,
-                    favorite: true,
-                    enable: false,
-                },
-                {
-                    id: 3,
-                    text: 'Poissons & Fruits de mer',
-                    icon: images.logo,
-                    favorite: false,
-                    enable: false,
-                },
-                {
-                    id: 4,
-                    text: 'Fruits',
-                    icon: images.logo,
-                    favorite: false,
-                    enable: false,
-                },
-                {
-                    id: 5,
-                    text: 'Légumes',
-                    icon: images.logo,
-                    favorite: true,
-                    enable: false,
-                },
-                {
-                    id: 6,
-                    text: 'Boulangerie',
-                    icon: images.logo,
-                    favorite: false,
-                    enable: false,
-                },
-                {
-                    id: 7,
-                    text: 'Fromages',
-                    icon: images.logo,
-                    favorite: false,
-                    enable: false,
-                },
-                {
-                    id: 8,
-                    text: 'Charcuterie',
-                    icon: images.logo,
-                    favorite: false,
-                    enable: false,
-                },
-                {
-                    id: 9,
-                    text: 'Produits laitiers',
-                    icon: images.logo,
-                    favorite: false,
-                    enable: false,
-                },
-                {
-                    id: 10,
-                    text: 'Produits frais',
-                    icon: images.logo,
-                    favorite: false,
-                    enable: false,
-                },
-            ],
-            // MOCK
-            products: [
-                {
-                    id: 1537,
-                    brand: 'Nestlé',
-                    name: 'Nesquik',
-                    weight: '250g',
-                    nutrient_grade: 'B',
-                    image: 'https://static.openfoodfacts.org/images/products/303/371/006/5066/front_fr.48.400.jpg',
-                    quantity: 2,
-                    favorite: false,
-                    enable: false,
-                },
-                {
-                    id: 1557,
-                    brand: 'Ferrero',
-                    name: 'Nutella',
-                    weight: '750g',
-                    nutrient_grade: 'E',
-                    image: 'https://static.openfoodfacts.org/images/products/301/762/042/1006/front_fr.112.100.jpg',
-                    quantity: 1,
-                    favorite: false,
-                    enable: false,
-                },
-            ],
+            departments: [],
+            products: [],
         }
     }
 
@@ -162,13 +68,28 @@ class ListCreateForm extends Component {
         return products;
     };
 
-    create = () => {
+    create = async () => {
         let departments = this.getEnabledDepartmentsIds();
         let products = this.getEnabledProducts();
+
+        let response = await GrizzlystClient.post('lists', {
+            name: this.state.listName,
+            date: this.state.isDateUndefined ? Date.now() : this.state.limitDate,
+            groupId: this.props.groupReducer.group.id,
+            departments,
+        });
+
+        if (response.status) {
+            response.data.departments = departments;
+            await this.props.setCurrentFullList(response.data);
+            NavigationService.navigate('EditList');
+        }
+        else {
+            // TODO: Throw alert.
+        }
     };
 
     render() {
-
         let now = moment().format('DD MMM YYYY');
         let nextWeek = moment().add(7, 'days');
 
@@ -218,20 +139,27 @@ class ListCreateForm extends Component {
                     action={this.switchDepartmentState.bind(this)}
                 />
 
-                <Text style={Styles.form.label}>
-                    Voulez-vous ajouter ces produits qui n'ont pu être achetés précédemment ?
-                </Text>
-
                 {
-                    this.state.products.map(product =>
-                        <ProductRow
-                            key={product.id}
-                            product={product}
-                            favorite={false}
-                            selectable={true}
-                        />
-                    )
+                    this.state.products.length > 0
+                        ?   <View>
+                                <Text style={Styles.form.label}>
+                                    Voulez-vous ajouter ces produits qui n'ont pu être achetés précédemment ?
+                                </Text>
+
+                                {
+                                    this.state.products.map(product =>
+                                        <ProductRow
+                                            key={product.id}
+                                            product={product}
+                                            favorite={false}
+                                            selectable={true}
+                                        />
+                                    )
+                                }
+                            </View>
+                        :   null
                 }
+
 
                 <Button
                     title={'Créer'}
@@ -241,6 +169,18 @@ class ListCreateForm extends Component {
                 />
             </View>
         )
+    }
+
+    async componentDidMount() {
+        const departments = await GrizzlystClient.get('departments');
+        const products = await GrizzlystClient.get(`groups/${this.props.groupReducer.group.id}/no-buy-products`);
+
+        if (departments.status) {
+            this.setState({departments: departments.data})
+        }
+        if (products.status) {
+            this.setState({ products: products.data })
+        }
     }
 }
 
@@ -260,4 +200,14 @@ const styles = StyleSheet.create({
     },
 });
 
-export default ListCreateForm;
+const mapStateToProps = ({ groupReducer }) => {
+    return { groupReducer }
+};
+
+const mapDispatchToProps = (dispatch) => {
+    return {
+        setCurrentFullList: (data) => dispatch(setCurrentFullList(data)),
+    }
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(ListCreateForm);

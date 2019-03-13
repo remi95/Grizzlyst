@@ -2,7 +2,7 @@ import React, {Component} from 'react';
 import colors from "../constants/colors";
 import FormValidator from "../helpers/FormValidator";
 import {SimpleForm} from "./SimpleForm";
-import {loginAction} from "../actions/userAction";
+import {auth} from "../actions/userAction";
 import {connect} from "react-redux";
 
 class LoginForm extends Component {
@@ -33,7 +33,7 @@ class LoginForm extends Component {
                 button: {
                     label: 'Connexion',
                     color: colors.GREEN,
-                    action: this.props.login
+                    action: this.props.login,
                 },
             },
         }
@@ -49,8 +49,7 @@ class LoginForm extends Component {
         return (
             <SimpleForm
                 form={this.state.form}
-                update={this.updateForm}
-            />
+                update={this.updateForm} />
         )
     }
 }
@@ -61,7 +60,7 @@ const mapStateToProps = ({ userReducer }) => {
 
 const mapDispatchToProps = (dispatch) => {
     return {
-        login: (data) => dispatch(loginAction(data)),
+        login: (data) => dispatch(auth(data)),
     }
 };
 

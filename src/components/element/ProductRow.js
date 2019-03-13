@@ -5,6 +5,25 @@ import colors from "../../constants/colors";
 import {Font} from "expo";
 import {FontAwesome} from "@expo/vector-icons";
 
+/**
+ * Display a product as row. Ideal for product preview in list.
+ *
+ * Required props:
+ *   - product:
+ *      - image_url
+ *      - name
+ *      - brand
+ *      - weight
+ *
+ * You can pass optional props which display or not some actions/icons.
+ *
+ * Optional props:
+ *   - product.nutrition_grade
+ *   - product.favorite
+ *   - delete
+ *   - selectable
+ *   - quantity
+ */
 class ProductRow extends Component {
 
     constructor(props) {
@@ -34,57 +53,61 @@ class ProductRow extends Component {
             <View style={styles.row}>
                 <View style={styles.basicInformations}>
                     <View style={styles.iconContainer}>
-                        <Image source={{uri: product.image}} style={styles.icon}/>
+                        <Image source={{uri: product.image_url}} style={styles.icon}/>
                     </View>
 
                     <View>
-                        <Text style={styles.title}>{product.name}</Text>
+                        <Text style={styles.title}>
+                            {product.name.substring(0, 50)}
+                            {product.name.length > 50 ? '...' : ''}
+                        </Text>
                         <Text style={styles.brand}>{product.brand}</Text>
-                        <Text style={styles.description}>{product.weight}</Text>
+                        <Text style={styles.description}>{product.weight} g</Text>
                     </View>
                 </View>
 
-                {
-                    product.nutrient_grade
-                        ?   <NutrientGradePreview style={styles.nutrient} grade={product.nutrient_grade}/>
-                        :   null
-                }
+                <View style={styles.action}>
+                    {
+                        product.nutrition_grade
+                            ?   <NutrientGradePreview style={styles.nutrient} grade={product.nutrition_grade}/>
+                            :   null
+                    }
 
-                {
-                    this.props.favorite && this.state.isIconLoaded
-                        ?   <FontAwesome
+                    {
+                        this.props.favorite && this.state.isIconLoaded
+                            ?   <FontAwesome
                                 name={product.favorite ? 'star' : 'star-o'}
                                 size={24}
                                 color={colors.YELLOW}
                                 onClick={this.switchFavorite}
                             />
-                        :   null
-                }
+                            :   null
+                    }
 
-                {
-                    this.props.delete && this.state.isIconLoaded
-                        ?   <FontAwesome
+                    {
+                        this.props.delete && this.state.isIconLoaded
+                            ?   <FontAwesome
                                 name={'trash-o'}
                                 size={24}
                                 color={colors.RED}
                                 onClick={this.switchFavorite}
                             />
-                        :   null
-                }
+                            :   null
+                    }
 
-                {
-                    this.props.selectable
-                        ?   <CheckBox
+                    {
+                        this.props.selectable
+                            ?   <CheckBox
                                 value={product.enable}
                                 onChange={this.switchProduct}
                             />
-                        :   null
-                }
+                            :   null
+                    }
 
-                {
-                    this.props.quantity
-                        ?   <Picker
-                            selectedValue={product.quantity.toString()}
+                    {
+                        this.props.quantity
+                            ?   <Picker
+                                selectedValue={product.quantity.toString()}
                                 onValueChange={this.changeQuantity}
                                 style={styles.quantity}
                             >
@@ -94,9 +117,10 @@ class ProductRow extends Component {
                                     )
                                 }
                             </Picker>
-                        :   null
-                }
+                            :   null
+                    }
 
+                </View>
             </View>
         )
     }
@@ -145,6 +169,12 @@ const styles = StyleSheet.create({
     description: {
         fontSize: 12,
         color: colors.GRAY,
+    },
+    action: {
+        flex: 3,
+        flexDirection: 'row',
+        alignItems: 'center',
+        justifyContent: 'space-around',
     },
     nutrient: {
         flex: 1,
