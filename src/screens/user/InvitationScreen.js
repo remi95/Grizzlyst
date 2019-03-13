@@ -1,7 +1,7 @@
 import React, {Component} from 'react';
-import {View, Text, StyleSheet, Button, FlatList} from 'react-native';
+import { Container, Content, Card, CardItem, Body, Text, Button } from 'native-base';
 import GrizzlystClient from '../../clients/GrizzlystClient';
-import { connect } from 'react-redux';
+import Styles from "../../styles/styles";
 
 class InvitationScreen extends Component {
     constructor(props) {
@@ -13,33 +13,53 @@ class InvitationScreen extends Component {
     }
 
     async componentDidMount() {
-        const invitations = await GrizzlystClient.get(`users/me/invitations`);
+       this.getInvitations();
+    }
+
+    async getInvitations() {
+        const invitations = await GrizzlystClient.get('me/invitations');
         this.setState({
-            invitations
+            invitations: invitations.data
         });
     }
 
-    renderItem({item}) {
-        return (
-            <View>
-                <Text>{item.group.name}</Text>
-                <Button title='Accepter' onPress={ () => null } />
-                <Button title='Refuser' onPress={ () => null } />
-            </View>
-        )
+    async joinGroup(id) {
+        await GrizzlystClient.post(`invitations/${id}/group`);
+        this.getInvitations();
+    }
+
+    async deleteGroup(id) {
+        await GrizzlystClient.delete(`invitations/${id}`);
+        this.getInvitations();
     }
 
     render() {
         return (
-            <View>
-                <Text>Hello</Text>
-                <FlatList
-                    data={ this.state.invitations }
-                    renderItem={({item}) => (
-                        this.renderItem({item})
-                    )}
-                    keyExtractor={(item, index) => index.toString()}/>
-            </View>
+            <Container>
+                <Content>
+                    {
+                        this.state.invitations.map((invit, i) =>
+                            <Card key={i}>
+                                <CardItem>
+                                    <Body>
+                                        <Text>{ invit.group.name }</Text>
+                                    </Body>
+                                </CardItem>
+                                <CardItem footer>
+                                    <Button style={ Styles.button.success }
+                                            onPress={ () => this.joinGroup(invit.id) }>
+                                        <Text>Accepter</Text>
+                                    </Button>
+                                    <Button style={Styles.button.danger}
+                                            onPress={ () => this.deleteGroup(invit.id) }>
+                                        <Text>Refuser</Text>
+                                    </Button>
+                                </CardItem>
+                            </Card>
+                        )
+                    }
+                </Content>
+            </Container>
         )
     }
 }

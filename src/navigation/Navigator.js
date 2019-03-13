@@ -61,7 +61,13 @@ const AppNavigator = createStackNavigator({
         navigationOptions: {
             title: 'Créer un groupe'
         }
-    }
+    },
+    Invitations: {
+        screen: InvitationScreen,
+        navigationOptions: {
+            title: 'Mes invitations'
+        }
+    },
 }, headerConf);
 
 const DrawerNavigator = createDrawerNavigator({
@@ -73,7 +79,7 @@ const DrawerNavigator = createDrawerNavigator({
         }
     },
     Invitations: {
-        screen: () => null,
+        screen: InvitationScreen,
         navigationOptions: {
             drawerLabel: 'Mes invitations'
         }

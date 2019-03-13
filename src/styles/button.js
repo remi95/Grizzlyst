@@ -8,7 +8,13 @@ const button = {
         left: 0,
         bottom: 0,
         backgroundColor: colors.BLUE
-    }
+    },
+    success: {
+        backgroundColor: colors.GREEN
+    },
+    danger: {
+        backgroundColor: colors.DANGER
+    },
 };
 
 export default button;
