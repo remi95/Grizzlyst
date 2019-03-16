@@ -1,5 +1,5 @@
 import React from "react";
-import {Container, Content, List, ListItem, Text} from "native-base";
+import {Container, Content, Text} from "native-base";
 import AppHeader from "../components/AppHeader";
 
 export default class Params extends React.Component {
@@ -7,7 +7,9 @@ export default class Params extends React.Component {
         return (
             <Container>
                 <AppHeader title="Paramètres" navigation={ this.props.navigation } />
-                <Text>Route des paramètres</Text>
+                <Content>
+                    <Text>Route des paramètres</Text>
+                </Content>
             </Container>
         );
     }

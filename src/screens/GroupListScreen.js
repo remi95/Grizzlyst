@@ -4,7 +4,7 @@ import NavigationService from "../services/NavigationService";
 import {setCurrentGroup} from "../actions/groupAction";
 import GrizzlystClient from "../clients/GrizzlystClient";
 import {setAlert} from "../actions/alertAction";
-import { Container, Content, List, ListItem, Text, Left, Right, Icon, Button, Footer, Header, Body, Title } from 'native-base';
+import { Container, Content, List, ListItem, Text, Left, Right, Icon, Button, Footer } from 'native-base';
 import Styles from "../styles/styles";
 import AppHeader from "../components/AppHeader";
 
