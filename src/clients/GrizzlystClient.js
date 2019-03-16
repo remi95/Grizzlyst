@@ -2,9 +2,8 @@ import parameters from "../../parameters";
 import store from "../store";
 
 class GrizzlystServerClient {
-
     constructor() {
-        this.token = store.getState().userReducer.token || null;
+        this.token = store.getState().userReducer.token;
     }
 
     post = async (endpoint, data, token = store.getState().userReducer.token) => {

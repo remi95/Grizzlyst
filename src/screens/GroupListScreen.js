@@ -4,8 +4,9 @@ import NavigationService from "../services/NavigationService";
 import {setCurrentGroup} from "../actions/groupAction";
 import GrizzlystClient from "../clients/GrizzlystClient";
 import {setAlert} from "../actions/alertAction";
-import { Container, Content, List, ListItem, Text, Left, Right, Icon, Button, Footer } from 'native-base';
+import { Container, Content, List, ListItem, Text, Left, Right, Icon, Button, Footer, Header, Body, Title } from 'native-base';
 import Styles from "../styles/styles";
+import AppHeader from "../components/AppHeader";
 
 class GroupListScreen extends Component {
     constructor(props) {
@@ -36,6 +37,7 @@ class GroupListScreen extends Component {
     render() {
         return (
             <Container style={ Styles.position.size.fullWidth }>
+                <AppHeader title="Mes groupes" navigation={ this.props.navigation } />
                 <Content>
                     <List>
                         {
@@ -53,7 +55,7 @@ class GroupListScreen extends Component {
                     </List>
                 </Content>
                 <Footer>
-                    <Button full style={ Styles.button.fixedBottom } onPress={ () => NavigationService.navigate('CreateGroup') }>
+                    <Button full style={ Styles.button.fixedBottom } onPress={ () => NavigationService.navigate('GroupCreate') }>
                         <Text>Ajouter un groupe</Text>
                     </Button>
                 </Footer>
