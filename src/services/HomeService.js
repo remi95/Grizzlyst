@@ -1,9 +1,6 @@
 import store from "../store";
 import LoginScreen from "../screens/LoginScreen";
 import {getGroups, getInvitations} from "../actions/userAction";
-import InvitationScreen from "../screens/user/InvitationScreen";
-import GroupListScreen from "../screens/GroupListScreen";
-import ListListScreen from "../screens/ListListScreen";
 import {getAllDepartments} from "../actions/listAction";
 import NavigationService from "./NavigationService";
 
@@ -23,7 +20,7 @@ class Home {
         }
 
         if (store.getState().userReducer.groups.length === 1) {
-            return ListListScreen;
+            NavigationService.navigate('ListList');
         }
 
         NavigationService.navigate('GroupList');

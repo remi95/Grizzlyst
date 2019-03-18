@@ -1,5 +1,6 @@
 import React, {Component} from 'react';
 import {StyleSheet, View, Image, AsyncStorage} from 'react-native';
+import { Spinner } from 'native-base';
 import HomeService from "../services/HomeService";
 import images from "../constants/images";
 import {loginByTokenAction} from "../actions/userAction";
@@ -8,25 +9,14 @@ import colors from "../constants/colors";
 
 class HomeScreen extends Component {
 
-    constructor(props) {
-        super(props);
-
-        this.state = {
-            homeComponent: null,
-        }
-    }
-
     render() {
         return (
             <View style={styles.container}>
-                {
-                    this.state.homeComponent === null
-                    ?   <Image
-                            source={images.logo}
-                            style={styles.logo}
-                        />
-                    :   <this.state.homeComponent />
-                }
+                    <Image
+                        source={images.logo}
+                        style={styles.logo}
+                    />
+                    <Spinner color='#7D7D7D' />
             </View>
         )
     }
@@ -36,12 +26,7 @@ class HomeScreen extends Component {
             await this.props.loginByToken();
         }
 
-        // await AsyncStorage.removeItem('token');
-        // await this.props.loginByToken();
-
-        const homeComponent = await HomeService.getHomeScreen();
-
-        // this.setState({ homeComponent })
+        await HomeService.getHomeScreen();
     }
 }
 
