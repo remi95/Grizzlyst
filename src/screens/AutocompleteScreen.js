@@ -59,14 +59,13 @@ class AutocompleteScreen extends Component {
            }
        );
 
-       // if (response.status) {
-       //     await this.props.addProductToDepartment(response.data.product, this.state.departmentId)
-       // }
+       let params = {};
 
-       NavigationService.navigate('EditList', {
-           product: response.data.product,
-           departmentId: this.state.departmentId,
-       });
+       if (response.status) {
+           this.props.addProductToDepartment(response.data.product, this.state.departmentId)
+       }
+
+       NavigationService.navigate('EditList');
     };
 
     updateProduct = (product) => {

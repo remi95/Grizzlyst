@@ -2,22 +2,28 @@ import React, {Component} from 'react';
 import {View} from 'react-native';
 import {connect} from "react-redux";
 import Accordion from "../element/Accordion";
-import NavigationService from "../../services/NavigationService";
 import {addProductToDepartment} from "../../actions/listAction";
 
 class ProductList extends Component {
 
+    constructor(props) {
+        super(props);
+
+        this.state = {
+            needUpdate: false,
+        }
+    }
+
     render() {
-        console.log('render')
+        let {departments} = this.props.listReducer;
         return (
             <View>
                 {
-                    Object.keys(this.props.departments).map(departmentName =>
+                    Object.keys(departments).map(departmentName =>
                         <Accordion
                             key={departmentName}
                             department={departmentName}
-                            products={this.props.departments[departmentName]}
-                            navigation={this.props.navigation}
+                            products={departments[departmentName]}
                         />
                     )
                 }
@@ -26,22 +32,30 @@ class ProductList extends Component {
     }
 
     componentDidMount() {
-        // if (!this.props.listReducer.list.id) {
-        //     return NavigationService.navigate('ListList');
-        //     // TODO: throw alert
-        // }
-        console.log('MOUNT ')
+        if (!this.props.listReducer.list.id) {
+            return NavigationService.navigate('ListList');
+            // TODO: throw alert
+        }
     }
 
-    componentDidUpdate(prevProps, prevState, snapshot) {
-        console.log(' UPDATED ')
-    }
+    willFocusSubscription = this.props.navigation.addListener(
+        'willFocus',
+        payload => {
+            this.setState(prevState => ({needUpdate: !prevState.needUpdate}))
+        }
+    );
 }
 
 const mapStateToProps = ({ listReducer }) => {
     return {
-        departments: listReducer.departments,
+        listReducer,
     }
 };
 
-export default connect(mapStateToProps, null)(ProductList);
+const mapDispatchToProps = (dispatch) => {
+    return {
+        addProductToDepartment: (product, departmentId) => dispatch(addProductToDepartment(product, departmentId)),
+    }
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(ProductList);

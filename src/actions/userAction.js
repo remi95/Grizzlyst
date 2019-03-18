@@ -53,9 +53,10 @@ export const loginByTokenAction = () => {
 
 export const auth = (data, isRegistration = false) => {
     return async (dispatch) => {
-        const endpoint = isRegistration ? 'auth/signup' : 'auth/login';
 
-        let response = await GrizzlystClient.post(endpoint, data);
+        let response = isRegistration ?
+            await GrizzlystClient.signup(data) :
+            await GrizzlystClient.login(data);
 
         if (response.status) {
             await AsyncStorage.setItem('token', response.data.token);

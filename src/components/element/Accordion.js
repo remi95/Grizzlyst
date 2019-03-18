@@ -64,7 +64,7 @@ class Accordion extends Component {
 
                 {
                     products.length > 0 && products[0].id !== null ?
-                        //<Collapsible collapsed={this.state.isCollapsed}>
+                        // <Collapsible collapsed={this.state.isCollapsed}>
                         //    <FlatList
                         //        data={products}
                         //        keyExtractor={this._keyExtractor}
@@ -78,8 +78,9 @@ class Accordion extends Component {
                         //        }
                         //        onPressItem={this.gotoDetailProduct}
                         //    />
-                        //</Collapsible>
+                        // </Collapsible>
 
+                        // TODO: Utiliser un component Native Base
                         products.map(product =>
                             <Text>{product.name}</Text>
                         )

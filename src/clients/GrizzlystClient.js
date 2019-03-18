@@ -8,6 +8,28 @@ class GrizzlystServerClient {
     }
 
     /**
+     * @param data
+     *   - email
+     *   - password
+     */
+    login = async (data) => {
+        return await this.post('auth/login', data, false);
+    };
+
+    /**
+     * @param data
+     *   - email
+     *   - firstname
+     *   - lastname
+     *   - pseudo
+     *   - password
+     *   - confirmPassword
+     */
+    signup = async (data) => {
+        return await this.post('auth/signup', data, false);
+    };
+
+    /**
      * Add product to a list, on a specific department.
      *
      * @param listId
@@ -27,13 +49,13 @@ class GrizzlystServerClient {
         return await this.get('departments');
     };
 
-    post = async (endpoint, data, token = store.getState().userReducer.token) => {
+    post = async (endpoint, data, needAuthorization = true) => {
         try {
             const response = await fetch(`${parameters.SERVER_URL}${endpoint}`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
-                    'Authorization': `Bearer ${token}`,
+                    'Authorization': needAuthorization ? `Bearer ${this.getToken()}` : '',
                 },
                 body: JSON.stringify(data),
             });
@@ -73,7 +95,16 @@ class GrizzlystServerClient {
         catch (error) {
             return { status: false, data: error }
         }
-    }
+    };
+
+    /**
+     * Get the token currently store on Redux.
+     *
+     * @return string
+     */
+    getToken = () => {
+        return store.getState().userReducer.token;
+    };
 }
 
 const GrizzlystClient = new GrizzlystServerClient();

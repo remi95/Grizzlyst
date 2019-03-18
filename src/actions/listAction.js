@@ -31,6 +31,12 @@ export const setDepartmentsReference = (data) => {
     }
 };
 
+/**
+ * @param product
+ *   The product get from API.
+ * @param departmentId
+ *   The departmentId to add product.
+ */
 export const addProductToDepartment = (product, departmentId) => {
     return async (dispatch, getState) => {
         let departments = Object.assign({}, getState().listReducer.departments);
