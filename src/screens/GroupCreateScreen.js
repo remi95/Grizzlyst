@@ -1,26 +1,20 @@
 import React, {Component} from 'react';
-import { StyleSheet, View, Button } from 'react-native';
 import {Title} from "../components/Title";
 import GroupCreateForm from "../forms/GroupCreateForm";
+import AppHeader from "../components/AppHeader";
+import { Container } from "native-base";
 
 class GroupCreateScreen extends Component {
 
     render() {
         return (
-            <View style={styles.screen}>
+            <Container>
+                <AppHeader title="Créer un group" navigation={ this.props.navigation } />
                 <Title text={'Créer un groupe'} />
                 <GroupCreateForm />
-            </View>
+            </Container>
         )
     }
 }
-
-const styles = StyleSheet.create({
-   screen: {
-       flex: 1,
-       justifyContent: 'center',
-       alignItems: 'center',
-   },
-});
 
 export default GroupCreateScreen;

@@ -1,63 +1,25 @@
 import React from 'react'
 import { createDrawerNavigator, createAppContainer, createStackNavigator } from 'react-navigation';
-import CreateGroupScreen from '../screens/GroupCreateScreen';
-import InvitationScreen from '../screens/user/InvitationScreen';
-import BurgerMenu from '../components/BurgerMenu';
-import LoginScreen from '../screens/LoginScreen';
 import GroupListScreen from "../screens/GroupListScreen";
 import ListListScreen from "../screens/ListListScreen";
 import ListCreateScreen from "../screens/ListCreateScreen";
 import ListEditScreen from "../screens/ListEditScreen";
 import AutocompleteScreen from "../screens/AutocompleteScreen";
 import HomeScreen from "../screens/HomeScreen";
-
-const ListGroupNavigator = createStackNavigator({
-    GroupList: {
-        screen: GroupListScreen,
-        navigationOptions: ({ navigation }) => ({
-            title: 'Mes groupes',
-            headerRight : <BurgerMenu navigation={navigation} />,
-        })
-    }
-});
-
-const InvitationsNavigator = createStackNavigator({
-    Invitations: {
-        screen: InvitationScreen,
-        navigationOptions: ({ navigation }) => ({
-            title: 'Mes invitations',
-            headerRight : <BurgerMenu navigation={navigation} />,
-        }),
-    }
-});
+import Sidebar from "../components/Sidebar";
+import Params from "../screens/Params";
+import InvitationScreen from "../screens/user/InvitationScreen";
+import GroupCreateScreen from "../screens/GroupCreateScreen";
+import LoginScreen from "../screens/LoginScreen";
 
 const DrawerNavigator = createDrawerNavigator({
-    GroupList: {
-        screen: ListGroupNavigator,
-        navigationOptions: {
-            drawerLabel: 'Mes groupes'
-        }
-    },
-    Invitations: {
-        screen: InvitationsNavigator,
-        navigationOptions: {
-            drawerLabel: 'Mes invitations'
-        }
-    },
-    Lists: {
-        screen: () => null,
-        navigationOptions: {
-            drawerLabel: 'Mes listes'
-        }
-    },
-    Params: {
-        screen: () => null,
-        navigationOptions: {
-            drawerLabel: 'Paramètres'
-        }
-    }
+    GroupList: { screen: GroupListScreen },
+    GroupCreate: { screen: GroupCreateScreen },
+    Invitations: { screen: InvitationScreen },
+    Params: { screen: Params },
 }, {
     drawerPosition: 'right',
+    contentComponent: props => <Sidebar {...props} />,
 });
 
 const AppNavigator = createStackNavigator({
@@ -71,7 +33,7 @@ const AppNavigator = createStackNavigator({
         screen: LoginScreen
     },
     CreateGroup: {
-        screen: CreateGroupScreen,
+        screen: GroupCreateScreen,
         navigationOptions: {
             title: 'Créer un groupe',
         },

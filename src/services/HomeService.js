@@ -5,6 +5,7 @@ import InvitationScreen from "../screens/user/InvitationScreen";
 import GroupListScreen from "../screens/GroupListScreen";
 import ListListScreen from "../screens/ListListScreen";
 import {getAllDepartments} from "../actions/listAction";
+import NavigationService from "./NavigationService";
 
 class Home {
 
@@ -18,14 +19,14 @@ class Home {
         await store.dispatch(getAllDepartments());
 
         if (store.getState().userReducer.groups.length === 0 && store.getState().userReducer.invitations.length > 0) {
-            return InvitationScreen;
+            NavigationService.navigate('Invitations');
         }
 
         if (store.getState().userReducer.groups.length === 1) {
             return ListListScreen;
         }
 
-        return GroupListScreen;
+        NavigationService.navigate('GroupList');
     }
 }
 
