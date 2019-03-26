@@ -7,21 +7,19 @@ class AppHeader extends Component {
 
     render() {
         return (
-            <Container>
-                <Header style={styles.header}>
-                    <Left />
-                    <Body>
-                    <Title>{ this.props.title }</Title>
-                    </Body>
-                    <Right>
-                        <Button
-                            transparent
-                            onPress={ () => this.props.navigation.toggleDrawer() }>
-                            <Icon name="menu" />
-                        </Button>
-                    </Right>
-                </Header>
-            </Container>
+            <Header style={styles.header}>
+                <Left />
+                <Body>
+                <Title>{ this.props.title }</Title>
+                </Body>
+                <Right>
+                    <Button
+                        transparent
+                        onPress={ () => this.props.navigation.toggleDrawer() }>
+                        <Icon name="menu" />
+                    </Button>
+                </Right>
+            </Header>
         )
     }
 }

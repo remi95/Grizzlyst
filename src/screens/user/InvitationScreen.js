@@ -2,6 +2,7 @@ import React, {Component} from 'react';
 import { Container, Content, Card, CardItem, Body, Text, Button } from 'native-base';
 import GrizzlystClient from '../../clients/GrizzlystClient';
 import Styles from "../../styles/styles";
+import AppHeader from "../../components/AppHeader";
 
 class InvitationScreen extends Component {
     constructor(props) {
@@ -36,6 +37,7 @@ class InvitationScreen extends Component {
     render() {
         return (
             <Container>
+                <AppHeader title="Mes invitations" navigation={ this.props.navigation } />
                 <Content>
                     {
                         this.state.invitations.map((invit, i) =>
