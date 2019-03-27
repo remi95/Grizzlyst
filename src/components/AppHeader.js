@@ -1,6 +1,6 @@
 import React, {Component} from 'react';
 import {StyleSheet} from 'react-native';
-import {Body, Button, Container, Header, Icon, Left, Right, Title} from "native-base";
+import {Body, Button, Header, Icon, Left, Right, Title} from "native-base";
 import colors from "../constants/colors";
 
 class AppHeader extends Component {

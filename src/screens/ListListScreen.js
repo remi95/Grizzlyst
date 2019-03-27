@@ -4,6 +4,8 @@ import NavigationService from "../services/NavigationService";
 import GrizzlystClient from "../clients/GrizzlystClient";
 import {connect} from "react-redux";
 import {setCurrentList, setProductsByDepartment} from "../actions/listAction";
+import AppHeader from "../components/AppHeader";
+import {Container, Content} from "native-base";
 
 class ListListScreen extends Component {
 
@@ -40,20 +42,23 @@ class ListListScreen extends Component {
 
     render() {
         return (
-            <ScrollView>
-                <Button
-                    title={'Créer une liste'}
-                    onPress={() => NavigationService.navigate('CreateList')} />
-                {
-                    this.state.lists.length > 0
-                        ?   <FlatList
-                            data={this.state.lists}
-                            keyExtractor={this._keyExtractor}
-                            renderItem={this._renderItem}
-                        />
-                        :   null
-                }
-            </ScrollView>
+            <Container>
+                <AppHeader title="Listes du groupe" navigation={ this.props.navigation } />
+                <Content>
+                    <Button
+                        title={'Créer une liste'}
+                        onPress={() => NavigationService.navigate('CreateList')} />
+                    {
+                        this.state.lists.length > 0
+                            ?   <FlatList
+                                data={this.state.lists}
+                                keyExtractor={this._keyExtractor}
+                                renderItem={this._renderItem}
+                            />
+                            :   null
+                    }
+                </Content>
+            </Container>
         )
     }
 

@@ -11,12 +11,15 @@ import Params from "../screens/Params";
 import InvitationScreen from "../screens/user/InvitationScreen";
 import GroupCreateScreen from "../screens/GroupCreateScreen";
 import LoginScreen from "../screens/LoginScreen";
+import ListInProgressScreen from "../screens/ListInProgressScreen";
 
 const DrawerNavigator = createDrawerNavigator({
     GroupList: { screen: GroupListScreen },
     GroupCreate: { screen: GroupCreateScreen },
     Invitations: { screen: InvitationScreen },
     Params: { screen: Params },
+    ListInProgress: { screen: ListInProgressScreen },
+    ListList: { screen: ListListScreen },
 }, {
     drawerPosition: 'right',
     contentComponent: props => <Sidebar {...props} />,
@@ -36,12 +39,6 @@ const AppNavigator = createStackNavigator({
         screen: GroupCreateScreen,
         navigationOptions: {
             title: 'Créer un groupe',
-        },
-    },
-    ListList: {
-        screen: ListListScreen,
-        navigationOptions: {
-            title: 'Mes listes',
         },
     },
     CreateList: {
