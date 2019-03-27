@@ -1,4 +1,5 @@
 import React, {Component} from 'react';
+import {StyleSheet} from 'react-native';
 import ProductList from "../components/list/ProductList";
 import NavigationService from "../services/NavigationService";
 import {Root, Content, Footer, Text, Button, ActionSheet} from "native-base";
@@ -90,6 +91,12 @@ class ListEditScreen extends Component {
         )
     }
 }
+
+const styles = StyleSheet.create({
+    container: {
+        alignSelf: 'stretch',
+    },
+});
 
 const mapStateToProps = ({ listReducer, userReducer }) => {
     return {
