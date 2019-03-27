@@ -1,11 +1,11 @@
 import React, {Component} from 'react';
-import {StyleSheet, ScrollView, FlatList, Button, Text} from 'react-native';
 import NavigationService from "../services/NavigationService";
 import GrizzlystClient from "../clients/GrizzlystClient";
 import {connect} from "react-redux";
 import {setCurrentList, setProductsByDepartment} from "../actions/listAction";
 import AppHeader from "../components/AppHeader";
-import {Container, Content} from "native-base";
+import {Container, Content, Footer, Button, Text, List, ListItem, Left, Right, Icon} from "native-base";
+import Styles from "../styles/styles";
 
 class ListListScreen extends Component {
 
@@ -16,14 +16,6 @@ class ListListScreen extends Component {
             lists: [],
         }
     }
-
-    _keyExtractor = (item) => item.id.toString();
-
-    _renderItem = ({item}) => (
-        <Text onPress={() => this._onPressItem(item.id)}>
-            {item.name}
-        </Text>
-    );
 
     _onPressItem = async (id) => {
         const list = await GrizzlystClient.get('lists/' + id);
@@ -45,24 +37,37 @@ class ListListScreen extends Component {
             <Container>
                 <AppHeader title="Listes du groupe" navigation={ this.props.navigation } />
                 <Content>
-                    <Button
-                        title={'Créer une liste'}
-                        onPress={() => NavigationService.navigate('CreateList')} />
                     {
                         this.state.lists.length > 0
-                            ?   <FlatList
-                                data={this.state.lists}
-                                keyExtractor={this._keyExtractor}
-                                renderItem={this._renderItem}
-                            />
-                            :   null
+                            ?
+                            <List>
+                                {
+                                    this.state.lists.map((list, i) =>
+                                        <ListItem key={i} onPress={ () => this._onPressItem(list.id) }>
+                                            <Left>
+                                                <Text>{list.name}</Text>
+                                            </Left>
+                                            <Right>
+                                                <Icon name="arrow-forward" />
+                                            </Right>
+                                        </ListItem>
+                                    )}
+                            </List>
+                            :
+                            null
                     }
                 </Content>
+                <Footer>
+                    <Button full style={ Styles.button.fixedBottom } onPress={ () => NavigationService.navigate('CreateList') }>
+                        <Text>Créer une liste</Text>
+                    </Button>
+                </Footer>
             </Container>
         )
     }
 
     async componentDidMount() {
+        console.log("didMount listlist")
         if (!this.props.groupReducer.group.id) {
             return NavigationService.navigate('GroupList');
             // TODO: throw alert
