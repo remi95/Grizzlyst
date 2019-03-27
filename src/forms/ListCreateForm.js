@@ -82,6 +82,7 @@ class ListCreateForm extends Component {
         });
 
         if (list.status) {
+            console.log(list)
             let productsByDepartments = await GrizzlystClient.get('lists/' + list.data.list.id + '/departments/products');
             await this.props.setCurrentList(list.data.list);
             await this.props.setProductsByDepartment(productsByDepartments.data);
@@ -111,17 +112,17 @@ class ListCreateForm extends Component {
                     this.state.isDateUndefined
                         ?   null
                         :   <DatePicker
-                                style={Styles.form.inputText}
-                                date={this.state.limitDate}
-                                mode={'date'}
-                                format={'DD MMM YYYY'}
-                                minDate={now}
-                                customStyles={{
-                                    dateIcon: styles.dateIcon,
-                                    dateInput: styles.dateInput
-                                }}
-                                onDateChange={(date) => this.setState({limitDate: date})}
-                            />
+                            style={Styles.form.inputText}
+                            date={this.state.limitDate}
+                            mode={'date'}
+                            format={'DD MMM YYYY'}
+                            minDate={now}
+                            customStyles={{
+                                dateIcon: styles.dateIcon,
+                                dateInput: styles.dateInput
+                            }}
+                            onDateChange={(date) => this.setState({limitDate: date})}
+                        />
                 }
                 <View style={styles.checkboxContainer}>
                     <CheckBox
@@ -144,21 +145,21 @@ class ListCreateForm extends Component {
                 {
                     this.state.products.length > 0
                         ?   <View>
-                                <Text style={Styles.form.label}>
-                                    Voulez-vous ajouter ces produits qui n'ont pu être achetés précédemment ?
-                                </Text>
+                            <Text style={Styles.form.label}>
+                                Voulez-vous ajouter ces produits qui n'ont pu être achetés précédemment ?
+                            </Text>
 
-                                {
-                                    this.state.products.map(product =>
-                                        <ProductRow
-                                            key={product.id}
-                                            product={product}
-                                            favorite={false}
-                                            selectable={true}
-                                        />
-                                    )
-                                }
-                            </View>
+                            {
+                                this.state.products.map(product =>
+                                    <ProductRow
+                                        key={product.id}
+                                        product={product}
+                                        favorite={false}
+                                        selectable={true}
+                                    />
+                                )
+                            }
+                        </View>
                         :   null
                 }
 

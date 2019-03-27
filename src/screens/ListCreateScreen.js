@@ -1,16 +1,18 @@
 import React, {Component} from 'react';
-import {ScrollView} from 'react-native';
-import {Title} from "../components/Title";
 import ListCreateForm from "../forms/ListCreateForm";
+import { Container, Content } from 'native-base';
+import AppHeader from "../components/AppHeader";
 
 class ListCreateScreen extends Component {
 
     render() {
         return (
-            <ScrollView>
-                <Title text={'Créer une liste'} />
-                <ListCreateForm />
-            </ScrollView>
+            <Container>
+                <AppHeader title="Créer une liste" navigation={ this.props.navigation } />
+                <Content>
+                    <ListCreateForm />
+                </Content>
+            </Container>
         )
     }
 }
