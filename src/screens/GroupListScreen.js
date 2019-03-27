@@ -25,8 +25,8 @@ class GroupListScreen extends Component {
         const response = await GrizzlystClient.get('groups/' + id);
 
         if (response.status) {
-            this.props.setCurrentGroup(response.data);
-            NavigationService.navigate('ListList');
+            await this.props.setCurrentGroup(response.data);
+            NavigationService.navigate('ListList', { groupId: id });
         }
         else {
             console.log(response)

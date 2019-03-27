@@ -8,6 +8,7 @@ import GrizzlystClient from "../clients/GrizzlystClient";
 import NavigationService from "../services/NavigationService";
 import {connect} from "react-redux";
 import {addProductToDepartment} from "../actions/listAction";
+import AppHeader from "../components/AppHeader";
 
 /**
  * Display the autocomplete search screen.
@@ -89,6 +90,7 @@ class AutocompleteScreen extends Component {
     render() {
         return (
             <View style={Styles.position.size.fullWidth}>
+                <AppHeader title="Rechercher un produit" navigation={ this.props.navigation } />
                 <Autocomplete
                     data={this.state.data}
                     onChangeText={this.updateQuery.bind(this)}

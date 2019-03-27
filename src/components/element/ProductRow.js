@@ -55,7 +55,8 @@ class ProductRow extends Component {
     };
 
     render() {
-        let {product} = this.props;
+        let {listProduct} = this.props;
+        let {product} = this.props.listProduct;
 
         return (
             <View style={styles.row}>
@@ -70,7 +71,7 @@ class ProductRow extends Component {
                             {product.name.length > 25 ? '...' : ''}
                         </Text>
                         <Text style={styles.brand}>{product.brand}</Text>
-                        <Text style={styles.description}>{product.weight} { typeof product.weight === "number" ? 'g' : ''}</Text>
+                        <Text style={styles.description}>{product.quantity} { typeof product.quantity === "number" ? 'g' : ''}</Text>
                     </View>
                 </View>
 
@@ -113,9 +114,9 @@ class ProductRow extends Component {
                     }
 
                     {
-                        product.quantity
+                        listProduct.quantity
                             ?   <Picker
-                                selectedValue={product.quantity.toString()}
+                                selectedValue={listProduct.quantity.toString()}
                                 onValueChange={(value) => this.changeQuantity(value)}
                                 style={styles.quantity}
                             >

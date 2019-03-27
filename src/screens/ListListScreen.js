@@ -17,6 +17,14 @@ class ListListScreen extends Component {
         }
     }
 
+    _keyExtractor = (item) => item.id.toString();
+
+    _renderItem = ({item}) => (
+        <Text onPress={() => this._onPressItem(item.id)}>
+            {item.name}
+        </Text>
+    );
+
     _onPressItem = async (id) => {
         const list = await GrizzlystClient.get('lists/' + id);
         const products = await GrizzlystClient.get('lists/' + id + '/departments/products');
@@ -67,18 +75,28 @@ class ListListScreen extends Component {
     }
 
     async componentDidMount() {
-        if (!this.props.groupReducer.group.id) {
+        if (!this.props.navigation.state.params.groupId) {
             return NavigationService.navigate('GroupList');
             // TODO: throw alert
         }
 
-        const groupId = this.props.groupReducer.group.id;
+        this.loadLists(this.props.navigation.state.params.groupId);
+    }
 
+    loadLists = async (groupId) => {
         const lists = await GrizzlystClient.get(`groups/${groupId}/lists`);
+
         if (lists.status) {
             this.setState({ lists: lists.data.lists })
         }
-    }
+    };
+
+    willFocusSubscription = this.props.navigation.addListener(
+        'willFocus',
+        async payload => {
+            await this.loadLists(this.props.navigation.state.params.groupId)
+        }
+    );
 }
 
 const mapStateToProps = ({ groupReducer }) => {

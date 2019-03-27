@@ -42,16 +42,13 @@ export const addProductToDepartment = (product, departmentId) => {
         let departments = Object.assign({}, getState().listReducer.departments);
 
         for (let i in departments) {
-            if (departments[i][0].departmentId === departmentId) {
+            if (departments[i].id === departmentId) {
 
                 // Because weight is called 'quantity' on database.
-                product.weight = product.quantity;
-                delete product.quantity;
+                // product.weight = product.quantity;
+                // delete product.quantity;
 
-                product.departmentId = departmentId;
-                product.departmentName = DepartmentsHelper.getDepartmentName(departmentId);
-
-                departments[i].push(product);
+                departments[i].products.push(product);
             }
         }
 

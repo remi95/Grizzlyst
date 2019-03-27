@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import {StyleSheet, Text, TouchableHighlight, TouchableOpacity, View} from 'react-native';
+import {StyleSheet, Text, TouchableOpacity, View} from 'react-native';
 import { Content, ListItem, Accordion, List } from "native-base";
 import {connect} from "react-redux";
 // import Accordion from "../element/Accordion";
@@ -77,12 +77,12 @@ class ProductList extends Component {
         return (
             <List>
                 {
-                    data.content.length <= 1 && data.content[0].id === null ?
+                    data.content.length < 1 ?
                         null :
                         data.content.map(product =>
                             <ListItem key={product.id}>
                                 <ProductRow
-                                   product={product}
+                                   listProduct={product}
                                    favorite={true}
                                    delete={true}
                                    quantity={true}
@@ -117,8 +117,8 @@ class ProductList extends Component {
         let {departments} = this.props.listReducer;
         let data = [];
 
-        Object.keys(departments).map(departmentName => {
-            data.push({ title: departmentName, content: departments[departmentName] })
+        Object.keys(departments).map(key => {
+            data.push({ title: departments[key].name, content: departments[key].products })
         });
 
         this.setState({ data });
@@ -134,7 +134,7 @@ class ProductList extends Component {
     willFocusSubscription = this.props.navigation.addListener(
         'willFocus',
         payload => {
-            this.setState(prevState => ({needUpdate: !prevState.needUpdate}))
+            // this.setState(prevState => ({needUpdate: !prevState.needUpdate}))
         }
     );
 }

@@ -5,6 +5,7 @@ import colors from "../constants/colors";
 import Styles from "../styles/styles";
 import NutrientGradeHelper from "../helpers/NutrientGrade";
 import {NutrientGrade} from "../components/element/NutrientGrade";
+import AppHeader from "../components/AppHeader";
 
 class ProductScreen extends Component {
 
@@ -24,6 +25,7 @@ class ProductScreen extends Component {
 
         return (
             <ScrollView style={[Styles.position.size.fullWidth, styles.container]}>
+                <AppHeader title={ product.name || 'Fiche produit' } navigation={ this.props.navigation } />
             {
                 product !== null
                 ?
