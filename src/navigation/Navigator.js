@@ -38,7 +38,7 @@ const AppNavigator = createStackNavigator({
     },
     Auth: {
         screen: LoginScreen
-    }
+    },
 }, {
     headerMode: 'none',
     initialRouteName: 'Home'

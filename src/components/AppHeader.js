@@ -2,7 +2,7 @@ import React, {Component} from 'react';
 import {StyleSheet} from 'react-native';
 import {Body, Button, Header, Icon, Left, Right, Title} from "native-base";
 import colors from "../constants/colors";
-import { Constants } from 'expo'
+import { Constants } from 'expo';
 
 class AppHeader extends Component {
 
