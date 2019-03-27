@@ -2,7 +2,6 @@ import React, {Component} from 'react';
 import {StyleSheet, Text, TouchableOpacity, View} from 'react-native';
 import { Content, ListItem, Accordion, List } from "native-base";
 import {connect} from "react-redux";
-// import Accordion from "../element/Accordion";
 import {addProductToDepartment} from "../../actions/listAction";
 import ProductRow from "../element/ProductRow";
 import Styles from "../../styles/styles";
@@ -22,12 +21,6 @@ class ProductList extends Component {
             data: [],
         }
     }
-
-    startAutocomplete = () => {
-        NavigationService.navigate('Autocomplete', {
-            departmentId: this.props.products[0].departmentId,
-        })
-    };
 
     // render() {
     //     let {departments} = this.props.listReducer;
@@ -52,13 +45,13 @@ class ProductList extends Component {
                 <View style={styles.department}>
                     <View style={Styles.position.flex.rowBetween}>
                         <Text style={styles.name}>{ data.title }</Text>
-                        <Text style={styles.quantity}>  - { data.content.length }</Text>
+                        <Text style={styles.quantity}>  - { data.content.products.length }</Text>
                     </View>
 
                     {
                         // this.state.isIconLoaded
                              <TouchableOpacity onPress={() => NavigationService.navigate('Autocomplete', {
-                                 departmentId: data.content[0].departmentId,
+                                 departmentId: data.content.id,
                              })} >
                                 <FontAwesome
                                     name={'plus'}
@@ -77,9 +70,9 @@ class ProductList extends Component {
         return (
             <List>
                 {
-                    data.content.length < 1 ?
+                    data.content.products.length < 1 ?
                         null :
-                        data.content.map(product =>
+                        data.content.products.map(product =>
                             <ListItem key={product.id}>
                                 <ProductRow
                                    listProduct={product}
@@ -96,7 +89,7 @@ class ProductList extends Component {
 
     render() {
         return (
-            <Content padder style={{ backgroundColor: "white" }}>
+            <Content style={{ backgroundColor: "white" }}>
                 <Accordion
                     dataArray={this.state.data}
                     animation={true}
@@ -108,20 +101,28 @@ class ProductList extends Component {
         )
     }
 
+    setDepartments = () => {
+        let {departments} = this.props.listReducer;
+        let data = [];
+
+        Object.keys(departments).map(key => {
+            data.push({ title: departments[key].name, content: departments[key] })
+        });
+
+        this.setState({ data });
+    };
+
+    componentDidUpdate(prevProps, prevState, snapshot) {
+        console.log('UPDATE')
+    }
+
     async componentDidMount () {
         if (!this.props.listReducer.list.id) {
             return NavigationService.navigate('ListList');
             // TODO: throw alert
         }
 
-        let {departments} = this.props.listReducer;
-        let data = [];
-
-        Object.keys(departments).map(key => {
-            data.push({ title: departments[key].name, content: departments[key].products })
-        });
-
-        this.setState({ data });
+        this.setDepartments();
 
         try {
             await Font.loadAsync({FontAwesome: require('@expo/vector-icons/fonts/FontAwesome.ttf')});
@@ -134,6 +135,7 @@ class ProductList extends Component {
     willFocusSubscription = this.props.navigation.addListener(
         'willFocus',
         payload => {
+            this.setDepartments();
             // this.setState(prevState => ({needUpdate: !prevState.needUpdate}))
         }
     );
