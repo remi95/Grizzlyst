@@ -8,13 +8,19 @@ class AppHeader extends Component {
     render() {
         return (
             <Header style={styles.header}>
-                <Left>
-                    <Button
-                        transparent
-                        onPress={ () => this.props.navigation.goBack() }>
-                        <Icon name="arrow-back" />
-                    </Button>
-                </Left>
+                {
+                    this.props.title !== 'Mes groupes'
+                        ?
+                        <Left>
+                            <Button
+                                transparent
+                                onPress={ () => this.props.navigation.goBack() }>
+                                <Icon name="arrow-back" />
+                            </Button>
+                        </Left>
+                        :
+                        <Left />
+                }
                 <Body>
                 <Title>{ this.props.title }</Title>
                 </Body>
