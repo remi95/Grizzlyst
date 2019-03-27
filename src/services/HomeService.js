@@ -1,5 +1,4 @@
 import store from "../store";
-import LoginScreen from "../screens/LoginScreen";
 import {getGroups, getInvitations} from "../actions/userAction";
 import {getAllDepartments} from "../actions/listAction";
 import NavigationService from "./NavigationService";
@@ -8,7 +7,7 @@ class Home {
 
     getHomeScreen = async () => {
         if (store.getState().userReducer.token === null) {
-            return LoginScreen;
+            return NavigationService.navigate('Auth');
         }
 
         await store.dispatch(getInvitations());
@@ -16,14 +15,14 @@ class Home {
         await store.dispatch(getAllDepartments());
 
         if (store.getState().userReducer.groups.length === 0 && store.getState().userReducer.invitations.length > 0) {
-            NavigationService.navigate('Invitations');
+            return NavigationService.navigate('Invitations');
         }
 
         if (store.getState().userReducer.groups.length === 1) {
-            NavigationService.navigate('ListList');
+            return NavigationService.navigate('ListList');
         }
 
-        NavigationService.navigate('GroupList');
+        return NavigationService.navigate('GroupList');
     }
 }
 
