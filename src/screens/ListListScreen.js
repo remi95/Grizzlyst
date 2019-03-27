@@ -4,6 +4,7 @@ import NavigationService from "../services/NavigationService";
 import GrizzlystClient from "../clients/GrizzlystClient";
 import {connect} from "react-redux";
 import {setCurrentList, setProductsByDepartment} from "../actions/listAction";
+import AppHeader from "../components/AppHeader";
 
 class ListListScreen extends Component {
 
@@ -41,6 +42,7 @@ class ListListScreen extends Component {
     render() {
         return (
             <ScrollView>
+                <AppHeader title={'Mes listes'} navigation={ this.props.navigation } />
                 <Button
                     title={'Créer une liste'}
                     onPress={() => NavigationService.navigate('CreateList')} />
@@ -58,18 +60,28 @@ class ListListScreen extends Component {
     }
 
     async componentDidMount() {
-        if (!this.props.groupReducer.group.id) {
+        if (!this.props.navigation.state.params.groupId) {
             return NavigationService.navigate('GroupList');
             // TODO: throw alert
         }
 
-        const groupId = this.props.groupReducer.group.id;
+        this.loadLists(this.props.navigation.state.params.groupId);
+    }
 
+    loadLists = async (groupId) => {
         const lists = await GrizzlystClient.get(`groups/${groupId}/lists`);
+
         if (lists.status) {
             this.setState({ lists: lists.data.lists })
         }
-    }
+    };
+
+    willFocusSubscription = this.props.navigation.addListener(
+        'willFocus',
+        async payload => {
+            await this.loadLists(this.props.navigation.state.params.groupId)
+        }
+    );
 }
 
 const mapStateToProps = ({ groupReducer }) => {

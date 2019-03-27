@@ -17,6 +17,7 @@ const DrawerNavigator = createDrawerNavigator({
     GroupCreate: { screen: GroupCreateScreen },
     Invitations: { screen: InvitationScreen },
     Params: { screen: Params },
+    ListList: { screen: ListListScreen },
 }, {
     drawerPosition: 'right',
     contentComponent: props => <Sidebar {...props} />,
@@ -36,12 +37,6 @@ const AppNavigator = createStackNavigator({
         screen: GroupCreateScreen,
         navigationOptions: {
             title: 'Créer un groupe',
-        },
-    },
-    ListList: {
-        screen: ListListScreen,
-        navigationOptions: {
-            title: 'Mes listes',
         },
     },
     CreateList: {

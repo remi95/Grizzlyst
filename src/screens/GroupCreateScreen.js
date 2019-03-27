@@ -9,7 +9,7 @@ class GroupCreateScreen extends Component {
     render() {
         return (
             <Container>
-                <AppHeader title="Créer un group" navigation={ this.props.navigation } />
+                <AppHeader title="Créer un groupe" navigation={ this.props.navigation } />
                 <Title text={'Créer un groupe'} />
                 <GroupCreateForm />
             </Container>

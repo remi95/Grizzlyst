@@ -4,7 +4,6 @@ import store from './src/store/index';
 import Navigator from "./src/navigation/Navigator";
 import NavigationService from "./src/services/NavigationService";
 import {Font} from "expo";
-import {FontAwesome} from "@expo/vector-icons";
 
 export default class App extends React.Component {
     constructor() {

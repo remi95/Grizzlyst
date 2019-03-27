@@ -10,7 +10,7 @@ import colors from "../constants/colors";
 import GrizzlystClient from "../clients/GrizzlystClient";
 import {connect} from "react-redux";
 import NavigationService from "../services/NavigationService";
-import {setCurrentFullList, setCurrentList, setProductsByDepartment} from "../actions/listAction";
+import {setCurrentList, setProductsByDepartment} from "../actions/listAction";
 
 class ListCreateForm extends Component {
 

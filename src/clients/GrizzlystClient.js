@@ -42,6 +42,16 @@ class GrizzlystServerClient {
     };
 
     /**
+     * Add a department to a list.
+     *
+     * @param listId
+     * @param departmentId
+     */
+    addDepartment = async (listId, departmentId) => {
+        return await this.post(`lists/${listId}/department`, {departmentId})
+    };
+
+    /**
      * Return all departments objects.
      */
     getAllDepartments = async () => {

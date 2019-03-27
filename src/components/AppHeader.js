@@ -2,6 +2,7 @@ import React, {Component} from 'react';
 import {StyleSheet} from 'react-native';
 import {Body, Button, Container, Header, Icon, Left, Right, Title} from "native-base";
 import colors from "../constants/colors";
+import { Constants } from 'expo'
 
 class AppHeader extends Component {
 
@@ -10,7 +11,7 @@ class AppHeader extends Component {
             <Header style={styles.header}>
                 <Left />
                 <Body>
-                <Title>{ this.props.title }</Title>
+                    <Title>{ this.props.title }</Title>
                 </Body>
                 <Right>
                     <Button
@@ -26,7 +27,7 @@ class AppHeader extends Component {
 
 const styles = StyleSheet.create({
     header: {
-        marginTop: 50,
+        marginTop: Constants.statusBarHeight,
         backgroundColor: colors.BLUE
     }
 });
