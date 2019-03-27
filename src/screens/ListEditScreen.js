@@ -1,8 +1,10 @@
 import React, {Component} from 'react';
-import {Button, ScrollView, StyleSheet} from 'react-native';
 import ProductList from "../components/list/ProductList";
 import NavigationService from "../services/NavigationService";
-import {Content} from "native-base";
+import {Container, Content, Footer, Text, Button} from "native-base";
+import AppHeader from "../components/AppHeader";
+import Styles from "../styles/styles";
+import {connect} from "react-redux";
 
 class ListEditScreen extends Component {
 
@@ -16,18 +18,23 @@ class ListEditScreen extends Component {
 
     render() {
         return (
-            <ScrollView style={styles.container}>
-                <ProductList navigation={this.props.navigation} />
-                <Button title="Commencer les courses" onPress={() => NavigationService.navigate('ListInProgress')} />
-            </ScrollView>
+            <Container>
+                <AppHeader title="List " navigation={ this.props.navigation } />
+                <Content>
+                    <ProductList navigation={this.props.navigation} />
+                </Content>
+                <Footer>
+                    <Button full style={ Styles.button.fixedBottom } onPress={ () => NavigationService.navigate('ListInProgress') }>
+                        <Text>Commencer les courses</Text>
+                    </Button>
+                </Footer>
+            </Container>
         )
     }
 }
 
-const styles = StyleSheet.create({
-    container: {
-        alignSelf: 'stretch',
-    },
-});
+const mapStateToProps = ({ userReducer }) => {
+    return { userReducer }
+};
 
-export default ListEditScreen;
+export default connect(mapStateToProps, null)(ListEditScreen);

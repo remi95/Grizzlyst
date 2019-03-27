@@ -67,7 +67,6 @@ class ListListScreen extends Component {
     }
 
     async componentDidMount() {
-        console.log("didMount listlist")
         if (!this.props.groupReducer.group.id) {
             return NavigationService.navigate('GroupList');
             // TODO: throw alert
