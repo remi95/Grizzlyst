@@ -8,7 +8,13 @@ class AppHeader extends Component {
     render() {
         return (
             <Header style={styles.header}>
-                <Left />
+                <Left>
+                    <Button
+                        transparent
+                        onPress={ () => this.props.navigation.goBack() }>
+                        <Icon name="arrow-back" />
+                    </Button>
+                </Left>
                 <Body>
                 <Title>{ this.props.title }</Title>
                 </Body>
