@@ -88,10 +88,14 @@ class ProductList extends Component {
     }
 
     render() {
+        let {departments} = this.props.listReducer;
+
         return (
             <Content style={{ backgroundColor: "white" }}>
                 <Accordion
-                    dataArray={this.state.data}
+                    dataArray={Object.keys(departments).map(key => (
+                        { title: departments[key].name, content: departments[key] }
+                    ))}
                     animation={true}
                     expanded={true}
                     renderHeader={this._renderHeader}
@@ -101,28 +105,22 @@ class ProductList extends Component {
         )
     }
 
-    setDepartments = () => {
-        let {departments} = this.props.listReducer;
-        let data = [];
-
-        Object.keys(departments).map(key => {
-            data.push({ title: departments[key].name, content: departments[key] })
-        });
-
-        this.setState({ data });
-    };
-
-    componentDidUpdate(prevProps, prevState, snapshot) {
-        console.log('UPDATE')
-    }
+    // setDepartments = () => {
+    //     let {departments} = this.props.listReducer;
+    //     let data = [];
+    //
+    //     Object.keys(departments).map(key => {
+    //         data.push({ title: departments[key].name, content: departments[key] })
+    //     });
+    //
+    //     this.setState({ data });
+    // };
 
     async componentDidMount () {
         if (!this.props.listReducer.list.id) {
             return NavigationService.navigate('ListList');
             // TODO: throw alert
         }
-
-        this.setDepartments();
 
         try {
             await Font.loadAsync({FontAwesome: require('@expo/vector-icons/fonts/FontAwesome.ttf')});
@@ -135,8 +133,7 @@ class ProductList extends Component {
     willFocusSubscription = this.props.navigation.addListener(
         'willFocus',
         payload => {
-            this.setDepartments();
-            // this.setState(prevState => ({needUpdate: !prevState.needUpdate}))
+            this.setState(prevState => ({needUpdate: !prevState.needUpdate}))
         }
     );
 }

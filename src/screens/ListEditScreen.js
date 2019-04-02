@@ -14,19 +14,24 @@ class ListEditScreen extends Component {
         super(props);
 
         this.state = {
-            departments: [],
+            addableDepartments: [],
+            needUpdate: false,
         }
     }
 
-    addDepartment = async (departmentName) => {
+    addDepartment = async (department) => {
         let {list, departments} = this.props.listReducer;
-        let departmentId = DepartmentsHelper.getDepartmentId(departmentName);
-        let response = await GrizzlystClient.addDepartment(list.id, departmentId);
+        // let departmentId = DepartmentsHelper.getDepartmentId(departmentName);
+        let response = await GrizzlystClient.addDepartment(list.id, department.id);
 
         if (response.status) {
+            // Because data from store has this products array.
+            response.data.products = [];
             departments[Object.keys(departments).length] = response.data;
+
             this.props.setProductsByDepartment(departments);
             this.filterDepartments();
+            this.setState({needUpdate: !this.state.needUpdate})
         }
     };
 
@@ -49,11 +54,11 @@ class ListEditScreen extends Component {
 
         for (let department of departmentsReference) {
             if (!existingDepartmentIds.includes(department.id)) {
-                addableDepartments.push(department.name)
+                addableDepartments.push(department)
             }
         }
 
-        this.setState({departments: addableDepartments})
+        this.setState({addableDepartments})
     };
 
     render() {
@@ -63,17 +68,17 @@ class ListEditScreen extends Component {
             <Root style={styles.container}>
                 <Content>
                     <AppHeader title="Edition de liste" navigation={ this.props.navigation } />
-                    <ProductList departments={this.props.listReducer.departments} navigation={this.props.navigation} />
+                    <ProductList update={this.state.needUpdate} departments={departments} navigation={this.props.navigation} />
                     <Button
                         title={'Ajouter un rayon'}
                         onPress={() =>
                             ActionSheet.show(
                                 {
-                                    options: this.state.departments,
+                                    options: this.state.addableDepartments.map(({name}) => name),
                                     title: "Ajouter un rayon"
                                 },
                                 buttonIndex => {
-                                    this.addDepartment(this.state.departments[buttonIndex])
+                                    this.addDepartment(this.state.addableDepartments[buttonIndex])
                                 }
                             )}
                     >
@@ -85,7 +90,7 @@ class ListEditScreen extends Component {
     }
 
     componentDidMount() {
-        this.filterDepartments()
+        this.filterDepartments();
     }
 }
 
