@@ -58,6 +58,18 @@ class GrizzlystServerClient {
         return await this.get('departments');
     };
 
+    /**
+     * Update a product
+     *
+     * @param listId
+     * @param productId
+     * @param data
+     *   Object, can be quantity, state, departmentId
+     */
+    updateProduct = async (listId, productId, data) => {
+        return await this.put(`lists/${listId}/product/${productId}`, data);
+    };
+
     post = async (endpoint, data, needAuthorization = true) => {
         try {
             const response = await fetch(`${parameters.SERVER_URL}${endpoint}`, {
@@ -125,6 +137,31 @@ class GrizzlystServerClient {
             return { status: true, data: json }
         }
         catch (error) {
+            return { status: false, data: error }
+        }
+    };
+
+    put = async (endpoint, data, token = store.getState().userReducer.token) => {
+        try {
+            const response = await fetch(`${parameters.SERVER_URL}${endpoint}`, {
+                method: 'PUT',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${this.getToken()}`,
+                },
+                body: JSON.stringify(data),
+            });
+
+            const json = await response.json();
+
+            if (!response.ok) {
+                throw json;
+            }
+
+            return { status: true, data: json }
+        }
+        catch (error) {
+            console.log(error)
             return { status: false, data: error }
         }
     };
