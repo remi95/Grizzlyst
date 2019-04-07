@@ -56,11 +56,9 @@ class AutocompleteScreen extends Component {
            this.state.departmentId,
            {
                _id: item.code,
-               quantity: item.quantity,
+               quantity: 1,
            }
        );
-
-       let params = {};
 
        if (response.status) {
            this.props.addProductToDepartment(response.data.product, this.state.departmentId)
@@ -82,8 +80,8 @@ class AutocompleteScreen extends Component {
 
     _renderItem = (item) => (
         <View style={styles.row}>
-            <ProductRow product={item} style={styles.product} updateProduct={this.updateProduct} />
-            <Button title={'+'} onPress={() => this.addProduct(item)} style={styles.button} />
+            <ProductRow listProduct={item} style={styles.product} updateProduct={this.updateProduct} />
+            <Button title={'+'} onPress={() => this.addProduct(item.product)} style={styles.button} />
         </View>
     );
 

@@ -1,6 +1,5 @@
 import React, {Component} from 'react';
-import {View, Text, FlatList, StyleSheet, TouchableHighlight, TouchableOpacity} from 'react-native';
-import Collapsible from 'react-native-collapsible';
+import {View, Text, FlatList, StyleSheet, TouchableHighlight, TouchableOpacity, Animated} from 'react-native';
 import ProductRow from "./ProductRow";
 import colors from "../../constants/colors";
 import {FontAwesome} from "@expo/vector-icons";
@@ -16,8 +15,9 @@ class Accordion extends Component {
         super(props);
 
         this.state = {
-            isCollapsed: false,
+            isCollapsed: true,
             isIconLoaded: false,
+            accordionHeight: new Animated.Value(0),
         }
     }
 
@@ -28,6 +28,15 @@ class Accordion extends Component {
     };
 
     switchCollapse = () => {
+
+
+        Animated.timing(
+            this.state.accordionHeight, {
+                toValue: this.state.isCollapsed ? this.props.department.products.length * 75 : 0,
+                duration: 250,
+            }
+        ).start();
+
         this.setState(prevState => ({ isCollapsed: !prevState.isCollapsed }))
     };
 
@@ -38,14 +47,15 @@ class Accordion extends Component {
     };
 
     render () {
-        let {products, department} = this.props;
+        let {department} = this.props;
+
         return (
             <View>
                 <TouchableHighlight onPress={this.switchCollapse}>
                     <View style={styles.department}>
                         <View style={Styles.position.flex.rowBetween}>
-                            <Text style={styles.name}>{ department }</Text>
-                            <Text style={styles.quantity}>  - { products.length }</Text>
+                            <Text style={styles.name}>{ department.name }</Text>
+                            <Text style={styles.quantity}> - { department.products.length }</Text>
                         </View>
 
                         {
@@ -63,27 +73,30 @@ class Accordion extends Component {
                 </TouchableHighlight>
 
                 {
-                    products.length > 0 && products[0].id !== null ?
-                        // <Collapsible collapsed={this.state.isCollapsed}>
-                        //    <FlatList
-                        //        data={products}
-                        //        keyExtractor={this._keyExtractor}
-                        //        renderItem={ ({item}) =>
-                        //            <ProductRow
-                        //                product={item}
-                        //                favorite={true}
-                        //                delete={true}
-                        //                quantity={true}
-                        //            />
-                        //        }
-                        //        onPressItem={this.gotoDetailProduct}
-                        //    />
-                        // </Collapsible>
+                    department.products.length > 0 && department.products[0].id !== null ?
+                        //<Collapsible collapsed={this.state.isCollapsed}>
+                        <Animated.View style={{height: this.state.accordionHeight}}>
+                            <FlatList
+                                data={department.products}
+                                keyExtractor={this._keyExtractor}
+                                renderItem={ ({item}) =>
+                                    <ProductRow
+                                        listProduct={item}
+                                        favorite={true}
+                                        delete={true}
+                                        quantity={true}
+                                    />
+                                }
+                                onPressItem={this.gotoDetailProduct}
+                            />
+                        </Animated.View>
 
-                        // TODO: Utiliser un component Native Base
-                        products.map(product =>
-                            <Text>{product.name}</Text>
-                        )
+                        //</Collapsible>
+                        //
+                        // // TODO: Utiliser un component Native Base
+                        // products.map(product =>
+                        //     <Text>{product.name}</Text>
+                        // )
                         : null
                 }
             </View>

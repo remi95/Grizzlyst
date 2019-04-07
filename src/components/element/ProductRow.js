@@ -1,9 +1,11 @@
 import React, {Component} from 'react';
-import {View, Image, Text, StyleSheet, CheckBox, Picker} from 'react-native';
+import {View, Image, Text, StyleSheet, CheckBox} from 'react-native';
+import { Picker } from "native-base";
 import {NutrientGradePreview} from "./NutrientGradePreview";
 import colors from "../../constants/colors";
 import {Font} from "expo";
 import {FontAwesome} from "@expo/vector-icons";
+import GrizzlystClient from "../../clients/GrizzlystClient";
 
 /**
  * Display a product as row. Ideal for product preview in list.
@@ -33,6 +35,8 @@ class ProductRow extends Component {
 
         this.state = {
             isIconLoaded: false,
+            quantity: 1,
+            isFavorite: false,
         }
     }
 
@@ -44,13 +48,12 @@ class ProductRow extends Component {
         // TODO: Enable or Disable product
     };
 
-    changeQuantity = (quantity) => {
-        // TODO: Send request to node server with product.id
-        if (this.props.updateProduct) {
-            let {product} = this.props;
-            product.quantity = quantity;
+    changeQuantity = async (quantity) => {
+        let {listProduct} = this.props;
+        let response = await GrizzlystClient.updateProduct(listProduct.listId, listProduct.productId, {quantity});
 
-            this.props.updateProduct(product);
+        if (response.status) {
+            this.setState({quantity});
         }
     };
 
@@ -114,18 +117,19 @@ class ProductRow extends Component {
                     }
 
                     {
-                        listProduct.quantity
+                        this.state.quantity
                             ?   <Picker
-                                selectedValue={listProduct.quantity.toString()}
-                                onValueChange={(value) => this.changeQuantity(value)}
-                                style={styles.quantity}
-                            >
-                                {
-                                    Array(11).fill(1).map((value, index) =>
-                                        <Picker.Item key={index} label={index.toString()} value={index.toString()} />
-                                    )
-                                }
-                            </Picker>
+                                    mode={'dropdown'}
+                                    selectedValue={this.state.quantity.toString()}
+                                    onValueChange={(value) => this.changeQuantity(value)}
+                                    style={styles.quantity}
+                                >
+                                    {
+                                        Array(11).fill(1).map((value, index) =>
+                                            <Picker.Item key={index} label={index.toString()} value={index.toString()} />
+                                        )
+                                    }
+                                </Picker>
                             :   null
                     }
 
@@ -137,7 +141,7 @@ class ProductRow extends Component {
     async componentDidMount() {
         try {
             await Font.loadAsync({FontAwesome: require('@expo/vector-icons/fonts/FontAwesome.ttf')});
-            this.setState({isIconLoaded: true})
+            this.setState({isIconLoaded: true, quantity: this.props.listProduct.quantity})
         } catch {
             console.log('ERROR WHILE LOADING ICONS...')
         }
@@ -151,6 +155,7 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         justifyContent: 'space-between',
         alignItems: 'center',
+        height: 75,
         borderBottomWidth: 1,
         borderColor: colors.LIGHT_GRAY,
         padding: 10,
