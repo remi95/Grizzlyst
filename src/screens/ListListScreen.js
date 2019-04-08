@@ -4,7 +4,7 @@ import GrizzlystClient from "../clients/GrizzlystClient";
 import {connect} from "react-redux";
 import {setCurrentList, setProductsByDepartment} from "../actions/listAction";
 import AppHeader from "../components/AppHeader";
-import {Container, Content, Footer, Button, Text, List, ListItem, Left, Right, Icon} from "native-base";
+import {Container, Content, Footer, Button, Text, List, ListItem, Left, Right, Icon, Body, Badge, CheckBox} from "native-base";
 import Styles from "../styles/styles";
 
 class ListListScreen extends Component {
@@ -40,6 +40,28 @@ class ListListScreen extends Component {
         }
     };
 
+    displayBadge(list) {
+        let stateColor = null;
+
+        switch (list.state) {
+            case 0:
+                stateColor = "yellow";
+                break;
+            case 1:
+                stateColor = "green";
+                break;
+            case 2:
+                stateColor = "danger";
+                break;
+            default:
+                stateColor = "yellow";
+                break;
+        }
+        return (
+            <CheckBox checked={true} color={ stateColor } />
+        )
+    }
+
     render() {
         return (
             <Container>
@@ -52,9 +74,8 @@ class ListListScreen extends Component {
                                 {
                                     this.state.lists.map((list, i) =>
                                         <ListItem key={i} onPress={ () => this._onPressItem(list.id) }>
-                                            <Left>
-                                                <Text>{list.name}</Text>
-                                            </Left>
+                                            {this.displayBadge(list)}
+                                            <Body><Text>{list.name}</Text></Body>
                                             <Right>
                                                 <Icon name="arrow-forward" />
                                             </Right>
