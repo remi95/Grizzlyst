@@ -22,6 +22,10 @@ class ListInProgressScreen extends Component {
     }
 
     async componentDidMount() {
+        await this.refreshList();
+    }
+
+    async refreshList() {
         const list = await this.getInProgressList();
         const shop = await this.getCompletedList();
 
@@ -30,7 +34,13 @@ class ListInProgressScreen extends Component {
             shop,
             isLoading: false
         });
+    }
 
+    async addToCard(id) {
+        await GrizzlystClient.put(`lists/${this.state.listId}/product/${id}`, {
+            state: 1
+        });
+        await this.refreshList();
     }
 
     async getInProgressList() {
@@ -50,7 +60,7 @@ class ListInProgressScreen extends Component {
         return data;
     }
 
-    renderEl(el) {
+    renderEl(el, isInProgress=false) {
         return (
             <ListItem>
                 <Left>
@@ -59,6 +69,17 @@ class ListInProgressScreen extends Component {
                     <Text>{el.product.name}</Text>
                     </Body>
                 </Left>
+               {
+                   isInProgress
+                   ?
+                       <Right>
+                           <Button small onPress={ () => this.addToCard(el.product.id) }>
+                               <Icon type="FontAwesome" name="shopping-cart" />
+                           </Button>
+                       </Right>
+                   :
+                       null
+               }
             </ListItem>
         )
     }
@@ -84,7 +105,7 @@ class ListInProgressScreen extends Component {
                 <AppHeader title={this.props.listReducer.list.name} navigation={ this.props.navigation } />
                 <Content padder>
                     <List>
-                        { this.state.list.map( list => this.renderList(list) ) }
+                        { this.state.list.map( list => this.renderList(list, true) ) }
                     </List>
 
                     <List>

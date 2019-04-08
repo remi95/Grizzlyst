@@ -83,6 +83,31 @@ class GrizzlystServerClient {
         }
     };
 
+    put = async (endpoint, data, needAuthorization = true) => {
+        try {
+            const response = await fetch(`${parameters.SERVER_URL}${endpoint}`, {
+                method: 'PUT',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': needAuthorization ? `Bearer ${this.getToken()}` : '',
+                },
+                body: JSON.stringify(data),
+            });
+
+            const json = await response.json();
+
+            if (!response.ok) {
+                throw json;
+            }
+
+            return { status: true, data: json }
+        }
+        catch (error) {
+            console.log(error)
+            return { status: false, data: error }
+        }
+    };
+
     get = async (endpoint, token = store.getState().userReducer.token) => {
         try {
             const response = await fetch(`${parameters.SERVER_URL}${endpoint}`, {
