@@ -8,6 +8,7 @@ import Styles from "../styles/styles";
 import {connect} from "react-redux";
 import GrizzlystClient from "../clients/GrizzlystClient";
 import {setProductsByDepartment} from "../actions/listAction";
+import DepartmentsHelper from "../helpers/Departments";
 
 class ListEditScreen extends Component {
 
@@ -15,19 +16,24 @@ class ListEditScreen extends Component {
         super(props);
 
         this.state = {
+            addableDepartments: [],
             needUpdate: false,
-            departments: [],
         }
     }
 
     addDepartment = async (department) => {
         let {list, departments} = this.props.listReducer;
+        // let departmentId = DepartmentsHelper.getDepartmentId(departmentName);
         let response = await GrizzlystClient.addDepartment(list.id, department.id);
 
         if (response.status) {
+            // Because data from store has this products array.
+            response.data.products = [];
             departments[Object.keys(departments).length] = response.data;
+
             this.props.setProductsByDepartment(departments);
             this.filterDepartments();
+            this.setState({needUpdate: !this.state.needUpdate})
         }
     };
 
@@ -50,32 +56,31 @@ class ListEditScreen extends Component {
 
         for (let department of departmentsReference) {
             if (!existingDepartmentIds.includes(department.id)) {
-                addableDepartments.push(department.name)
+                addableDepartments.push(department)
             }
         }
 
-        this.setState({departments: addableDepartments})
+        this.setState({addableDepartments})
     };
 
     render() {
-        let {departmentsReference} = this.props.listReducer;
-        let {departments} = this.state;
+        let {departments} = this.props.listReducer;
 
         return (
             <Root style={styles.container}>
                 <Content>
                     <AppHeader title="Edition de liste" navigation={ this.props.navigation } />
-                    <ProductList navigation={this.props.navigation} />
+                    <ProductList update={this.state.needUpdate} departments={departments} navigation={this.props.navigation} />
                     <Button
                         title={'Ajouter un rayon'}
                         onPress={() =>
                             ActionSheet.show(
                                 {
-                                    options: departments,
+                                    options: this.state.addableDepartments.map(({name}) => name),
                                     title: "Ajouter un rayon"
                                 },
                                 buttonIndex => {
-                                    this.addDepartment(departmentsReference[buttonIndex])
+                                    this.addDepartment(this.state.addableDepartments[buttonIndex])
                                 }
                             )}
                     >

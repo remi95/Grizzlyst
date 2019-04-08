@@ -1,7 +1,5 @@
 import {REFERENCES, SET_FULL_LIST, SET_LIST, SET_PRODUCTS_BY_DEPARTMENT} from "../constants/actions";
 import GrizzlystClient from "../clients/GrizzlystClient";
-import DepartmentsHelper from "../helpers/Departments";
-import NavigationService from "../services/NavigationService";
 
 export const setCurrentFullList = (data) => {
     return {
@@ -43,12 +41,13 @@ export const addProductToDepartment = (product, departmentId) => {
 
         for (let i in departments) {
             if (departments[i].id === departmentId) {
-
-                // Because weight is called 'quantity' on database.
-                // product.weight = product.quantity;
-                // delete product.quantity;
-
-                departments[i].products.push(product);
+                // Set as object because of data structure returned by API (product by department query)
+                let newProduct = {
+                    quantity: 1,
+                    departmentId: departmentId,
+                    product,
+                };
+                departments[i].products.push(newProduct);
             }
         }
 

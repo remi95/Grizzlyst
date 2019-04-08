@@ -6,20 +6,42 @@ import store from "../store";
 class Departments {
 
     getDepartmentName = (departmentId) => {
-        let department = this.getDepartment(departmentId);
+        let department = this.getDepartmentById(departmentId);
 
         return department !== '' ? department.name : '';
     };
 
-    getDepartment = (departmentId) => {
-        const departments = store.getState().listReducer.departmentsReference;
+    getDepartmentId = (departmentName) => {
+        let department = this.getDepartmentByName(departmentName);
 
-        if (departments.length <=0) {
+        return department !== '' ? department.id : '';
+    };
+
+    getDepartmentById = (departmentId) => {
+        let departments = store.getState().listReducer.departmentsReference;
+
+        if (departments.length <= 0) {
             return '';
         }
 
         for (let department of departments) {
             if (department.id === departmentId) {
+                return department;
+            }
+        }
+
+        return '';
+    };
+
+    getDepartmentByName = (departmentName) => {
+        let departments = store.getState().listReducer.departmentsReference;
+
+        if (departments.length <= 0) {
+            return '';
+        }
+
+        for (let department of departments) {
+            if (department.name === departmentName) {
                 return department;
             }
         }
