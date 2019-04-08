@@ -24,6 +24,13 @@ class ListInProgressScreen extends Component {
         await this.refreshList();
     }
 
+    async isCompleted() {
+        await GrizzlystClient.put(`lists/${this.state.listId}`, {
+            state: 2
+        });
+        return NavigationService.navigate('ListList');
+    }
+
     async refreshList() {
         const list = await this.getInProgressList();
         const shop = await this.getCompletedList();
@@ -119,7 +126,7 @@ class ListInProgressScreen extends Component {
                     </List>
                 </Content>
                 <Footer>
-                    <Button full style={ Styles.button.fixedBottom } onPress={ () => null }>
+                    <Button full style={ Styles.button.fixedBottom } onPress={ () => this.isCompleted() }>
                         <Text>Terminer</Text>
                     </Button>
                 </Footer>
