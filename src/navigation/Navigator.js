@@ -23,7 +23,7 @@ const DrawerNavigator = createDrawerNavigator({
     CreateGroup: { screen: GroupCreateScreen },
     CreateList: { screen: ListCreateScreen },
     EditList: { screen: ListEditScreen },
-    Autocomplete: { screen: AutocompleteScreen }
+    Autocomplete: { screen: AutocompleteScreen },
 }, {
     drawerPosition: 'right',
     contentComponent: props => <Sidebar {...props} />,

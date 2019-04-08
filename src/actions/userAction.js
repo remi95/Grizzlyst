@@ -1,12 +1,19 @@
-import {LOGIN, GROUPS, INVITATIONS} from "../constants/actions";
+import {LOGIN, GROUPS, INVITATIONS, LOGOUT} from "../constants/actions";
 import GrizzlystClient from "../clients/GrizzlystClient";
 import {AsyncStorage} from 'react-native';
 import NavigationService from "../services/NavigationService";
+import HomeService from "../services/HomeService";
 
 const login = (data) => {
     return {
         type: LOGIN,
         data
+    }
+};
+
+export const logout = () => {
+    return {
+        type: LOGOUT
     }
 };
 
@@ -61,10 +68,7 @@ export const auth = (data, isRegistration = false) => {
         if (response.status) {
             await AsyncStorage.setItem('token', response.data.token);
             await dispatch(login(response.data));
-            NavigationService.navigate('GroupList');
-
-            // response.data.token = null;
-            // dispatch(login(response.data));
+            await HomeService.getHomeScreen();
         } else {
             //TODO: throw alert.
             console.log(response)

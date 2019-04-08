@@ -1,5 +1,6 @@
 import React from 'react';
-import {View, TextInput, Button, Text} from 'react-native';
+import {View, TextInput, Text, KeyboardAvoidingView} from 'react-native';
+import { Button } from "native-base";
 import Styles from "../styles/styles";
 
 /**
@@ -85,7 +86,7 @@ export const SimpleForm = (props) => {
     };
 
     return (
-        <View>
+        <KeyboardAvoidingView behavior="padding" enabled>
             {
                 props.form.inputs.map((input, i) =>
                     <View key={input.placeholder + i}>
@@ -111,7 +112,8 @@ export const SimpleForm = (props) => {
                 title={props.form.button.label}
                 color={props.form.button.color}
                 onPress={() => action()}
+                block
             />
-        </View>
+        </KeyboardAvoidingView>
     )
 };

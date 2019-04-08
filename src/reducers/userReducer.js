@@ -1,6 +1,6 @@
-import {LOGIN, GROUPS, INVITATIONS} from "../constants/actions";
+import {LOGIN, GROUPS, INVITATIONS, LOGOUT} from "../constants/actions";
 
-let initialState = {
+const initialState = {
     user: {},
     token: null,
     groups: [],
@@ -25,6 +25,8 @@ const userReducer = (state = initialState, action) => {
                 ...state,
                 invitations: action.data,
             };
+        case LOGOUT:
+            return initialState;
         default:
             return state;
     }

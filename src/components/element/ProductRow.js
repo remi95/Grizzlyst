@@ -1,11 +1,13 @@
 import React, {Component} from 'react';
 import {View, Image, Text, StyleSheet, CheckBox} from 'react-native';
-import { Picker } from "native-base";
+import { Picker, Button, Icon } from "native-base";
 import {NutrientGradePreview} from "./NutrientGradePreview";
 import colors from "../../constants/colors";
 import {Font} from "expo";
 import {FontAwesome} from "@expo/vector-icons";
 import GrizzlystClient from "../../clients/GrizzlystClient";
+import {connect} from "react-redux";
+import {removeProductFromDepartment} from "../../actions/listAction";
 
 /**
  * Display a product as row. Ideal for product preview in list.
@@ -48,13 +50,18 @@ class ProductRow extends Component {
         // TODO: Enable or Disable product
     };
 
-    changeQuantity = async (quantity) => {
+
+
+    removeProduct = async () => {
         let {listProduct} = this.props;
-        let response = await GrizzlystClient.updateProduct(listProduct.listId, listProduct.productId, {quantity});
+        let response = await GrizzlystClient.removeProduct(listProduct.listId, listProduct.departmentId, listProduct.product.id);
 
         if (response.status) {
-            this.setState({quantity});
+            this.props.removeProduct(listProduct.product.id);
+            return this.props.removeProductFromDepartment(listProduct.product.id, listProduct.departmentId);
         }
+
+        //TODO: throw alert
     };
 
     render() {
@@ -98,12 +105,15 @@ class ProductRow extends Component {
 
                     {
                         this.props.delete && this.state.isIconLoaded
-                            ?   <FontAwesome
-                                name={'trash-o'}
-                                size={24}
-                                color={colors.RED}
-                                onClick={this.switchFavorite}
-                            />
+                            // ?   <FontAwesome
+                            //     name={'trash-o'}
+                            //     size={24}
+                            //     color={colors.RED}
+                            //     onClick={this.removeProduct}
+                            // />
+                            ? <Button iconLeft danger bordered onPress={this.removeProduct}>
+                                <Icon name={'trash'} />
+                            </Button>
                             :   null
                     }
 
@@ -202,4 +212,11 @@ const styles = StyleSheet.create({
     },
 });
 
-export default ProductRow;
+
+const mapDispatchToProps = (dispatch) => {
+    return {
+        removeProductFromDepartment: (productId, departmentId) => dispatch(removeProductFromDepartment(productId, departmentId)),
+    }
+};
+
+export default connect(null, mapDispatchToProps)(ProductRow);

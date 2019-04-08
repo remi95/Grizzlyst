@@ -68,7 +68,7 @@ class ListListScreen extends Component {
                 <AppHeader title="Listes du groupe" navigation={ this.props.navigation } />
                 <Content>
                     {
-                        this.state.lists.length > 0
+                        this.state.lists && this.state.lists.length > 0
                             ?
                             <List>
                                 {
@@ -83,7 +83,7 @@ class ListListScreen extends Component {
                                     )}
                             </List>
                             :
-                            null
+                            <Text>Vous n'avez pas encore de liste.</Text>
                     }
                 </Content>
                 <Footer>

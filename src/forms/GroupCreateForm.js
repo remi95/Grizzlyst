@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import {View, TextInput, StyleSheet, Button} from 'react-native';
+import {Button, TextInput, StyleSheet, KeyboardAvoidingView} from 'react-native';
 import Styles from "../styles/styles";
 import colors from "../constants/colors";
 import FormValidator from "../helpers/FormValidator";
@@ -7,7 +7,6 @@ import TextList from "../components/list/TextList";
 import GrizzlystClient from "../clients/GrizzlystClient";
 import NavigationService from "../services/NavigationService";
 import {connect} from "react-redux";
-import {auth} from "../actions/userAction";
 import {setCurrentGroup} from "../actions/groupAction";
 
 class GroupCreateForm extends Component {
@@ -43,7 +42,7 @@ class GroupCreateForm extends Component {
 
     render() {
         return (
-            <View style={styles.form.container}>
+            <KeyboardAvoidingView behavior="padding" enabled style={styles.form.container}>
                 <TextInput
                     style={Styles.form.inputText}
                     placeholder={'Nom du groupe'}
@@ -63,7 +62,7 @@ class GroupCreateForm extends Component {
                     color={colors.BLUE}
                     onPress={this.create}
                 />
-            </View>
+            </KeyboardAvoidingView>
         )
     }
 }

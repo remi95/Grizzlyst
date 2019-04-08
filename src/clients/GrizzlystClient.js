@@ -59,7 +59,7 @@ class GrizzlystServerClient {
     };
 
     /**
-     * Update a product
+     * Update a product.
      *
      * @param listId
      * @param productId
@@ -68,6 +68,17 @@ class GrizzlystServerClient {
      */
     updateProduct = async (listId, productId, data) => {
         return await this.put(`lists/${listId}/product/${productId}`, data);
+    };
+
+    /**
+     * Remove a product of a list.
+     *
+     * @param listId
+     * @param departmentId
+     * @param productId
+     */
+    removeProduct = async (listId, departmentId, productId) => {
+        return await this.delete(`lists/${listId}/department/${departmentId}/product/${productId}`);
     };
 
     post = async (endpoint, data, needAuthorization = true) => {

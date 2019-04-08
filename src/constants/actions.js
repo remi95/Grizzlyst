@@ -1,5 +1,6 @@
 // USER ACTIONS
 export const LOGIN = 'LOGIN';
+export const LOGOUT = 'LOGOUT';
 export const GROUPS = 'GROUPS';
 export const INVITATIONS = 'INVITATIONS';
 
