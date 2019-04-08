@@ -1,12 +1,11 @@
 import React, {Component} from 'react';
-import {Container, Content, Text, CheckBox, List, ListItem, Left, Right, Body, Footer, Button, Root, Icon} from "native-base";
+import {Container, Content, Text, List, ListItem, Left, Right, Body, Footer, Button, Icon} from "native-base";
 import AppHeader from "../components/AppHeader";
 import {connect} from "react-redux";
 import {StyleSheet, View} from "react-native";
 import Styles from "../styles/styles";
 import NavigationService from "../services/NavigationService";
 import GrizzlystClient from "../clients/GrizzlystClient";
-import LoadingScreen from "./LoadingScreen";
 import Loader from "../components/Loader";
 
 class ListInProgressScreen extends Component {
@@ -91,7 +90,7 @@ class ListInProgressScreen extends Component {
                     <Text style={ styles.department }>{ list.name }</Text>
                 </ListItem>
 
-                { list.products.map( el => this.renderEl(el)) }
+                { list.products.map( el => this.renderEl(el, true)) }
             </View>
         )
     }
@@ -105,14 +104,15 @@ class ListInProgressScreen extends Component {
                 <AppHeader title={this.props.listReducer.list.name} navigation={ this.props.navigation } />
                 <Content padder>
                     <List>
-                        { this.state.list.map( list => this.renderList(list, true) ) }
+                        { this.state.list.map( list => this.renderList(list) ) }
                     </List>
 
                     <List>
-                        <ListItem itemDivider>
-                            <Body>
-                            <Text>Panier</Text>
-                            </Body>
+                        <ListItem itemDivider noIndent style={ styles.shop }>
+                            <Left>
+                                <Icon type="FontAwesome" name="shopping-cart" />
+                                <Body><Text>Panier</Text></Body>
+                            </Left>
                         </ListItem>
 
                         { this.state.shop.map( el => this.renderEl(el)) }
@@ -131,6 +131,9 @@ class ListInProgressScreen extends Component {
 const styles = StyleSheet.create({
     department: {
         textTransform: 'capitalize'
+    },
+    shop: {
+        backgroundColor: "#cde1f9",
     }
 });
 
