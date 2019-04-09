@@ -51,7 +51,7 @@ class ListListScreen extends Component {
                 stateColor = "green";
                 break;
             case 2:
-                stateColor = "danger";
+                stateColor = "red";
                 break;
             default:
                 stateColor = "yellow";
@@ -115,7 +115,7 @@ class ListListScreen extends Component {
     willFocusSubscription = this.props.navigation.addListener(
         'willFocus',
         async payload => {
-            await this.loadLists(this.props.navigation.state.params.groupId)
+            await this.loadLists(this.props.groupReducer.group.id)
         }
     );
 }
