@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import {Container, Content, Text, List, ListItem, Left, Right, Body, Footer, Button, Icon} from "native-base";
+import {Container, Content, Text, List, ListItem, Left, Right, Body, Footer, Button, Icon, Spinner} from "native-base";
 import AppHeader from "../components/AppHeader";
 import {connect} from "react-redux";
 import {StyleSheet, View} from "react-native";
@@ -7,6 +7,8 @@ import Styles from "../styles/styles";
 import NavigationService from "../services/NavigationService";
 import GrizzlystClient from "../clients/GrizzlystClient";
 import Loader from "../components/Loader";
+import listStatus from "../constants/list";
+import colors from "../constants/colors";
 
 class ListInProgressScreen extends Component {
     constructor(props) {
@@ -20,14 +22,21 @@ class ListInProgressScreen extends Component {
         }
     }
 
+    willFocusSubscription = this.props.navigation.addListener(
+        'willFocus',
+        async payload => {
+            await this.setState({listId: payload.state.params.listId});
+            this.refreshList()
+        }
+    );
+
+
     async componentDidMount() {
-        await this.refreshList();
+        // await this.refreshList();
     }
 
     async isCompleted() {
-        await GrizzlystClient.put(`lists/${this.state.listId}`, {
-            state: 2
-        });
+        await GrizzlystClient.changeListStatus(this.state.listId, listStatus.TERMINATED);
         return NavigationService.navigate('ListList');
     }
 
@@ -52,7 +61,7 @@ class ListInProgressScreen extends Component {
     async getInProgressList() {
         const { data } = await GrizzlystClient.get(`lists/${this.state.listId}/departments/products/progress`);
         let list = [];
-
+console.log(data)
         for (let i in data) {
             if (data[i].products.length) {
                 list.push(data[i])
@@ -104,11 +113,11 @@ class ListInProgressScreen extends Component {
 
     render() {
         if (this.state.isLoading) {
-            return <Loader />;
+            return <Spinner color={colors.DARK_GREEN} />;
         }
         return (
             <Container>
-                <AppHeader title={this.props.listReducer.list.name} navigation={ this.props.navigation } />
+                <AppHeader title={this.state.list.name} navigation={ this.props.navigation } />
                 <Content padder>
                     <List>
                         { this.state.list.map( list => this.renderList(list) ) }

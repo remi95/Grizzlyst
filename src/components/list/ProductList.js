@@ -5,7 +5,6 @@ import {connect} from "react-redux";
 import {addProductToDepartment} from "../../actions/listAction";
 import colors from "../../constants/colors";
 import {Font} from "expo";
-import NavigationService from "../../services/NavigationService";
 
 class ProductList extends Component {
 
@@ -14,47 +13,52 @@ class ProductList extends Component {
 
         this.state = {
             isIconLoaded: false,
-            needUpdate: false,
-            data: [],
+            departments: null,
+            // needUpdate: false,
         }
     }
 
     render() {
-        let {departments} = this.props;
+        let {departments} = this.state;
+
         return (
             <View>
                 {
-                    Object.keys(departments).map(key =>
-                        <Accordion
-                            key={key}
-                            department={departments[key]}
-                        />
-                    )
+                    departments !== null
+                        ? Object.keys(departments).map(key =>
+                            <Accordion
+                                key={key}
+                                department={departments[key]}
+                            />
+                        )
+
+                        : null
                 }
             </View>
         )
     }
 
     async componentDidMount () {
-        if (!this.props.listReducer.list.id) {
-            return NavigationService.navigate('ListList');
-            // TODO: throw alert
-        }
-
         try {
             await Font.loadAsync({FontAwesome: require('@expo/vector-icons/fonts/FontAwesome.ttf')});
-            this.setState({isIconLoaded: true})
+            this.setState({isIconLoaded: true, departments: this.props.departments})
         } catch {
             console.log('ERROR WHILE LOADING ICONS...')
         }
     }
 
-    willFocusSubscription = this.props.navigation.addListener(
-        'willFocus',
-        payload => {
-            this.setState(prevState => ({needUpdate: !prevState.needUpdate}))
+    componentDidUpdate(prevProps, prevState, snapshot) {
+        if (this.props.departments !== prevProps.departments) {
+            this.setState({departments: this.props.departments})
         }
-    );
+    }
+
+    // willFocusSubscription = this.props.navigation.addListener(
+    //     'willFocus',
+    //     payload => {
+    //         this.setState(prevState => ({needUpdate: !prevState.needUpdate}))
+    //     }
+    // );
 }
 
 const styles = StyleSheet.create({

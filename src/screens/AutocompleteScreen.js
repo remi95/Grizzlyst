@@ -51,20 +51,22 @@ class AutocompleteScreen extends Component {
     };
 
     addProduct = async (item) => {
-       let response = await GrizzlystClient.addProduct(
-           this.props.listReducer.list.id,
-           this.state.departmentId,
-           {
-               _id: item.code,
-               quantity: 1,
-           }
-       );
+        const listId = this.props.navigation.getParam('listId');
 
-       if (response.status) {
-           this.props.addProductToDepartment(response.data.product, this.state.departmentId)
-       }
+        let response = await GrizzlystClient.addProduct(
+            listId,
+            this.state.departmentId,
+            {
+                _id: item.code,
+                quantity: 1,
+            }
+        );
 
-       NavigationService.navigate('EditList');
+        if (response.status) {
+            this.props.addProductToDepartment(response.data.product, this.state.departmentId)
+        }
+
+        NavigationService.navigate('EditList', {listId});
     };
 
     updateProduct = (product) => {
@@ -108,6 +110,13 @@ class AutocompleteScreen extends Component {
 
         this.setState({departmentId: this.props.navigation.getParam('departmentId')})
     }
+
+    willFocusSubscription = this.props.navigation.addListener(
+        'willFocus',
+        payload => {
+            this.setState({departmentId: this.props.navigation.getParam('departmentId')})
+        }
+    );
 }
 
 const styles = StyleSheet.create({

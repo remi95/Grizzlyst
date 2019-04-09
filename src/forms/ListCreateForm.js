@@ -82,7 +82,6 @@ class ListCreateForm extends Component {
         });
 
         if (list.status) {
-            console.log(list)
             let productsByDepartments = await GrizzlystClient.get('lists/' + list.data.list.id + '/departments/products');
             await this.props.setCurrentList(list.data.list);
             await this.props.setProductsByDepartment(productsByDepartments.data);

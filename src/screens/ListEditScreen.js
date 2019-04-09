@@ -1,14 +1,15 @@
 import React, {Component} from 'react';
-import {StyleSheet} from 'react-native';
+import {StyleSheet, View} from 'react-native';
 import ProductList from "../components/list/ProductList";
 import NavigationService from "../services/NavigationService";
-import {Root, Content, Footer, Text, Button, ActionSheet} from "native-base";
+import {Root, Content, Footer, Text, Button, ActionSheet, Spinner} from "native-base";
 import AppHeader from "../components/AppHeader";
 import Styles from "../styles/styles";
 import {connect} from "react-redux";
 import GrizzlystClient from "../clients/GrizzlystClient";
 import {setProductsByDepartment} from "../actions/listAction";
-import DepartmentsHelper from "../helpers/Departments";
+import listStatus from "../constants/list";
+import colors from "../constants/colors";
 
 class ListEditScreen extends Component {
 
@@ -16,14 +17,15 @@ class ListEditScreen extends Component {
         super(props);
 
         this.state = {
+            list: {},
+            departments: null,
             addableDepartments: [],
             needUpdate: false,
         }
     }
 
     addDepartment = async (department) => {
-        let {list, departments} = this.props.listReducer;
-        // let departmentId = DepartmentsHelper.getDepartmentId(departmentName);
+        let {list, departments} = this.state;
         let response = await GrizzlystClient.addDepartment(list.id, department.id);
 
         if (response.status) {
@@ -31,14 +33,13 @@ class ListEditScreen extends Component {
             response.data.products = [];
             departments[Object.keys(departments).length] = response.data;
 
-            this.props.setProductsByDepartment(departments);
             this.filterDepartments();
-            this.setState({needUpdate: !this.state.needUpdate})
+            this.setState({needUpdate: !this.state.needUpdate, departments})
         }
     };
 
     getExistingDepartmentIds = () => {
-        let {departments} = this.props.listReducer;
+        let {departments} = this.state;
         let departmentsIds = [];
 
         for (let i in departments) {
@@ -63,38 +64,89 @@ class ListEditScreen extends Component {
         this.setState({addableDepartments})
     };
 
+    startListInProgress = async () => {
+        await GrizzlystClient.changeListStatus(this.state.list.id, listStatus.IN_PROGRESS);
+        NavigationService.navigate('ListInProgress', {listId: this.state.list.id})
+    };
+
     render() {
-        let {departments} = this.props.listReducer;
+        let {departments, list} = this.state;
 
         return (
             <Root style={styles.container}>
                 <Content>
-                    <AppHeader title="Edition de liste" navigation={ this.props.navigation } />
-                    <ProductList update={this.state.needUpdate} departments={departments} navigation={this.props.navigation} />
-                    <Button
-                        title={'Ajouter un rayon'}
-                        onPress={() =>
-                            ActionSheet.show(
-                                {
-                                    options: this.state.addableDepartments.map(({name}) => name),
-                                    title: "Ajouter un rayon"
-                                },
-                                buttonIndex => {
-                                    this.addDepartment(this.state.addableDepartments[buttonIndex])
-                                }
-                            )}
-                    >
-                        <Text>Ajouter un rayon</Text>
-                    </Button>
+                    <AppHeader title={list.name || ''} navigation={this.props.navigation}/>
+                    {
+                        departments !== null
+                            ?
+                                <View>
+                                    <Button
+                                        full
+                                        onPress={() =>
+                                            ActionSheet.show(
+                                                {
+                                                    options: this.state.addableDepartments.map(({name}) => name),
+                                                    title: "Ajouter un rayon"
+                                                },
+                                                buttonIndex => {
+                                                    this.addDepartment(this.state.addableDepartments[buttonIndex])
+                                                }
+                                            )}
+                                    >
+                                        <Text>Ajouter un rayon</Text>
+                                    </Button>
+
+                                    <ProductList update={this.state.needUpdate}
+                                                 departments={departments}
+                                                 navigation={this.props.navigation}/>
+                                </View>
+
+                            : <Spinner color={colors.BLUE} />
+                    }
                 </Content>
-                 <Footer>
-                    <Button full style={ Styles.button.fixedBottom } onPress={ () => NavigationService.navigate('ListInProgress') }>
+                <Footer>
+                    <Button full style={ Styles.button.fixedBottom } onPress={this.startListInProgress}>
                         <Text>Commencer les courses</Text>
                     </Button>
                 </Footer>
             </Root>
         )
     }
+
+    loadList = async (listId) => {
+        const list = await GrizzlystClient.getList(listId);
+        const products = await GrizzlystClient.getProductsByDepartments(listId);
+
+        if (list.status && products.status) {
+            this.setState({
+                list: list.data,
+                departments: products.data,
+            });
+        }
+
+        this.filterDepartments();
+    };
+
+    clearList = () => {
+        this.setState({
+            list: {},
+            departments: null,
+        });
+    };
+
+    willFocusSubscription = this.props.navigation.addListener(
+        'willFocus',
+        payload => {
+            this.loadList(payload.state.params.listId);
+        }
+    );
+
+    didBlurSubscription = this.props.navigation.addListener(
+        'didBlur',
+        payload => {
+            this.clearList();
+        }
+    );
 }
 
 const styles = StyleSheet.create({
@@ -103,10 +155,9 @@ const styles = StyleSheet.create({
     },
 });
 
-const mapStateToProps = ({ listReducer, userReducer }) => {
+const mapStateToProps = ({ listReducer }) => {
     return {
         listReducer,
-        userReducer,
     }
 };
 

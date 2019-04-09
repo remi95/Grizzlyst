@@ -59,6 +59,24 @@ class GrizzlystServerClient {
     };
 
     /**
+     * Get a list object by id.
+     *
+     * @param listId
+     */
+    getList = async (listId) => {
+        return await GrizzlystClient.get('lists/' + listId);
+    };
+
+    /**
+     * Get all products of a list, sort by department.
+     *
+     * @param listId
+     */
+    getProductsByDepartments = async (listId) => {
+        return await GrizzlystClient.get('lists/' + listId + '/departments/products');
+    };
+
+    /**
      * Update a product.
      *
      * @param listId
@@ -68,6 +86,18 @@ class GrizzlystServerClient {
      */
     updateProduct = async (listId, productId, data) => {
         return await this.put(`lists/${listId}/product/${productId}`, data);
+    };
+
+    /**
+     * Change the list status. See constants/list.
+     *
+     * @param listId
+     * @param status
+     */
+    changeListStatus = async (listId, status) => {
+        return await GrizzlystClient.put(`lists/${listId}`, {
+            state: status
+        });
     };
 
     /**

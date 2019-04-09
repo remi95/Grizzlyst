@@ -6,6 +6,7 @@ import {setCurrentList, setProductsByDepartment} from "../actions/listAction";
 import AppHeader from "../components/AppHeader";
 import {Container, Content, Footer, Button, Text, List, ListItem, Left, Right, Icon, Body, Badge, CheckBox} from "native-base";
 import Styles from "../styles/styles";
+import ListsHelper from "../helpers/Lists";
 
 class ListListScreen extends Component {
 
@@ -25,43 +26,6 @@ class ListListScreen extends Component {
         </Text>
     );
 
-    _onPressItem = async (id) => {
-        const list = await GrizzlystClient.get('lists/' + id);
-        const products = await GrizzlystClient.get('lists/' + id + '/departments/products');
-
-        if (list.status && products.status) {
-            await this.props.setCurrentList(list.data);
-            await this.props.setProductsByDepartment(products.data);
-            NavigationService.navigate('EditList');
-        }
-        else {
-            console.log(response)
-            // TODO: throw alert.
-        }
-    };
-
-    displayBadge(list) {
-        let stateColor = null;
-
-        switch (list.state) {
-            case 0:
-                stateColor = "yellow";
-                break;
-            case 1:
-                stateColor = "green";
-                break;
-            case 2:
-                stateColor = "red";
-                break;
-            default:
-                stateColor = "yellow";
-                break;
-        }
-        return (
-            <CheckBox checked={true} color={ stateColor } />
-        )
-    }
-
     render() {
         return (
             <Container>
@@ -73,8 +37,14 @@ class ListListScreen extends Component {
                             <List>
                                 {
                                     this.state.lists.map((list, i) =>
-                                        <ListItem key={i} onPress={ () => this._onPressItem(list.id) }>
-                                            {this.displayBadge(list)}
+                                        <ListItem icon key={i} onPress={ () => ListsHelper.navigateToList(list) }>
+                                            <Left>
+                                                <Icon
+                                                    active
+                                                    type={'FontAwesome'}
+                                                    name={ListsHelper.getIcon(list)}
+                                                    style={{color: ListsHelper.getIconColor(list)}} />
+                                            </Left>
                                             <Body><Text>{list.name}</Text></Body>
                                             <Right>
                                                 <Icon name="arrow-forward" />

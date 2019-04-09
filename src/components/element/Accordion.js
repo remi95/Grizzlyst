@@ -36,7 +36,7 @@ class Accordion extends Component {
     switchCollapse = () => {
         Animated.timing(
             this.state.accordionHeight, {
-                toValue: this.state.isCollapsed ? this.props.department.products.length * 75 : 0,
+                toValue: this.state.isCollapsed ? this.props.department.products.length * 80 : 0,
                 duration: 250,
             }
         ).start();
@@ -46,6 +46,7 @@ class Accordion extends Component {
 
     startAutocomplete = () => {
         NavigationService.navigate('Autocomplete', {
+            listId: this.state.department.products[0].listId,
             departmentId: this.props.department.id,
         })
     };
@@ -165,6 +166,8 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         padding: 20,
         backgroundColor: colors.LIGHT_GRAY,
+        borderBottomWidth: 1,
+        borderColor: colors.GRAY,
     },
     name: {
         fontSize: 16,
