@@ -75,7 +75,7 @@ class ListEditScreen extends Component {
         return (
             <Root style={styles.container}>
                 <Content>
-                    <AppHeader title={list.name || ''} navigation={this.props.navigation}/>
+                    <AppHeader title={list.name || ''} navigation={this.props.navigation} />
                     {
                         departments !== null
                             ?

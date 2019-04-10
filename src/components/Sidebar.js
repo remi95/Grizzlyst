@@ -37,6 +37,7 @@ class SideBar extends React.Component {
     logout = async () => {
         await AsyncStorage.removeItem('token');
         this.props.logout();
+        this.props.navigation.closeDrawer();
         await HomeService.getHomeScreen();
     };
 

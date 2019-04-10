@@ -13,7 +13,7 @@ import GroupCreateScreen from "../screens/GroupCreateScreen";
 import LoginScreen from "../screens/LoginScreen";
 import ListInProgressScreen from "../screens/ListInProgressScreen";
 
-const DrawerNavigator = createDrawerNavigator({
+const DrawerStack = createStackNavigator({
     GroupList: { screen: GroupListScreen },
     GroupCreate: { screen: GroupCreateScreen },
     Invitations: { screen: InvitationScreen },
@@ -24,6 +24,12 @@ const DrawerNavigator = createDrawerNavigator({
     CreateList: { screen: ListCreateScreen },
     EditList: { screen: ListEditScreen },
     Autocomplete: { screen: AutocompleteScreen },
+}, {
+    headerMode: 'none'
+});
+
+const DrawerNavigator = createDrawerNavigator({
+    DrawerStack
 }, {
     drawerPosition: 'right',
     contentComponent: props => <Sidebar {...props} />,

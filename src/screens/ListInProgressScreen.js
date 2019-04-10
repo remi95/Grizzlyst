@@ -18,7 +18,8 @@ class ListInProgressScreen extends Component {
             list: [],
             shop: [],
             listId: this.props.listReducer.list.id,
-            isLoading: true
+            isLoading: true,
+            currentList: null
         }
     }
 
@@ -30,11 +31,6 @@ class ListInProgressScreen extends Component {
         }
     );
 
-
-    async componentDidMount() {
-        // await this.refreshList();
-    }
-
     async isCompleted() {
         await GrizzlystClient.changeListStatus(this.state.listId, listStatus.TERMINATED);
         return NavigationService.navigate('ListList');
@@ -43,10 +39,12 @@ class ListInProgressScreen extends Component {
     async refreshList() {
         const list = await this.getInProgressList();
         const shop = await this.getCompletedList();
+        const currentList = await GrizzlystClient.getList(this.state.listId);
 
         this.setState({
             list,
             shop,
+            currentList: currentList.data,
             isLoading: false
         });
     }
@@ -61,7 +59,6 @@ class ListInProgressScreen extends Component {
     async getInProgressList() {
         const { data } = await GrizzlystClient.get(`lists/${this.state.listId}/departments/products/progress`);
         let list = [];
-console.log(data)
         for (let i in data) {
             if (data[i].products.length) {
                 list.push(data[i])
@@ -117,7 +114,7 @@ console.log(data)
         }
         return (
             <Container>
-                <AppHeader title={this.state.list.name} navigation={ this.props.navigation } />
+                <AppHeader title={this.state.currentList.name} navigation={ this.props.navigation } />
                 <Content padder>
                     <List>
                         { this.state.list.map( list => this.renderList(list) ) }
