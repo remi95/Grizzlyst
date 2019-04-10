@@ -3,7 +3,7 @@ class OpenFactClient {
     constructor() {
         let baseUrl = 'https://world.openfoodfacts.org/';
         this.searchUrl = baseUrl + 'cgi/search.pl?search_simple=1&action=process&json=1';
-        this.productUrl = baseUrl + 'api/v/product/';
+        this.productUrl = baseUrl + 'api/v0/product/';
     }
 
     search = async (query) => {
@@ -37,12 +37,11 @@ class OpenFactClient {
     normalizeProduct = (originalProduct) => {
         let original = originalProduct.product;
         let product = {
-            product: {
                 code: original.code,
                 brand: original.brands,
                 name: original.product_name_fr,
                 quantity: original.quantity,
-                nutrient_grade: original.nutrition_grade_fr.toUpperCase(),
+                nutrient_grade: original.nutrition_grade_fr ? original.nutrition_grade_fr.toUpperCase() : '-',
                 image: original.image_url,
                 description: original.generic_name_fr,
                 nutriments: [
@@ -52,7 +51,7 @@ class OpenFactClient {
                         unit: original.nutriments['saturated-fat_unit'],
                     },
                     {
-                        name: 'Matières grasses / Lipides',
+                        name: 'Matières grasses',
                         value: original.nutriments.fat_100g || '-',
                         unit: original.nutriments.fat_unit || '',
                     },
@@ -94,7 +93,6 @@ class OpenFactClient {
                 ],
                 ingredients: [],
                 allergens: original.allergens_from_ingredients,
-            },
         };
 
         for (let ingredient of original.ingredients) {

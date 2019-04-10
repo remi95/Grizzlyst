@@ -12,6 +12,7 @@ import InvitationScreen from "../screens/user/InvitationScreen";
 import GroupCreateScreen from "../screens/GroupCreateScreen";
 import LoginScreen from "../screens/LoginScreen";
 import ListInProgressScreen from "../screens/ListInProgressScreen";
+import ProductScreen from "../screens/ProductScreen";
 
 const DrawerStack = createStackNavigator({
     GroupList: { screen: GroupListScreen },
@@ -24,6 +25,7 @@ const DrawerStack = createStackNavigator({
     CreateList: { screen: ListCreateScreen },
     EditList: { screen: ListEditScreen },
     Autocomplete: { screen: AutocompleteScreen },
+    Product: {screen: ProductScreen}
 }, {
     headerMode: 'none'
 });

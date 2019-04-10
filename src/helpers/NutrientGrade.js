@@ -17,6 +17,10 @@ class NutrientGrade {
     getColor = (grade) => {
         let color = colors.GRAY;
 
+        if (!grade) {
+            return color;
+        }
+
         switch (grade.toUpperCase()) {
             case 'A':
                 color = colors.DARK_GREEN;

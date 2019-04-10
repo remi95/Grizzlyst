@@ -5,6 +5,10 @@ import NutrientGradeHelper from "../../helpers/NutrientGrade";
 
 export const NutrientGradePreview = (props) => {
 
+    if (!props.grade) {
+        return null;
+    }
+
     let color = NutrientGradeHelper.getColor(props.grade);
 
     return (

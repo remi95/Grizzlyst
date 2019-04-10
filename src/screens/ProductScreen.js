@@ -6,6 +6,7 @@ import Styles from "../styles/styles";
 import NutrientGradeHelper from "../helpers/NutrientGrade";
 import {NutrientGrade} from "../components/element/NutrientGrade";
 import AppHeader from "../components/AppHeader";
+import {Spinner} from "native-base";
 
 class ProductScreen extends Component {
 
@@ -24,12 +25,12 @@ class ProductScreen extends Component {
         let { product } = this.state;
 
         return (
-            <ScrollView style={[Styles.position.size.fullWidth, styles.container]}>
-                <AppHeader title={ product.name || 'Fiche produit' } navigation={ this.props.navigation } />
+            <ScrollView style={Styles.position.size.fullWidth}>
+                <AppHeader title={ product !== null ? product.name : 'Fiche produit' } navigation={ this.props.navigation } />
             {
                 product !== null
                 ?
-                    <View style={Styles.position.flex.flex}>
+                    <View style={[Styles.position.flex.flex, styles.container]}>
                         <View style={styles.box}>
                             <View style={styles.main}>
                                 <Image source={{uri: product.image}} style={[styles.image, {borderColor: this.state.gradeColor}]} />
@@ -57,51 +58,59 @@ class ProductScreen extends Component {
                             <Text style={styles.underline}>Allergènes :</Text><Text>{ product.allergens }</Text>
                         </View>
 
+                        <Text style={styles.underline}>Informations nutritionnelles :</Text>
                         <View style={styles.table}>
                             <View style={styles.tableCol}>
                                 {
-                                    product.nutriments.map((nutriment, i) =>
-                                        <View
-                                            key={`${nutriment.name}_name`}
-                                            style={[styles.tableRow, i % 2 === 0 ? styles.tableRowEven : styles.tableRowOdd]}
-                                        >
-                                            <Text>{nutriment.name}</Text>
-                                        </View>
-                                    )
+                                    product.nutriments.length > 0 ?
+                                        product.nutriments.map((nutriment, i) =>
+                                            <View
+                                                key={`${nutriment.name}_name`}
+                                                style={[styles.tableRow, i % 2 === 0 ? styles.tableRowEven : styles.tableRowOdd]}
+                                            >
+                                                <Text>{nutriment.name}</Text>
+                                            </View>
+                                        )
+                                        : null
                                 }
                             </View>
                             <View style={styles.tableCol}>
                                 {
-                                    product.nutriments.map((nutriment, i) =>
-                                        <View
-                                            key={`${nutriment.name}_value`}
-                                            style={[styles.tableRow, i % 2 === 0 ? styles.tableRowEven : styles.tableRowOdd]}
-                                        >
-                                            <Text>{nutriment.value} {nutriment.unit}</Text>
-                                        </View>
-                                    )
+                                    product.nutriments.length > 0 ?
+                                        product.nutriments.map((nutriment, i) =>
+                                            <View
+                                                key={`${nutriment.name}_value`}
+                                                style={[styles.tableRow, i % 2 === 0 ? styles.tableRowEven : styles.tableRowOdd]}
+                                            >
+                                                <Text>{nutriment.value} {nutriment.unit}</Text>
+                                            </View>
+                                        )
+                                        : null
                                 }
                             </View>
                         </View>
                     </View>
 
-                :   null
+                :   <Spinner color={colors.BLUE} />
             }
             </ScrollView>
         )
     }
 
-    async componentDidMount() {
-        let product = await OpenClient.getProduct(this.props.code);
+    willFocusSubscription = this.props.navigation.addListener(
+        'willFocus',
+        async payload => {
+            let product = await OpenClient.getProduct(this.props.navigation.getParam('productCode'));
 
-        if (product.status) {
-            let data = await OpenClient.normalizeProduct(product.data);
-            let gradeColor = NutrientGradeHelper.getColor(data.nutrient_grade);
+            if (product.status) {
+                let data = await OpenClient.normalizeProduct(product.data);
+                let gradeColor = NutrientGradeHelper.getColor(data.nutrient_grade);
+                return this.setState({ product: data, gradeColor });
+            }
 
-            this.setState({ product: data, gradeColor });
+            console.log(product)
         }
-        // TODO: Manage if API doesn't respond correctly.
-    }
+    );
 }
 
 const styles = StyleSheet.create({
@@ -116,11 +125,13 @@ const styles = StyleSheet.create({
         height: 100,
         width: 100,
         marginRight: 20,
-        borderWidth: 2,
+        borderWidth: 3,
         borderRadius: 5,
     },
     title: {
+        flexWrap: 'wrap',
         fontSize: 16,
+        maxWidth: 180,
     },
     brand: {
         fontSize: 14,
@@ -131,12 +142,9 @@ const styles = StyleSheet.create({
         color: colors.GRAY,
     },
     description: {
-        padding: 25,
         marginBottom: 20,
         color: colors.GRAY,
-        borderWidth: 1,
-        borderColor: colors.GRAY,
-        borderRadius: 10,
+        fontSize: 14,
     },
     box: {
         padding: 10,
@@ -171,6 +179,7 @@ const styles = StyleSheet.create({
     },
     underline: {
         textDecorationLine: 'underline',
+        marginTop: 20,
     },
 });
 

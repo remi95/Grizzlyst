@@ -22,7 +22,7 @@ class AppHeader extends Component {
                         :
                         <Left />
                 }
-                <Body>
+                <Body style={styles.body}>
                     <Title>{ this.props.title }</Title>
                 </Body>
                 <Right>
@@ -41,7 +41,11 @@ const styles = StyleSheet.create({
     header: {
         marginTop: Constants.statusBarHeight,
         backgroundColor: colors.BLUE
-    }
+    },
+    body: {
+        flex: 3,
+        marginLeft: 10,
+    },
 });
 
 export default AppHeader;
