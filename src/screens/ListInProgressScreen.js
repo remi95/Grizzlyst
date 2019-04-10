@@ -74,7 +74,7 @@ class ListInProgressScreen extends Component {
 
     renderEl(el, isInProgress=false) {
         return (
-            <ListItem>
+            <ListItem key={el.product.id}>
                 <Left>
                     <Text>{el.quantity}</Text>
                     <Body>
@@ -98,7 +98,7 @@ class ListInProgressScreen extends Component {
 
     renderList(list) {
         return (
-            <View>
+            <View key={list.id}>
                 <ListItem itemDivider>
                     <Text style={ styles.department }>{ list.name }</Text>
                 </ListItem>
