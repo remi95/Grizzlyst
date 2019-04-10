@@ -9,11 +9,24 @@
     "eject": "expo eject"
   },
   "dependencies": {
-    "expo": "^31.0.2",
-    "react": "16.5.0",
-    "react-native": "https://github.com/expo/react-native/archive/sdk-31.0.0.tar.gz"
+    "@expo/vector-icons": "^9.0.0",
+    "expo": "^31.0.6",
+    "expo-font": "^2.0.0",
+    "moment": "^2.24.0",
+    "native-base": "^2.12.1",
+    "react": "^16.8.2",
+    "react-native": "https://github.com/expo/react-native/archive/sdk-31.0.0.tar.gz",
+    "react-native-autocomplete-input": "^3.6.0",
+    "react-native-collapsible": "^1.4.0",
+    "react-native-datepicker": "^1.7.2",
+    "react-native-vector-icons": "^6.3.0",
+    "react-navigation": "^3.3.0",
+    "react-redux": "^6.0.0",
+    "redux": "^4.0.1",
+    "redux-thunk": "^2.3.0"
   },
   "devDependencies": {
-    "babel-preset-expo": "^5.0.0"
+    "babel-preset-expo": "^5.0.0",
+    "schedule": "^0.4.0"
   }
 }
