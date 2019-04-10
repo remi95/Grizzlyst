@@ -128,7 +128,7 @@ class Accordion extends Component {
                                                 </ListItem>
                                             }
                                             renderLeftHiddenRow={data =>
-                                                <Button full onPress={() => alert(data)}>
+                                                <Button full onPress={() => NavigationService.navigate('Product', {productCode: data.product._id})}>
                                                     <Icon active name="information-circle"/>
                                                 </Button>}
                                             renderRightHiddenRow={(data, secId, rowId, rowMap) =>
