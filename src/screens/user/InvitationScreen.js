@@ -13,6 +13,13 @@ class InvitationScreen extends Component {
         }
     }
 
+    willFocusSubscription = this.props.navigation.addListener(
+        'willFocus',
+        payload => {
+            this.getInvitations();
+        }
+    );
+
     async componentDidMount() {
        this.getInvitations();
     }
