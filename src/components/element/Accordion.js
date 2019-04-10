@@ -36,7 +36,7 @@ class Accordion extends Component {
     switchCollapse = () => {
         Animated.timing(
             this.state.accordionHeight, {
-                toValue: this.state.isCollapsed ? this.props.department.products.length * 80 : 0,
+                toValue: this.state.isCollapsed ? this.props.department.products.length * 65 : 0,
                 duration: 250,
             }
         ).start();
@@ -46,7 +46,7 @@ class Accordion extends Component {
 
     startAutocomplete = () => {
         NavigationService.navigate('Autocomplete', {
-            listId: this.state.department.products[0].listId,
+            listId: this.state.list.id,
             departmentId: this.props.department.id,
         })
     };
@@ -112,9 +112,9 @@ class Accordion extends Component {
                                             rightOpenValue={-75}
                                             dataSource={this.ds.cloneWithRows(department.products)}
                                             renderRow={listProduct =>
-                                                <ListItem avatar key={listProduct.id}>
+                                                <ListItem avatar key={listProduct.id} style={styles.listItem}>
                                                     <Left>
-                                                        <Thumbnail source={{uri: listProduct.product.image_url}}/>
+                                                        <Thumbnail source={{uri: listProduct.product.image_url}} style={styles.image}/>
                                                     </Left>
                                                     <Body>
                                                         <Text>{listProduct.product.name}</Text>
@@ -151,7 +151,7 @@ class Accordion extends Component {
     async componentDidMount() {
         try {
             await Font.loadAsync({FontAwesome: require('@expo/vector-icons/fonts/FontAwesome.ttf')});
-            this.setState({isIconLoaded: true, department: this.props.department})
+            this.setState({isIconLoaded: true, department: this.props.department, list: this.props.list})
         } catch {
             console.log('ERROR WHILE LOADING ICONS...')
         }
@@ -175,6 +175,14 @@ const styles = StyleSheet.create({
     quantity: {
         fontSize: 14,
         color: colors.GRAY
+    },
+    listItem: {
+        height: 65,
+    },
+    image: {
+        height: 45,
+        width: 45,
+        marginLeft: 15,
     },
 });
 

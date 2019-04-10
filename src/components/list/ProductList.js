@@ -19,7 +19,7 @@ class ProductList extends Component {
     }
 
     render() {
-        let {departments} = this.state;
+        let {departments, list} = this.state;
 
         return (
             <View>
@@ -28,6 +28,7 @@ class ProductList extends Component {
                         ? Object.keys(departments).map(key =>
                             <Accordion
                                 key={key}
+                                list={list}
                                 department={departments[key]}
                             />
                         )
@@ -41,7 +42,7 @@ class ProductList extends Component {
     async componentDidMount () {
         try {
             await Font.loadAsync({FontAwesome: require('@expo/vector-icons/fonts/FontAwesome.ttf')});
-            this.setState({isIconLoaded: true, departments: this.props.departments})
+            this.setState({isIconLoaded: true, departments: this.props.departments, list: this.props.list})
         } catch {
             console.log('ERROR WHILE LOADING ICONS...')
         }
@@ -49,7 +50,7 @@ class ProductList extends Component {
 
     componentDidUpdate(prevProps, prevState, snapshot) {
         if (this.props.departments !== prevProps.departments) {
-            this.setState({departments: this.props.departments})
+            this.setState({departments: this.props.departments, list: this.props.list})
         }
     }
 

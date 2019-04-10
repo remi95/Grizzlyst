@@ -85,7 +85,7 @@ class ListCreateForm extends Component {
             let productsByDepartments = await GrizzlystClient.get('lists/' + list.data.list.id + '/departments/products');
             await this.props.setCurrentList(list.data.list);
             await this.props.setProductsByDepartment(productsByDepartments.data);
-            NavigationService.navigate('EditList');
+            NavigationService.navigate('EditList', {listId: list.data.list.id});
         }
         else {
             // TODO: Throw alert.

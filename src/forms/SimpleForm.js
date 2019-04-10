@@ -1,7 +1,8 @@
 import React from 'react';
-import {View, TextInput, Text, KeyboardAvoidingView} from 'react-native';
+import {View, TextInput, Text, KeyboardAvoidingView, StyleSheet} from 'react-native';
 import { Button } from "native-base";
 import Styles from "../styles/styles";
+import colors from "../constants/colors";
 
 /**
  * Provides a simple form
@@ -109,11 +110,19 @@ export const SimpleForm = (props) => {
                 )
             }
             <Button
-                title={props.form.button.label}
                 color={props.form.button.color}
                 onPress={() => action()}
+                style={styles.button}
                 block
-            />
+            >
+                <Text style={{color: colors.WHITE}}>{props.form.button.label}</Text>
+            </Button>
         </KeyboardAvoidingView>
     )
 };
+
+const styles = StyleSheet.create({
+    button: {
+        marginTop: 30,
+    },
+});

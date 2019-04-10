@@ -8,7 +8,7 @@ export default class Params extends React.Component {
             <Container>
                 <AppHeader title="Paramètres" navigation={ this.props.navigation } />
                 <Content>
-                    <Text>Route des paramètres</Text>
+                    <Text>Paramètres</Text>
                 </Content>
             </Container>
         );

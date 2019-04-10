@@ -1,7 +1,6 @@
 import React, {Component} from 'react';
 import {View, StyleSheet, Button} from 'react-native';
 import Autocomplete from "react-native-autocomplete-input";
-import ProductRow from "../components/element/ProductRow";
 import OpenClient from "../clients/OpenFactClient";
 import Styles from "../styles/styles";
 import GrizzlystClient from "../clients/GrizzlystClient";
@@ -9,6 +8,9 @@ import NavigationService from "../services/NavigationService";
 import {connect} from "react-redux";
 import {addProductToDepartment} from "../actions/listAction";
 import AppHeader from "../components/AppHeader";
+import {Body, Left, ListItem, Right, Text, Thumbnail, Icon} from "native-base";
+import {NutrientGradePreview} from "../components/element/NutrientGradePreview";
+import colors from "../constants/colors";
 
 /**
  * Display the autocomplete search screen.
@@ -81,10 +83,23 @@ class AutocompleteScreen extends Component {
     };
 
     _renderItem = (item) => (
-        <View style={styles.row}>
-            <ProductRow listProduct={item} style={styles.product} updateProduct={this.updateProduct} />
-            <Button title={'+'} onPress={() => this.addProduct(item.product)} style={styles.button} />
-        </View>
+        <ListItem avatar key={item.id} style={styles.listItem}>
+            <Left>
+                <Thumbnail source={{uri: item.product.image_url}} style={styles.image}/>
+            </Left>
+            <Body>
+                <Text>{item.product.name}</Text>
+                <Text
+                    note>{item.product.brand} - {item.product.quantity}</Text>
+            </Body>
+            <Right>
+                <NutrientGradePreview
+                    grade={item.product.nutrition_grade}/>
+            </Right>
+            <Right>
+                <Button title={'+'} onPress={() => this.addProduct(item.product)} style={styles.button}/>
+            </Right>
+        </ListItem>
     );
 
     render() {
@@ -133,7 +148,18 @@ const styles = StyleSheet.create({
         flex: 3,
     },
     button: {
-        flex: 2,
+        width: 35,
+        height: 31,
+        paddingTop: 7,
+        paddingBottom: 7,
+        paddingRight: 10,
+        paddingLeft: 10,
+        borderRadius: 5,
+        backgroundColor: colors.BLUE,
+    },
+    image: {
+        height: 45,
+        width: 45,
     },
 });
 

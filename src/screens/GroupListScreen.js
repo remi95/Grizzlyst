@@ -17,10 +17,6 @@ class GroupListScreen extends Component {
         };
     }
 
-    componentDidMount() {
-        this.setState({ groups: this.props.userReducer.groups });
-    }
-
     async navigateToList(id) {
         const response = await GrizzlystClient.get('groups/' + id);
 
@@ -62,6 +58,17 @@ class GroupListScreen extends Component {
             </Container>
         )
     }
+
+    willFocusSubscription = this.props.navigation.addListener(
+        'willFocus',
+        async payload => {
+            let groups = await GrizzlystClient.get('me/groups');
+
+            if (groups.status) {
+                this.setState({groups: groups.data});
+            }
+        }
+    );
 }
 
 const mapStateToProps = ({ userReducer }) => {

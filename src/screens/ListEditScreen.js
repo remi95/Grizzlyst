@@ -97,8 +97,9 @@ class ListEditScreen extends Component {
                                     </Button>
 
                                     <ProductList update={this.state.needUpdate}
+                                                 list={list}
                                                  departments={departments}
-                                                 navigation={this.props.navigation}/>
+                                                 navigation={this.props.navigation} />
                                 </View>
 
                             : <Spinner color={colors.BLUE} />
