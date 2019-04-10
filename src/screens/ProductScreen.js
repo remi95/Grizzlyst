@@ -125,7 +125,7 @@ const styles = StyleSheet.create({
         height: 100,
         width: 100,
         marginRight: 20,
-        borderWidth: 2,
+        borderWidth: 3,
         borderRadius: 5,
     },
     title: {
